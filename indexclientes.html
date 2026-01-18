@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WB Assessoria - Portal Inteligente</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        wbGold: '#d4af37', 
+                        wbDark: '#050505',
+                        wbGray: '#121212',
+                        wbInput: '#1a1a1a'
+                    },
+                    animation: {
+                        'pulse-fast': 'pulse 1s cubic-bezier(0.4, 0, 0.6, 1) infinite',
+                    }
+                }
+            }
+        }
+    </script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <style>
+        body { font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif; background-color: #000; color: #e5e5e5; }
+        /* Loader Circular */
+        .loader { border: 3px solid #f3f3f3; border-top: 3px solid #d4af37; border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; display: inline-block; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</head>
+<body class="bg-black min-h-screen flex flex-col">
+
+    <nav class="border-b border-wbGold/30 bg-wbGray p-4 sticky top-0 z-50 backdrop-blur-md bg-opacity-90">
+        <div class="container mx-auto flex justify-between items-center">
+            <div class="flex items-center gap-3">
+                <img src="logo.jpeg" alt="WB Logo" class="h-10 w-10 md:h-12 md:w-12 object-contain rounded-full border border-wbGold/50"> 
+                <div>
+                    <h1 class="font-bold text-lg md:text-xl text-wbGold tracking-wider">WB ASSESSORIA</h1>
+                </div>
+            </div>
+            <button onclick="logout()" id="btnLogout" class="hidden text-red-500 text-xs font-bold hover:text-red-400 border border-red-900/30 p-2 rounded transition">
+                SAIR <i class="fa-solid fa-right-from-bracket ml-1"></i>
+            </button>
+        </div>
+    </nav>
+
+    <div id="loginScreen" class="flex-grow flex items-center justify-center p-4">
+        <div class="bg-wbGray p-6 md:p-8 rounded-2xl shadow-2xl w-full max-w-md border border-wbGold/20">
+            <div class="text-center mb-6">
+                <img src="logo.jpeg" class="w-20 h-20 mx-auto mb-4 rounded-full border-2 border-wbGold p-1 object-cover">
+                <h2 class="text-2xl font-bold text-white">Portal do Cliente</h2>
+            </div>
+            <form onsubmit="handleLogin(event)" class="space-y-4">
+                <div>
+                    <label class="text-xs text-wbGold font-bold uppercase ml-1">CPF</label>
+                    <input type="text" id="loginInput" oninput="maskCPF(this)" maxlength="14" class="w-full p-3 bg-wbInput border border-gray-800 rounded text-white focus:border-wbGold outline-none placeholder-gray-600 transition" placeholder="000.000.000-00" required>
+                </div>
+                <div>
+                    <label class="text-xs text-wbGold font-bold uppercase ml-1">Senha</label>
+                    <input type="password" id="passwordInput" class="w-full p-3 bg-wbInput border border-gray-800 rounded text-white focus:border-wbGold outline-none placeholder-gray-600 transition" placeholder="••••••••" required>
+                </div>
+                <button type="submit" class="w-full bg-wbGold text-black font-bold py-3 rounded hover:bg-yellow-600 transition shadow-lg transform hover:scale-[1.01]">ENTRAR</button>
+            </form>
+            <div class="mt-6 text-center">
+                <button onclick="switchScreen('registerScreen')" class="text-sm text-gray-400 hover:text-white underline">Criar Conta</button>
+            </div>
+        </div>
+    </div>
+
+    <div id="registerScreen" class="hidden container mx-auto p-4 py-8 max-w-3xl">
+        <div class="bg-wbGray rounded-2xl border border-wbGold/20 overflow-hidden shadow-2xl">
+            <div class="bg-black/50 p-4 border-b border-gray-800 flex justify-between items-center">
+                <h2 class="text-lg font-bold text-wbGold"><i class="fa-solid fa-user-plus mr-2"></i>Novo Cadastro</h2>
+                <button onclick="switchScreen('loginScreen')" class="text-gray-400 hover:text-white transition"><i class="fa-solid fa-times text-xl"></i></button>
+            </div>
+            <form onsubmit="handlePublicRegister(event)" class="p-6 grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="md:col-span-2">
+                    <label class="text-xs text-gray-500 ml-1">Nome Completo</label>
+                    <input type="text" id="regName" class="w-full bg-wbInput border border-gray-800 p-3 rounded text-white focus:border-wbGold outline-none" required>
+                </div>
+                <div>
+                    <label class="text-xs text-gray-500 ml-1">CPF</label>
+                    <input type="text" id="regCpf" oninput="maskCPF(this)" maxlength="14" class="w-full bg-wbInput border border-gray-800 p-3 rounded text-white focus:border-wbGold outline-none" placeholder="000.000.000-00" required>
+                </div>
+                <div>
+                    <label class="text-xs text-gray-500 ml-1">WhatsApp</label>
+                    <input type="text" id="regPhone" oninput="maskPhone(this)" maxlength="15" class="w-full bg-wbInput border border-gray-800 p-3 rounded text-white focus:border-wbGold outline-none" placeholder="(00) 00000-0000" required>
+                </div>
+                <div class="md:col-span-2">
+                    <label class="text-xs text-gray-500 ml-1">E-mail</label>
+                    <input type="email" id="regEmail" class="w-full bg-wbInput border border-gray-800 p-3 rounded text-white focus:border-wbGold outline-none" required>
+                </div>
+                <div class="md:col-span-2">
+                    <label class="text-xs text-gray-500 ml-1">Senha</label>
+                    <input type="password" id="regPassword" class="w-full bg-wbInput border border-wbGold/30 p-3 rounded text-white focus:border-wbGold outline-none" placeholder="Crie sua senha" required>
+                </div>
+                
+                <h3 class="md:col-span-2 text-wbGold text-sm font-bold mt-4 border-b border-gray-800 pb-2">DADOS DO PROCESSO</h3>
+                <input type="text" id="regCountry" class="bg-wbInput border border-gray-800 p-3 rounded text-white focus:border-wbGold outline-none" placeholder="País de Origem" required>
+                <input type="text" id="regCity" class="bg-wbInput border border-gray-800 p-3 rounded text-white focus:border-wbGold outline-none" placeholder="Cidade Nascimento" required>
+                <input type="text" id="regRne" class="bg-wbInput border border-gray-800 p-3 rounded text-white focus:border-wbGold outline-none" placeholder="Nº RNE/CRNM" required>
+                <select id="regService" class="bg-wbInput border border-gray-800 p-3 rounded text-white focus:border-wbGold outline-none">
+                    <option value="Naturalização">Naturalização Brasileira</option>
+                    <option value="Visto Americano">Visto Americano</option>
+                    <option value="Autorização de Residência">Autorização de Residência</option>
+                </select>
+
+                <button type="submit" class="md:col-span-2 mt-4 bg-wbGold text-black font-bold py-3 rounded hover:bg-yellow-600 transition shadow-lg">FINALIZAR CADASTRO</button>
+            </form>
+        </div>
+    </div>
+
+    <div id="clientDashboard" class="container mx-auto p-4 hidden pb-20">
+        <div class="bg-gradient-to-r from-gray-900 to-black p-4 rounded-xl border-l-4 border-wbGold mb-6 flex justify-between items-center shadow-lg">
+            <div>
+                <p class="text-gray-400 text-xs uppercase">Bem-vindo(a),</p>
+                <h2 class="text-xl font-bold text-white" id="clientNameDisplay">Carregando...</h2>
+            </div>
+            <div class="text-right">
+                <p class="text-wbGold font-bold text-2xl" id="progressPercent">0%</p>
+                <p class="text-xs text-gray-500">Concluído</p>
+            </div>
+        </div>
+
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            <div class="lg:col-span-2 space-y-6">
+                
+                <div class="bg-wbGray rounded-xl border border-gray-800 overflow-hidden shadow-lg">
+                    <div class="bg-gray-900 p-3 border-b border-gray-800 flex items-center justify-between">
+                        <h3 class="text-white font-bold text-sm"><i class="fa-brands fa-google-drive text-green-500 mr-2"></i>Enviar para o Drive</h3>
+                    </div>
+                    <div class="p-6">
+                        <p class="text-gray-400 text-sm mb-4">Selecione o documento PDF. Ele será enviado automaticamente para sua pasta na WB.</p>
+                        
+                        <div id="uploadArea" class="border-2 border-dashed border-gray-700 bg-black/40 rounded-xl p-6 text-center hover:border-wbGold transition relative group">
+                            <input type="file" id="fileInput" accept=".pdf" class="absolute inset-0 w-full h-full opacity-0 cursor-pointer" onchange="prepareUpload(this)">
+                            <div id="uploadPlaceholder">
+                                <i class="fa-solid fa-cloud-arrow-up text-3xl text-gray-600 mb-2 group-hover:text-wbGold transition"></i>
+                                <p class="text-gray-300 text-sm font-bold">Clique para selecionar PDF</p>
+                            </div>
+                            <div id="fileSelectedInfo" class="hidden">
+                                <i class="fa-solid fa-file-pdf text-3xl text-red-500 mb-2"></i>
+                                <p class="text-wbGold text-sm font-bold" id="selectedFileName"></p>
+                                <p class="text-gray-500 text-xs">Pronto para enviar</p>
+                            </div>
+                        </div>
+
+                        <button id="btnSendToMake" onclick="uploadToMake()" class="hidden w-full mt-4 bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded transition flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed">
+                            <span>Confirmar Envio para o Drive</span> <i class="fa-solid fa-paper-plane"></i>
+                        </button>
+                        
+                        <div id="uploadStatus" class="mt-3 text-center text-sm hidden"></div>
+                    </div>
+                </div>
+
+                <div class="bg-wbGray rounded-xl border border-gray-800 p-6 relative">
+                    <h3 class="text-wbGold font-bold mb-3"><i class="fa-solid fa-university mr-2"></i>Status do Processo</h3>
+                    <div class="w-full bg-black rounded-full h-2 mb-2 border border-gray-800">
+                        <div id="progressBar" class="bg-green-600 h-2 rounded-full transition-all duration-1000" style="width: 0%"></div>
+                    </div>
+                    <p class="text-white text-sm bg-black/50 p-2 rounded inline-block border border-gray-700" id="currentStatusMsg">...</p>
+                </div>
+            </div>
+
+            <div class="space-y-4">
+                <div class="bg-wbGray p-6 rounded-xl border border-gray-800">
+                    <h3 class="text-white font-bold mb-4 border-b border-gray-800 pb-2">Seus Dados</h3>
+                    <div class="space-y-3 text-sm">
+                        <p class="text-gray-500 text-xs">CPF: <span class="text-white block text-sm" id="clientCpfDisplay">...</span></p>
+                        <p class="text-gray-500 text-xs">RNE: <span class="text-white block text-sm" id="clientRneDisplay">...</span></p>
+                        <p class="text-gray-500 text-xs">Serviço: <span class="text-wbGold block text-sm" id="clientServiceDisplay">...</span></p>
+                    </div>
+                </div>
+                <a href="https://wa.me/5511999999999" target="_blank" class="block bg-green-600 hover:bg-green-700 text-white text-center py-4 rounded-xl font-bold shadow-lg transition">
+                    <i class="fa-brands fa-whatsapp mr-2 text-xl"></i> Suporte WhatsApp
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div id="adminDashboard" class="container mx-auto p-4 hidden">
+        <h2 class="text-wbGold font-bold text-xl mb-4">Painel Administrativo</h2>
+        <div id="clientsList" class="space-y-3"></div>
+    </div>
+
+    <script>
+        // ==========================================================
+        // CONFIGURAÇÃO DO MAKE (LINK JÁ INSERIDO!)
+        // ==========================================================
+        const MAKE_WEBHOOK_URL = "https://hook.us2.make.com/rmycf4cbux6g6u4kyhwqkxivimmr3c6k"; 
+        // ==========================================================
+
+        // --- MÁSCARAS ---
+        function maskCPF(i) {
+            let v = i.value.replace(/\D/g, "").slice(0, 11);
+            i.value = v.replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d)/, "$1.$2").replace(/(\d{3})(\d{1,2})$/, "$1-$2");
+        }
+        function maskPhone(i) {
+            let v = i.value.replace(/\D/g, "").slice(0, 11);
+            i.value = v.replace(/^(\d{2})(\d)/, "($1) $2").replace(/(\d)(\d{4})$/, "$1-$2");
+        }
+
+        // --- SISTEMA ---
+        let clients = []; 
+        let currentUser = null;
+        let selectedFile = null;
+
+        function switchScreen(id) {
+            ['loginScreen','registerScreen','clientDashboard','adminDashboard'].forEach(s => document.getElementById(s).classList.add('hidden'));
+            document.getElementById(id).classList.remove('hidden');
+            if(id === 'clientDashboard' || id === 'adminDashboard') document.getElementById('btnLogout').classList.remove('hidden');
+        }
+
+        function handleLogin(e) {
+            e.preventDefault();
+            const cpf = document.getElementById('loginInput').value;
+            const pass = document.getElementById('passwordInput').value;
+
+            if(cpf === 'admin' && pass === 'admin') {
+                renderAdmin();
+                switchScreen('adminDashboard');
+                return;
+            }
+
+            const user = clients.find(c => c.cpf === cpf && c.pass === pass);
+            if(user) {
+                currentUser = user; 
+                loadClient(user);
+                switchScreen('clientDashboard');
+            } else {
+                alert("Login inválido. Verifique CPF e senha.");
+            }
+        }
+
+        function handlePublicRegister(e) {
+            e.preventDefault();
+            const newUser = {
+                name: document.getElementById('regName').value,
+                cpf: document.getElementById('regCpf').value,
+                phone: document.getElementById('regPhone').value,
+                pass: document.getElementById('regPassword').value,
+                service: document.getElementById('regService').value,
+                country: document.getElementById('regCountry').value,
+                rne: document.getElementById('regRne').value,
+                progress: 5,
+                status: "Aguardando Documentação"
+            };
+            clients.push(newUser);
+            currentUser = newUser;
+            alert("Cadastro realizado com sucesso!");
+            loadClient(newUser);
+            switchScreen('clientDashboard');
+            e.target.reset();
+        }
+
+        function loadClient(u) {
+            document.getElementById('clientNameDisplay').innerText = u.name;
+            document.getElementById('clientCpfDisplay').innerText = u.cpf;
+            document.getElementById('clientServiceDisplay').innerText = u.service;
+            document.getElementById('clientRneDisplay').innerText = u.rne;
+            document.getElementById('progressPercent').innerText = u.progress + "%";
+            document.getElementById('progressBar').style.width = u.progress + "%";
+            document.getElementById('currentStatusMsg').innerText = u.status;
+        }
+
+        // --- UPLOAD ---
+        function prepareUpload(input) {
+            const file = input.files[0];
+            const btn = document.getElementById('btnSendToMake');
+            const placeholder = document.getElementById('uploadPlaceholder');
+            const info = document.getElementById('fileSelectedInfo');
+            const nameDisplay = document.getElementById('selectedFileName');
+
+            if(file) {
+                if(file.type !== "application/pdf") {
+                    alert("Apenas arquivos PDF são permitidos.");
+                    input.value = "";
+                    return;
+                }
+                selectedFile = file;
+                placeholder.classList.add('hidden');
+                info.classList.remove('hidden');
+                nameDisplay.innerText = file.name;
+                btn.classList.remove('hidden');
+            }
+        }
+
+        async function uploadToMake() {
+            if(!selectedFile || !currentUser) return;
+            
+            const btn = document.getElementById('btnSendToMake');
+            const statusDiv = document.getElementById('uploadStatus');
+
+            btn.disabled = true;
+            btn.innerHTML = '<span class="loader mr-2"></span> Enviando...';
+            statusDiv.classList.remove('hidden');
+            statusDiv.innerHTML = '<span class="text-wbGold">Conectando ao servidor...</span>';
+
+            const formData = new FormData();
+            formData.append('file', selectedFile);
+            // Enviamos também o nome e CPF para você usar no Make se quiser renomear o arquivo
+            formData.append('name', currentUser.name);
+            formData.append('cpf', currentUser.cpf);
+
+            try {
+                const response = await fetch(MAKE_WEBHOOK_URL, { method: 'POST', body: formData });
+                if (response.ok) {
+                    statusDiv.innerHTML = '<span class="text-green-500 font-bold"><i class="fa-solid fa-check"></i> Sucesso! Arquivo salvo no Drive.</span>';
+                    btn.innerHTML = 'Enviado';
+                    setTimeout(() => {
+                        document.getElementById('fileInput').value = "";
+                        placeholder.classList.remove('hidden');
+                        info.classList.add('hidden');
+                        btn.classList.add('hidden');
+                        btn.disabled = false;
+                        btn.innerHTML = 'Confirmar Envio';
+                        statusDiv.classList.add('hidden');
+                    }, 3000);
+                } else { throw new Error('Falha no Make'); }
+            } catch (error) {
+                console.error(error);
+                statusDiv.innerHTML = '<span class="text-red-500">Erro no envio. Tente novamente.</span>';
+                btn.disabled = false;
+                btn.innerHTML = 'Tentar Novamente';
+            }
+        }
+
+        // --- ADMIN ---
+        function renderAdmin() {
+            const list = document.getElementById('clientsList');
+            list.innerHTML = '';
+            clients.forEach(c => {
+                list.innerHTML += `
+                    <div class="bg-wbGray p-4 rounded border border-gray-800 flex justify-between">
+                        <div><p class="font-bold text-white">${c.name}</p><p class="text-xs text-gray-500">${c.cpf}</p></div>
+                        <a href="https://wa.me/55${c.phone.replace(/\D/g,'')}" target="_blank" class="text-green-500 text-sm font-bold">WhatsApp</a>
+                    </div>`;
+            });
+            if(clients.length === 0) list.innerHTML = "<p class='text-gray-500'>Sem cadastros.</p>";
+        }
+
+        function logout() { location.reload(); }
+    </script>
+</body>
+</html>
