@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WB Admin - Gestão</title>
+    <title>WB Admin - Gestão Completa</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script>
@@ -17,84 +17,107 @@
     </script>
     <style>
         body { background-color: #000; color: #e5e5e5; font-family: sans-serif; }
-        .sidebar-item { cursor: pointer; padding: 10px; border-radius: 8px; transition: 0.3s; color: #888; display: flex; align-items: center; gap: 10px; }
-        .sidebar-item:hover, .sidebar-item.active { background-color: #1a1a1a; color: #d4af37; }
-        .input-wb { width: 100%; background: #1a1a1a; border: 1px solid #333; padding: 10px; border-radius: 6px; color: white; margin-bottom: 10px; }
-        .input-wb:focus { border-color: #d4af37; outline: none; }
-        .section-title { color: #d4af37; font-weight: bold; margin-top: 20px; margin-bottom: 10px; border-bottom: 1px solid #333; padding-bottom: 5px; }
+        /* Estilo do Menu Lateral */
+        .sidebar-item { cursor: pointer; padding: 12px; border-radius: 8px; transition: 0.3s; color: #888; display: flex; align-items: center; gap: 10px; margin-bottom: 5px; }
+        .sidebar-item:hover, .sidebar-item.active { background-color: #1a1a1a; color: #d4af37; border-left: 3px solid #d4af37; }
+        
+        /* Estilo dos Inputs */
+        .input-wb { width: 100%; background: #1a1a1a; border: 1px solid #333; padding: 12px; border-radius: 6px; color: white; margin-bottom: 12px; transition: 0.3s; }
+        .input-wb:focus { border-color: #d4af37; outline: none; background: #222; }
+        
+        /* Títulos */
+        .section-title { color: #d4af37; font-weight: bold; margin-top: 25px; margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; }
+        
+        /* Botões */
+        .btn-action { width: 100%; font-weight: bold; padding: 15px; border-radius: 8px; margin-top: 20px; transition: 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
+        .btn-gold { background-color: #d4af37; color: black; }
+        .btn-gold:hover { background-color: #b5952f; transform: translateY(-2px); }
+        .btn-blue { background-color: #2563eb; color: white; }
+        .btn-blue:hover { background-color: #1d4ed8; transform: translateY(-2px); }
     </style>
 </head>
 <body class="flex h-screen overflow-hidden">
 
     <div class="w-64 bg-wbGray border-r border-gray-800 flex flex-col p-4 hidden md:flex">
-        <div class="flex items-center gap-2 mb-8 px-2">
-            <img src="logo.jpeg" class="w-8 h-8 rounded-full border border-wbGold">
-            <h1 class="font-bold text-wbGold tracking-wider">WB ADMIN</h1>
+        <div class="flex items-center gap-3 mb-10 px-2 mt-2">
+            <img src="logo.jpeg" class="w-10 h-10 rounded-full border border-wbGold shadow-lg shadow-wbGold/20">
+            <div>
+                <h1 class="font-bold text-wbGold tracking-wider text-lg">WB ADMIN</h1>
+                <p class="text-xs text-gray-600">Sistema Interno</p>
+            </div>
         </div>
         
-        <nav class="space-y-2 flex-grow">
-            <div onclick="showTab('novo-contrato')" class="sidebar-item active" id="btn-novo">
-                <i class="fa-solid fa-file-signature"></i> Novo Cadastro
+        <nav class="space-y-1 flex-grow">
+            <div onclick="showTab('novo-cliente')" class="sidebar-item active" id="btn-novo-cliente">
+                <i class="fa-solid fa-user-plus w-6"></i> Novo Cliente
+            </div>
+            
+            <div onclick="showTab('novo-colaborador')" class="sidebar-item" id="btn-novo-colaborador">
+                <i class="fa-solid fa-id-badge w-6"></i> Novo Colaborador
             </div>
         </nav>
 
-        <div class="mt-auto pt-4 border-t border-gray-800">
+        <div class="mt-auto pt-6 border-t border-gray-800">
             <div class="flex items-center gap-3">
-                <div class="w-8 h-8 bg-wbGold rounded-full flex items-center justify-center text-black font-bold">R</div>
-                <div><p class="text-sm text-white font-bold">Renato</p><p class="text-xs text-gray-500">Diretor</p></div>
+                <div class="w-10 h-10 bg-wbGold rounded-full flex items-center justify-center text-black font-bold text-xl">R</div>
+                <div><p class="text-sm text-white font-bold">Renato</p><p class="text-xs text-gray-500">Diretor Geral</p></div>
             </div>
         </div>
     </div>
 
-    <div class="flex-grow overflow-y-auto p-6 md:p-10 relative">
+    <div class="flex-grow overflow-y-auto p-6 md:p-12 relative bg-black">
         
-        <div id="tab-novo-contrato" class="max-w-4xl mx-auto">
-            <h2 class="text-2xl font-bold text-white mb-6">📝 Cadastro de Novo Cliente</h2>
+        <div id="tab-novo-cliente" class="max-w-4xl mx-auto animation-fade">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-3xl font-bold text-white"><i class="fa-solid fa-user-plus mr-3 text-wbGold"></i>Novo Cliente</h2>
+                <span class="bg-wbGray text-gray-400 px-4 py-1 rounded-full text-xs border border-gray-800">Formulário Completo</span>
+            </div>
             
-            <form id="formContrato" onsubmit="enviarDados(event)">
-                
-                <p class="section-title">1. Dados Pessoais & Login</p>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <input type="text" name="nome" placeholder="Nome Completo" class="input-wb" required>
+            <form id="formCliente" onsubmit="enviarDados(event, 'cliente')" class="bg-wbGray p-8 rounded-xl border border-gray-800 shadow-2xl">
+                <input type="hidden" name="tipo_cadastro" value="cliente">
+
+                <p class="section-title">1. Dados Pessoais & Acesso</p>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <input type="text" name="nome" placeholder="Nome Completo do Cliente" class="input-wb" required>
                     <input type="text" name="cpf" placeholder="CPF (Será o Login)" class="input-wb" required>
-                    <input type="text" name="senha" placeholder="Criar Senha de Acesso" class="input-wb" required>
-                    <input type="text" name="whatsapp" placeholder="WhatsApp" class="input-wb" required>
+                    <input type="text" name="senha" placeholder="Definir Senha de Acesso" class="input-wb" required>
+                    <input type="text" name="whatsapp" placeholder="WhatsApp / Contato" class="input-wb" required>
                     <input type="email" name="email" placeholder="E-mail" class="input-wb">
                     <input type="text" name="pais" placeholder="País de Origem" class="input-wb" required>
                 </div>
 
                 <p class="section-title">2. Perfil Migratório</p>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <input type="text" name="tempo_brasil" placeholder="Tempo de Residência no Brasil" class="input-wb">
-                    <select name="status_legal" class="input-wb">
+                    <select name="status_legal" class="input-wb text-gray-400">
                         <option value="">Status Legal Atual...</option>
                         <option value="Indocumentado">Indocumentado</option>
                         <option value="RNE Temporário">RNE Temporário</option>
                         <option value="RNE Permanente">RNE Permanente</option>
                         <option value="Visto Turismo">Visto de Turismo</option>
                     </select>
-                    <input type="text" name="data_rne" placeholder="Data Expedição RNE" class="input-wb">
+                    <input type="text" name="data_rne" placeholder="Data Expedição RNE (dd/mm/aaaa)" class="input-wb">
                     <input type="text" name="tempo_fora" placeholder="Tempo fora do Brasil" class="input-wb">
                     
                     <div class="flex items-center gap-2 text-gray-400 bg-wbInput p-3 rounded border border-gray-800">
-                        <span>Filho Brasileiro?</span>
-                        <label class="ml-auto"><input type="radio" name="filho_br" value="Sim"> Sim</label>
-                        <label class="ml-2"><input type="radio" name="filho_br" value="Nao"> Não</label>
+                        <span class="text-sm">Filho Brasileiro?</span>
+                        <label class="ml-auto flex items-center gap-2 cursor-pointer"><input type="radio" name="filho_br" value="Sim" class="accent-wbGold"> Sim</label>
+                        <label class="ml-4 flex items-center gap-2 cursor-pointer"><input type="radio" name="filho_br" value="Nao" class="accent-wbGold"> Não</label>
                     </div>
                     
                     <div class="flex items-center gap-2 text-gray-400 bg-wbInput p-3 rounded border border-gray-800">
-                        <span>Cônjuge Brasileiro?</span>
-                        <label class="ml-auto"><input type="radio" name="conjuge_br" value="Sim"> Sim</label>
-                        <label class="ml-2"><input type="radio" name="conjuge_br" value="Nao"> Não</label>
+                        <span class="text-sm">Cônjuge Brasileiro?</span>
+                        <label class="ml-auto flex items-center gap-2 cursor-pointer"><input type="radio" name="conjuge_br" value="Sim" class="accent-wbGold"> Sim</label>
+                        <label class="ml-4 flex items-center gap-2 cursor-pointer"><input type="radio" name="conjuge_br" value="Nao" class="accent-wbGold"> Não</label>
                     </div>
                 </div>
-                <textarea name="obs_perfil" rows="3" class="input-wb mt-2" placeholder="Resumo da História / Observações..."></textarea>
+                <textarea name="obs_perfil" rows="3" class="input-wb mt-3" placeholder="Resumo da História / Observações Importantes..."></textarea>
 
-                <p class="section-title">3. Financeiro</p>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-                    <input type="text" name="valor_total" placeholder="Valor Total (R$)" class="input-wb" required>
+                <p class="section-title">3. Financeiro do Contrato</p>
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                    <input type="text" name="valor_total" placeholder="Valor Total (R$)" class="input-wb border-wbGold/30" required>
                     <input type="number" name="qtd_parcelas" placeholder="Qtd Parcelas" class="input-wb">
-                    <input type="text" name="valor_parcela" placeholder="Valor Parcela" class="input-wb">
+                    <input type="text" name="valor_parcela" placeholder="Valor da Parcela" class="input-wb">
                 </div>
                 <div class="mt-2">
                     <select name="status_contrato" class="input-wb">
@@ -105,56 +128,136 @@
                 </div>
 
                 <p class="section-title">4. Definição do Serviço</p>
-                <select name="servico" class="input-wb" required>
+                <select name="servico" class="input-wb bg-wbInput font-bold text-white" required>
                     <option value="Naturalização Brasileira">Naturalização Brasileira</option>
                     <option value="Visto Americano">Visto Americano</option>
                     <option value="Autorização de Residência">Autorização de Residência</option>
                     <option value="Reunião Familiar">Reunião Familiar</option>
                 </select>
 
-                <button type="submit" id="btnSalvar" class="w-full bg-wbGold text-black font-bold py-4 rounded mt-6 hover:bg-yellow-600 transition shadow-lg text-lg">
-                    💾 SALVAR NA PLANILHA
+                <button type="submit" id="btnSalvarCliente" class="btn-action btn-gold text-lg">
+                    <i class="fa-solid fa-check-circle mr-2"></i> CADASTRAR CLIENTE
                 </button>
             </form>
         </div>
 
-        <div id="notificacao" class="fixed bottom-4 right-4 bg-green-600 text-white px-6 py-3 rounded shadow-lg hidden">
-            <i class="fa-solid fa-check-circle mr-2"></i> Dados Enviados ao Make!
+
+        <div id="tab-novo-colaborador" class="max-w-2xl mx-auto hidden animation-fade">
+            <div class="flex justify-between items-center mb-8">
+                <h2 class="text-3xl font-bold text-white"><i class="fa-solid fa-id-badge mr-3 text-blue-500"></i>Novo Colaborador</h2>
+                <span class="bg-wbGray text-gray-400 px-4 py-1 rounded-full text-xs border border-gray-800">Acesso Interno</span>
+            </div>
+
+            <form id="formColaborador" onsubmit="enviarDados(event, 'colaborador')" class="bg-wbGray p-8 rounded-xl border border-blue-900/30 shadow-2xl">
+                <input type="hidden" name="tipo_cadastro" value="colaborador">
+
+                <div class="space-y-4">
+                    <div>
+                        <label class="text-xs text-gray-500 uppercase font-bold ml-1">Nome do Funcionário</label>
+                        <input type="text" name="nome" placeholder="Ex: Maria Silva" class="input-wb" required>
+                    </div>
+
+                    <div>
+                        <label class="text-xs text-gray-500 uppercase font-bold ml-1">Login de Acesso</label>
+                        <input type="text" name="login" placeholder="Ex: mariasilva ou maria@wb.com" class="input-wb" required>
+                    </div>
+
+                    <div>
+                        <label class="text-xs text-gray-500 uppercase font-bold ml-1">Senha Provisória</label>
+                        <input type="text" name="senha" placeholder="Defina a senha inicial" class="input-wb" required>
+                    </div>
+
+                    <div>
+                        <label class="text-xs text-gray-500 uppercase font-bold ml-1">Função / Cargo</label>
+                        <select name="funcao" class="input-wb" required>
+                            <option value="">Selecione...</option>
+                            <option value="Vendas">Comercial / Vendas</option>
+                            <option value="Advogado">Jurídico / Advogado</option>
+                            <option value="Administrativo">Administrativo / Financeiro</option>
+                            <option value="Diretor">Diretoria</option>
+                        </select>
+                    </div>
+                </div>
+
+                <button type="submit" id="btnSalvarColaborador" class="btn-action btn-blue text-lg">
+                    <i class="fa-solid fa-user-plus mr-2"></i> CADASTRAR EQUIPE
+                </button>
+            </form>
         </div>
+
+        <div id="notificacao" class="fixed bottom-6 right-6 bg-green-600 text-white px-6 py-4 rounded-lg shadow-2xl transform translate-y-20 opacity-0 transition-all duration-500 flex items-center gap-3">
+            <i class="fa-solid fa-circle-check text-2xl"></i>
+            <div>
+                <h4 class="font-bold">Sucesso!</h4>
+                <p class="text-sm">Dados enviados para o sistema.</p>
+            </div>
+        </div>
+
     </div>
 
     <script>
-        // --- SEU LINK NOVO AQUI ---
-        const WEBHOOK_CADASTRO = "https://hook.us2.make.com/91fgciu87cnwl72ftfohkycnhyeylv8q"; 
-        // --------------------------
+        // --- SEU LINK DO MAKE (WebHook) ---
+        // Atualmente os dois formulários mandam para o mesmo lugar
+        const WEBHOOK_URL = "https://hook.us2.make.com/91fgciu87cnwl72ftfohkycnhyeylv8q"; 
+        // ----------------------------------
 
-        function showTab(id) {
-            document.querySelectorAll('[id^="tab-"]').forEach(el => el.classList.add('hidden'));
-            document.getElementById('tab-' + id).classList.remove('hidden');
+        // Função para trocar de abas
+        function showTab(tabName) {
+            // Esconde todas as abas
+            document.getElementById('tab-novo-cliente').classList.add('hidden');
+            document.getElementById('tab-novo-colaborador').classList.add('hidden');
+            
+            // Tira o destaque do menu
+            document.getElementById('btn-novo-cliente').classList.remove('active');
+            document.getElementById('btn-novo-colaborador').classList.remove('active');
+
+            // Mostra a aba certa e destaca o menu
+            document.getElementById('tab-' + tabName).classList.remove('hidden');
+            document.getElementById('btn-' + tabName).classList.add('active');
         }
 
-        async function enviarDados(e) {
-            e.preventDefault();
-            const btn = document.getElementById('btnSalvar');
-            const form = document.getElementById('formContrato');
+        // Função ÚNICA que envia os dados (serve para os dois)
+        async function enviarDados(event, tipo) {
+            event.preventDefault();
             
-            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Enviando...';
+            // Seleciona o botão e o formulário correto
+            const btnId = tipo === 'cliente' ? 'btnSalvarCliente' : 'btnSalvarColaborador';
+            const formId = tipo === 'cliente' ? 'formCliente' : 'formColaborador';
+            
+            const btn = document.getElementById(btnId);
+            const form = document.getElementById(formId);
+            const originalText = btn.innerHTML;
+
+            // Muda botão para "Carregando"
+            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Salvando...';
             btn.disabled = true;
+            btn.classList.add('opacity-70');
 
             const formData = new FormData(form);
 
             try {
                 // Envia para o Make
-                await fetch(WEBHOOK_CADASTRO, { method: 'POST', body: formData });
+                await fetch(WEBHOOK_URL, { method: 'POST', body: formData });
                 
-                document.getElementById('notificacao').classList.remove('hidden');
-                setTimeout(() => document.getElementById('notificacao').classList.add('hidden'), 3000);
+                // Mostra notificação bonita
+                const notif = document.getElementById('notificacao');
+                notif.classList.remove('translate-y-20', 'opacity-0'); // Aparece
+                
+                // Limpa o form
                 form.reset();
+
+                // Esconde notificação depois de 3 seg
+                setTimeout(() => {
+                    notif.classList.add('translate-y-20', 'opacity-0');
+                }, 3000);
+
             } catch (err) {
-                alert("Erro: " + err.message);
+                alert("Erro de conexão: " + err.message);
             } finally {
-                btn.innerHTML = '💾 SALVAR NA PLANILHA';
+                // Restaura o botão
+                btn.innerHTML = originalText;
                 btn.disabled = false;
+                btn.classList.remove('opacity-70');
             }
         }
     </script>
