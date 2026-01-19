@@ -3,261 +3,254 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WB Admin - Gestão Completa</title>
+    <title>WB Admin - Acesso Restrito</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    colors: { wbGold: '#d4af37', wbDark: '#050505', wbGray: '#121212', wbInput: '#1a1a1a' }
+                    colors: { wbGold: '#d4af37', wbDark: '#050505', wbGray: '#121212', wbInput: '#1a1a1a' },
+                    animation: { 'fade-in': 'fadeIn 0.5s ease-out' },
+                    keyframes: { fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } } }
                 }
             }
         }
     </script>
     <style>
         body { background-color: #000; color: #e5e5e5; font-family: sans-serif; }
-        /* Estilo do Menu Lateral */
         .sidebar-item { cursor: pointer; padding: 12px; border-radius: 8px; transition: 0.3s; color: #888; display: flex; align-items: center; gap: 10px; margin-bottom: 5px; }
         .sidebar-item:hover, .sidebar-item.active { background-color: #1a1a1a; color: #d4af37; border-left: 3px solid #d4af37; }
-        
-        /* Estilo dos Inputs */
         .input-wb { width: 100%; background: #1a1a1a; border: 1px solid #333; padding: 12px; border-radius: 6px; color: white; margin-bottom: 12px; transition: 0.3s; }
         .input-wb:focus { border-color: #d4af37; outline: none; background: #222; }
-        
-        /* Títulos */
+        .btn-gold { background-color: #d4af37; color: black; font-weight: bold; transition: 0.3s; }
+        .btn-gold:hover { background-color: #b5952f; transform: scale(1.02); }
         .section-title { color: #d4af37; font-weight: bold; margin-top: 25px; margin-bottom: 15px; border-bottom: 1px solid #333; padding-bottom: 5px; text-transform: uppercase; font-size: 0.85rem; letter-spacing: 1px; }
-        
-        /* Botões */
-        .btn-action { width: 100%; font-weight: bold; padding: 15px; border-radius: 8px; margin-top: 20px; transition: 0.3s; box-shadow: 0 4px 6px rgba(0,0,0,0.3); }
-        .btn-gold { background-color: #d4af37; color: black; }
-        .btn-gold:hover { background-color: #b5952f; transform: translateY(-2px); }
-        .btn-blue { background-color: #2563eb; color: white; }
-        .btn-blue:hover { background-color: #1d4ed8; transform: translateY(-2px); }
     </style>
 </head>
-<body class="flex h-screen overflow-hidden">
+<body class="h-screen overflow-hidden flex flex-col">
 
-    <div class="w-64 bg-wbGray border-r border-gray-800 flex flex-col p-4 hidden md:flex">
-        <div class="flex items-center gap-3 mb-10 px-2 mt-2">
-            <img src="logo.jpeg" class="w-10 h-10 rounded-full border border-wbGold shadow-lg shadow-wbGold/20">
-            <div>
-                <h1 class="font-bold text-wbGold tracking-wider text-lg">WB ADMIN</h1>
-                <p class="text-xs text-gray-600">Sistema Interno</p>
+    <div id="login-screen" class="flex-grow flex items-center justify-center bg-[url('https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?q=80&w=2070&auto=format&fit=crop')] bg-cover bg-center">
+        <div class="absolute inset-0 bg-black/80 backdrop-blur-sm"></div> <div class="relative z-10 bg-wbGray p-8 md:p-12 rounded-2xl shadow-2xl w-full max-w-md border border-wbGold/20 animate-fade-in">
+            <div class="text-center mb-8">
+                <img src="logo.jpeg" class="w-24 h-24 mx-auto mb-4 rounded-full border-2 border-wbGold p-1 object-cover shadow-lg shadow-wbGold/20">
+                <h2 class="text-3xl font-bold text-wbGold tracking-wider">WB ADMIN</h2>
+                <p class="text-gray-500 text-sm mt-2">Área Restrita para Colaboradores</p>
             </div>
-        </div>
-        
-        <nav class="space-y-1 flex-grow">
-            <div onclick="showTab('novo-cliente')" class="sidebar-item active" id="btn-novo-cliente">
-                <i class="fa-solid fa-user-plus w-6"></i> Novo Cliente
-            </div>
+
+            <form onsubmit="fazerLogin(event)" class="space-y-4">
+                <div>
+                    <label class="text-xs text-wbGold font-bold uppercase ml-1">Usuário / Login</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-user absolute left-3 top-3.5 text-gray-500"></i>
+                        <input type="text" id="loginUser" class="input-wb pl-10" placeholder="Seu Login" required>
+                    </div>
+                </div>
+                
+                <div>
+                    <label class="text-xs text-wbGold font-bold uppercase ml-1">Senha</label>
+                    <div class="relative">
+                        <i class="fa-solid fa-lock absolute left-3 top-3.5 text-gray-500"></i>
+                        <input type="password" id="loginPass" class="input-wb pl-10" placeholder="••••••••" required>
+                    </div>
+                </div>
+
+                <button type="submit" class="w-full btn-gold py-4 rounded-lg mt-4 shadow-lg">
+                    ENTRAR NO SISTEMA <i class="fa-solid fa-arrow-right ml-2"></i>
+                </button>
+            </form>
             
-            <div onclick="showTab('novo-colaborador')" class="sidebar-item" id="btn-novo-colaborador">
-                <i class="fa-solid fa-id-badge w-6"></i> Novo Colaborador
-            </div>
-        </nav>
-
-        <div class="mt-auto pt-6 border-t border-gray-800">
-            <div class="flex items-center gap-3">
-                <div class="w-10 h-10 bg-wbGold rounded-full flex items-center justify-center text-black font-bold text-xl">R</div>
-                <div><p class="text-sm text-white font-bold">Renato</p><p class="text-xs text-gray-500">Diretor Geral</p></div>
-            </div>
+            <p class="text-center text-gray-600 text-xs mt-6">Sistema Protegido WB Assessoria © 2026</p>
         </div>
     </div>
 
-    <div class="flex-grow overflow-y-auto p-6 md:p-12 relative bg-black">
+
+    <div id="dashboard-screen" class="hidden h-full flex">
         
-        <div id="tab-novo-cliente" class="max-w-4xl mx-auto animation-fade">
-            <div class="flex justify-between items-center mb-8">
-                <h2 class="text-3xl font-bold text-white"><i class="fa-solid fa-user-plus mr-3 text-wbGold"></i>Novo Cliente</h2>
-                <span class="bg-wbGray text-gray-400 px-4 py-1 rounded-full text-xs border border-gray-800">Formulário Completo</span>
+        <div class="w-64 bg-wbGray border-r border-gray-800 flex flex-col p-4 hidden md:flex">
+            <div class="flex items-center gap-3 mb-10 px-2 mt-2">
+                <img src="logo.jpeg" class="w-10 h-10 rounded-full border border-wbGold">
+                <div>
+                    <h1 class="font-bold text-wbGold tracking-wider text-lg">WB SYSTEM</h1>
+                </div>
             </div>
             
-            <form id="formCliente" onsubmit="enviarDados(event, 'cliente')" class="bg-wbGray p-8 rounded-xl border border-gray-800 shadow-2xl">
-                <input type="hidden" name="tipo_cadastro" value="cliente">
-
-                <p class="section-title">1. Dados Pessoais & Acesso</p>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <input type="text" name="nome" placeholder="Nome Completo do Cliente" class="input-wb" required>
-                    <input type="text" name="cpf" placeholder="CPF (Será o Login)" class="input-wb" required>
-                    <input type="text" name="senha" placeholder="Definir Senha de Acesso" class="input-wb" required>
-                    <input type="text" name="whatsapp" placeholder="WhatsApp / Contato" class="input-wb" required>
-                    <input type="email" name="email" placeholder="E-mail" class="input-wb">
-                    <input type="text" name="pais" placeholder="País de Origem" class="input-wb" required>
+            <nav class="space-y-1 flex-grow">
+                <div onclick="showTab('novo-cliente')" class="sidebar-item active" id="btn-novo-cliente">
+                    <i class="fa-solid fa-user-plus w-6"></i> Novo Cliente
                 </div>
-
-                <p class="section-title">2. Perfil Migratório</p>
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <input type="text" name="tempo_brasil" placeholder="Tempo de Residência no Brasil" class="input-wb">
-                    <select name="status_legal" class="input-wb text-gray-400">
-                        <option value="">Status Legal Atual...</option>
-                        <option value="Indocumentado">Indocumentado</option>
-                        <option value="RNE Temporário">RNE Temporário</option>
-                        <option value="RNE Permanente">RNE Permanente</option>
-                        <option value="Visto Turismo">Visto de Turismo</option>
-                    </select>
-                    <input type="text" name="data_rne" placeholder="Data Expedição RNE (dd/mm/aaaa)" class="input-wb">
-                    <input type="text" name="tempo_fora" placeholder="Tempo fora do Brasil" class="input-wb">
-                    
-                    <div class="flex items-center gap-2 text-gray-400 bg-wbInput p-3 rounded border border-gray-800">
-                        <span class="text-sm">Filho Brasileiro?</span>
-                        <label class="ml-auto flex items-center gap-2 cursor-pointer"><input type="radio" name="filho_br" value="Sim" class="accent-wbGold"> Sim</label>
-                        <label class="ml-4 flex items-center gap-2 cursor-pointer"><input type="radio" name="filho_br" value="Nao" class="accent-wbGold"> Não</label>
-                    </div>
-                    
-                    <div class="flex items-center gap-2 text-gray-400 bg-wbInput p-3 rounded border border-gray-800">
-                        <span class="text-sm">Cônjuge Brasileiro?</span>
-                        <label class="ml-auto flex items-center gap-2 cursor-pointer"><input type="radio" name="conjuge_br" value="Sim" class="accent-wbGold"> Sim</label>
-                        <label class="ml-4 flex items-center gap-2 cursor-pointer"><input type="radio" name="conjuge_br" value="Nao" class="accent-wbGold"> Não</label>
-                    </div>
+                <div onclick="showTab('novo-colaborador')" class="sidebar-item" id="btn-novo-colaborador">
+                    <i class="fa-solid fa-id-badge w-6"></i> Novo Colaborador
                 </div>
-                <textarea name="obs_perfil" rows="3" class="input-wb mt-3" placeholder="Resumo da História / Observações Importantes..."></textarea>
+            </nav>
 
-                <p class="section-title">3. Financeiro do Contrato</p>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-                    <input type="text" name="valor_total" placeholder="Valor Total (R$)" class="input-wb border-wbGold/30" required>
-                    <input type="number" name="qtd_parcelas" placeholder="Qtd Parcelas" class="input-wb">
-                    <input type="text" name="valor_parcela" placeholder="Valor da Parcela" class="input-wb">
+            <button onclick="logout()" class="text-red-500 text-sm font-bold flex items-center gap-2 hover:bg-red-900/20 p-3 rounded transition mb-4">
+                <i class="fa-solid fa-right-from-bracket"></i> Sair do Sistema
+            </button>
+
+            <div class="mt-auto pt-4 border-t border-gray-800">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-wbGold rounded-full flex items-center justify-center text-black font-bold text-xl">A</div>
+                    <div><p class="text-sm text-white font-bold" id="userDisplay">Admin</p><p class="text-xs text-gray-500">Logado</p></div>
                 </div>
-                <div class="mt-2">
-                    <select name="status_contrato" class="input-wb">
-                        <option value="Pendente">Contrato Pendente</option>
-                        <option value="Enviado">Contrato Enviado</option>
-                        <option value="Assinado">Contrato Assinado</option>
-                    </select>
-                </div>
-
-                <p class="section-title">4. Definição do Serviço</p>
-                <select name="servico" class="input-wb bg-wbInput font-bold text-white" required>
-                    <option value="Naturalização Brasileira">Naturalização Brasileira</option>
-                    <option value="Visto Americano">Visto Americano</option>
-                    <option value="Autorização de Residência">Autorização de Residência</option>
-                    <option value="Reunião Familiar">Reunião Familiar</option>
-                </select>
-
-                <button type="submit" id="btnSalvarCliente" class="btn-action btn-gold text-lg">
-                    <i class="fa-solid fa-check-circle mr-2"></i> CADASTRAR CLIENTE
-                </button>
-            </form>
+            </div>
         </div>
 
+        <div class="flex-grow overflow-y-auto p-6 md:p-12 bg-black relative">
+            
+            <div id="tab-novo-cliente" class="max-w-4xl mx-auto animate-fade-in">
+                <h2 class="text-3xl font-bold text-white mb-2"><i class="fa-solid fa-user-plus mr-3 text-wbGold"></i>Novo Cliente</h2>
+                <p class="text-gray-500 mb-8 border-b border-gray-800 pb-4">Preencha os dados abaixo para iniciar um novo processo.</p>
+                
+                <form id="formCliente" onsubmit="enviarDados(event, 'cliente')" class="bg-wbGray p-8 rounded-xl border border-gray-800 shadow-2xl">
+                    <input type="hidden" name="tipo_cadastro" value="cliente">
 
-        <div id="tab-novo-colaborador" class="max-w-2xl mx-auto hidden animation-fade">
-            <div class="flex justify-between items-center mb-8">
-                <h2 class="text-3xl font-bold text-white"><i class="fa-solid fa-id-badge mr-3 text-blue-500"></i>Novo Colaborador</h2>
-                <span class="bg-wbGray text-gray-400 px-4 py-1 rounded-full text-xs border border-gray-800">Acesso Interno</span>
+                    <p class="section-title">1. Dados de Acesso</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <input type="text" name="nome" placeholder="Nome Completo" class="input-wb" required>
+                        <input type="text" name="cpf" placeholder="CPF (Login)" class="input-wb" required>
+                        <input type="text" name="senha" placeholder="Senha de Acesso" class="input-wb" required>
+                        <input type="text" name="whatsapp" placeholder="WhatsApp" class="input-wb" required>
+                        <input type="email" name="email" placeholder="E-mail" class="input-wb">
+                        <input type="text" name="pais" placeholder="País de Origem" class="input-wb" required>
+                    </div>
+
+                    <p class="section-title">2. Perfil Migratório</p>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                        <input type="text" name="tempo_brasil" placeholder="Tempo no Brasil" class="input-wb">
+                        <select name="status_legal" class="input-wb text-gray-400">
+                            <option value="">Status Legal...</option>
+                            <option value="Indocumentado">Indocumentado</option>
+                            <option value="RNE Temporário">RNE Temporário</option>
+                            <option value="RNE Permanente">RNE Permanente</option>
+                        </select>
+                        <input type="text" name="data_rne" placeholder="Data RNE" class="input-wb">
+                        <input type="text" name="tempo_fora" placeholder="Tempo fora do Brasil" class="input-wb">
+                        
+                        <div class="flex items-center gap-2 text-gray-400 bg-wbInput p-3 rounded border border-gray-800">
+                            <span class="text-xs uppercase font-bold">Filho Brasileiro?</span>
+                            <label class="ml-auto flex items-center gap-2"><input type="radio" name="filho_br" value="Sim" class="accent-wbGold"> Sim</label>
+                            <label class="ml-4 flex items-center gap-2"><input type="radio" name="filho_br" value="Nao" class="accent-wbGold"> Não</label>
+                        </div>
+                         <div class="flex items-center gap-2 text-gray-400 bg-wbInput p-3 rounded border border-gray-800">
+                            <span class="text-xs uppercase font-bold">Cônjuge Brasileiro?</span>
+                            <label class="ml-auto flex items-center gap-2"><input type="radio" name="conjuge_br" value="Sim" class="accent-wbGold"> Sim</label>
+                            <label class="ml-4 flex items-center gap-2"><input type="radio" name="conjuge_br" value="Nao" class="accent-wbGold"> Não</label>
+                        </div>
+                    </div>
+                    <textarea name="obs_perfil" rows="3" class="input-wb mt-3" placeholder="Resumo do Perfil..."></textarea>
+
+                    <p class="section-title">3. Financeiro & Serviço</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                        <input type="text" name="valor_total" placeholder="Valor Total (R$)" class="input-wb border-wbGold/30" required>
+                        <input type="number" name="qtd_parcelas" placeholder="Qtd Parcelas" class="input-wb">
+                        <input type="text" name="valor_parcela" placeholder="Valor Parcela" class="input-wb">
+                    </div>
+                    <select name="servico" class="input-wb mt-2 font-bold text-wbGold" required>
+                        <option value="Naturalização Brasileira">Naturalização Brasileira</option>
+                        <option value="Visto Americano">Visto Americano</option>
+                        <option value="Autorização de Residência">Autorização de Residência</option>
+                        <option value="Reunião Familiar">Reunião Familiar</option>
+                    </select>
+
+                    <button type="submit" id="btnSalvarCliente" class="w-full btn-gold py-4 rounded-lg mt-6 shadow-lg text-lg">
+                        CADASTRAR CLIENTE
+                    </button>
+                </form>
             </div>
 
-            <form id="formColaborador" onsubmit="enviarDados(event, 'colaborador')" class="bg-wbGray p-8 rounded-xl border border-blue-900/30 shadow-2xl">
-                <input type="hidden" name="tipo_cadastro" value="colaborador">
+            <div id="tab-novo-colaborador" class="max-w-2xl mx-auto hidden animate-fade-in">
+                <h2 class="text-3xl font-bold text-white mb-2"><i class="fa-solid fa-id-badge mr-3 text-blue-500"></i>Novo Colaborador</h2>
+                <p class="text-gray-500 mb-8 border-b border-gray-800 pb-4">Cadastre um membro da equipe para ter acesso ao sistema.</p>
 
-                <div class="space-y-4">
-                    <div>
-                        <label class="text-xs text-gray-500 uppercase font-bold ml-1">Nome do Funcionário</label>
-                        <input type="text" name="nome" placeholder="Ex: Maria Silva" class="input-wb" required>
-                    </div>
-
-                    <div>
-                        <label class="text-xs text-gray-500 uppercase font-bold ml-1">Login de Acesso</label>
-                        <input type="text" name="login" placeholder="Ex: mariasilva ou maria@wb.com" class="input-wb" required>
-                    </div>
-
-                    <div>
-                        <label class="text-xs text-gray-500 uppercase font-bold ml-1">Senha Provisória</label>
-                        <input type="text" name="senha" placeholder="Defina a senha inicial" class="input-wb" required>
-                    </div>
-
-                    <div>
-                        <label class="text-xs text-gray-500 uppercase font-bold ml-1">Função / Cargo</label>
+                <form id="formColaborador" onsubmit="enviarDados(event, 'colaborador')" class="bg-wbGray p-8 rounded-xl border border-blue-900/30 shadow-2xl">
+                    <input type="hidden" name="tipo_cadastro" value="colaborador">
+                    
+                    <div class="space-y-4">
+                        <input type="text" name="nome" placeholder="Nome do Funcionário" class="input-wb" required>
+                        <input type="text" name="login" placeholder="Login de Acesso" class="input-wb" required>
+                        <input type="text" name="senha" placeholder="Senha Inicial" class="input-wb" required>
                         <select name="funcao" class="input-wb" required>
-                            <option value="">Selecione...</option>
-                            <option value="Vendas">Comercial / Vendas</option>
-                            <option value="Advogado">Jurídico / Advogado</option>
-                            <option value="Administrativo">Administrativo / Financeiro</option>
-                            <option value="Diretor">Diretoria</option>
+                            <option value="">Selecione o Cargo...</option>
+                            <option value="Vendas">Vendas</option>
+                            <option value="Advogado">Advogado</option>
+                            <option value="Diretor">Diretor</option>
                         </select>
                     </div>
-                </div>
 
-                <button type="submit" id="btnSalvarColaborador" class="btn-action btn-blue text-lg">
-                    <i class="fa-solid fa-user-plus mr-2"></i> CADASTRAR EQUIPE
-                </button>
-            </form>
-        </div>
-
-        <div id="notificacao" class="fixed bottom-6 right-6 bg-green-600 text-white px-6 py-4 rounded-lg shadow-2xl transform translate-y-20 opacity-0 transition-all duration-500 flex items-center gap-3">
-            <i class="fa-solid fa-circle-check text-2xl"></i>
-            <div>
-                <h4 class="font-bold">Sucesso!</h4>
-                <p class="text-sm">Dados enviados para o sistema.</p>
+                    <button type="submit" id="btnSalvarColaborador" class="w-full bg-blue-600 hover:bg-blue-700 text-white font-bold py-4 rounded-lg mt-6 shadow-lg transition">
+                        CADASTRAR EQUIPE
+                    </button>
+                </form>
             </div>
-        </div>
+            
+            <div id="notificacao" class="fixed bottom-6 right-6 bg-green-600 text-white px-6 py-4 rounded-lg shadow-2xl hidden flex items-center gap-3 animate-bounce">
+                <i class="fa-solid fa-check-circle text-2xl"></i>
+                <div><h4 class="font-bold">Sucesso!</h4><p class="text-sm">Dados salvos no sistema.</p></div>
+            </div>
 
+        </div>
     </div>
 
     <script>
         // --- SEU LINK DO MAKE (WebHook) ---
-        // Atualmente os dois formulários mandam para o mesmo lugar
         const WEBHOOK_URL = "https://hook.us2.make.com/91fgciu87cnwl72ftfohkycnhyeylv8q"; 
         // ----------------------------------
 
-        // Função para trocar de abas
+        // 1. SISTEMA DE LOGIN
+        function fazerLogin(e) {
+            e.preventDefault();
+            const user = document.getElementById('loginUser').value;
+            const pass = document.getElementById('loginPass').value;
+
+            // Simulação de Login (Pode colocar "admin" e "123" para testar)
+            // Futuramente a gente conecta isso na planilha "Colaboradores"
+            if(user === "admin" && pass === "123") {
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('dashboard-screen').classList.remove('hidden');
+                document.getElementById('userDisplay').innerText = user;
+            } else {
+                alert("Login incorreto! Tente admin / 123");
+            }
+        }
+
+        function logout() {
+            location.reload(); // Recarrega a página e volta pro login
+        }
+
+        // 2. NAVEGAÇÃO ENTRE ABAS
         function showTab(tabName) {
-            // Esconde todas as abas
             document.getElementById('tab-novo-cliente').classList.add('hidden');
             document.getElementById('tab-novo-colaborador').classList.add('hidden');
-            
-            // Tira o destaque do menu
             document.getElementById('btn-novo-cliente').classList.remove('active');
             document.getElementById('btn-novo-colaborador').classList.remove('active');
 
-            // Mostra a aba certa e destaca o menu
             document.getElementById('tab-' + tabName).classList.remove('hidden');
             document.getElementById('btn-' + tabName).classList.add('active');
         }
 
-        // Função ÚNICA que envia os dados (serve para os dois)
+        // 3. ENVIO PARA O MAKE
         async function enviarDados(event, tipo) {
             event.preventDefault();
-            
-            // Seleciona o botão e o formulário correto
-            const btnId = tipo === 'cliente' ? 'btnSalvarCliente' : 'btnSalvarColaborador';
-            const formId = tipo === 'cliente' ? 'formCliente' : 'formColaborador';
-            
-            const btn = document.getElementById(btnId);
-            const form = document.getElementById(formId);
+            const btn = document.getElementById(tipo === 'cliente' ? 'btnSalvarCliente' : 'btnSalvarColaborador');
+            const form = document.getElementById(tipo === 'cliente' ? 'formCliente' : 'formColaborador');
             const originalText = btn.innerHTML;
 
-            // Muda botão para "Carregando"
-            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Salvando...';
+            btn.innerHTML = 'Salvando...';
             btn.disabled = true;
-            btn.classList.add('opacity-70');
 
             const formData = new FormData(form);
 
             try {
-                // Envia para o Make
                 await fetch(WEBHOOK_URL, { method: 'POST', body: formData });
-                
-                // Mostra notificação bonita
-                const notif = document.getElementById('notificacao');
-                notif.classList.remove('translate-y-20', 'opacity-0'); // Aparece
-                
-                // Limpa o form
+                document.getElementById('notificacao').classList.remove('hidden');
+                setTimeout(() => document.getElementById('notificacao').classList.add('hidden'), 3000);
                 form.reset();
-
-                // Esconde notificação depois de 3 seg
-                setTimeout(() => {
-                    notif.classList.add('translate-y-20', 'opacity-0');
-                }, 3000);
-
             } catch (err) {
-                alert("Erro de conexão: " + err.message);
+                alert("Erro: " + err.message);
             } finally {
-                // Restaura o botão
                 btn.innerHTML = originalText;
                 btn.disabled = false;
-                btn.classList.remove('opacity-70');
             }
         }
     </script>
