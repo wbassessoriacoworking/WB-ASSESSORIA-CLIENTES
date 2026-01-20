@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WB System - Gestão Inteligada</title>
+    <title>WB System - Gestão Profissional</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script>
@@ -11,15 +11,8 @@
             theme: {
                 extend: {
                     colors: { 
-                        wbGold: '#d4af37', 
-                        wbDark: '#050505', 
-                        wbGray: '#121212', 
-                        wbInput: '#1a1a1a',
-                        mondayGreen: '#00c875', 
-                        mondayRed: '#e2445c', 
-                        mondayYellow: '#fdab3d', 
-                        mondayBlue: '#0086c0', 
-                        mondayPurple: '#a25ddc'
+                        wbGold: '#d4af37', wbDark: '#050505', wbGray: '#121212', wbInput: '#1a1a1a',
+                        mondayGreen: '#00c875', mondayRed: '#e2445c', mondayYellow: '#fdab3d', mondayBlue: '#0086c0', mondayPurple: '#a25ddc'
                     },
                     animation: { 'fade-in': 'fadeIn 0.5s ease-out' },
                     keyframes: { fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } } }
@@ -30,30 +23,27 @@
     <style>
         body { background-color: #000; color: #e5e5e5; font-family: 'Segoe UI', sans-serif; }
         
-        /* INPUTS E MÁSCARAS */
+        /* ESTILO PROFISSIONAL */
         .input-wb { width: 100%; background: #1a1a1a; border: 1px solid #333; padding: 12px; border-radius: 6px; color: white; transition: 0.3s; font-size: 0.95rem; }
         .input-wb:focus { border-color: #d4af37; outline: none; background: #222; }
+        select.input-wb { cursor: pointer; color: #ddd; }
         
-        /* TABELA CRM (ESTILO MONDAY) */
         .crm-table { width: 100%; border-collapse: separate; border-spacing: 0 8px; }
-        .crm-header { text-align: left; color: #888; font-size: 12px; font-weight: 600; padding: 10px; text-transform: uppercase; letter-spacing: 1px; }
-        .crm-row { background: #1a1a1a; transition: 0.2s; cursor: pointer; }
-        .crm-row:hover { background: #252525; transform: scale(1.005); box-shadow: 0 4px 12px rgba(0,0,0,0.3); }
-        .crm-cell { padding: 16px; border-top: 1px solid #333; border-bottom: 1px solid #333; }
+        .crm-header { text-align: left; color: #888; font-size: 11px; font-weight: 700; padding: 12px; text-transform: uppercase; letter-spacing: 1px; }
+        .crm-row { background: #1a1a1a; transition: 0.2s; border-radius: 8px; }
+        .crm-row:hover { background: #222; transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.5); }
+        .crm-cell { padding: 16px; border-top: 1px solid #333; border-bottom: 1px solid #333; font-size: 0.9rem; }
         .crm-row td:first-child { border-left: 4px solid transparent; border-top-left-radius: 8px; border-bottom-left-radius: 8px; }
         .crm-row td:last-child { border-top-right-radius: 8px; border-bottom-right-radius: 8px; border-right: 1px solid #333; }
         
-        /* BADGES E STATUS */
-        .badge { padding: 6px 14px; border-radius: 20px; font-size: 11px; font-weight: 800; color: white; text-transform: uppercase; letter-spacing: 0.5px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
-        .bg-status-analise { background-color: #fdab3d; }
-        .bg-status-aprovado { background-color: #00c875; }
-        .bg-status-novo { background-color: #0086c0; }
-
-        /* SIDEBAR E BOTÕES */
-        .sidebar-item { cursor: pointer; padding: 12px; border-radius: 8px; transition: 0.3s; color: #888; display: flex; align-items: center; gap: 10px; margin-bottom: 5px; }
+        .badge { padding: 4px 12px; border-radius: 20px; font-size: 10px; font-weight: 800; color: white; text-transform: uppercase; letter-spacing: 0.5px; }
+        
+        .sidebar-item { cursor: pointer; padding: 14px; border-radius: 8px; transition: 0.3s; color: #888; display: flex; align-items: center; gap: 12px; margin-bottom: 5px; font-weight: 500; }
         .sidebar-item:hover, .sidebar-item.active { background-color: #1a1a1a; color: #d4af37; border-left: 3px solid #d4af37; }
-        .btn-gold { background: linear-gradient(45deg, #d4af37, #b5952f); color: black; font-weight: bold; transition: 0.3s; border: none; }
-        .btn-gold:hover { transform: scale(1.02); }
+        
+        .btn-gold { background: linear-gradient(45deg, #d4af37, #b5952f); color: black; font-weight: bold; transition: 0.3s; border: none; box-shadow: 0 4px 15px rgba(212, 175, 55, 0.2); }
+        .btn-gold:hover { transform: scale(1.02); box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4); }
+        
         .hidden-role { display: none !important; }
     </style>
 </head>
@@ -63,193 +53,235 @@
         <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
         <div class="relative z-10 bg-wbGray p-10 rounded-2xl shadow-2xl w-full max-w-md border border-wbGold/20 animate-fade-in">
             <div class="text-center mb-8">
-                <img src="logo.jpeg" class="w-20 h-20 mx-auto mb-4 rounded-full border-2 border-wbGold p-1 shadow-lg">
+                <img src="logo.jpeg" class="w-24 h-24 mx-auto mb-4 rounded-full border-2 border-wbGold p-1 shadow-lg shadow-wbGold/10">
                 <h2 class="text-3xl font-bold text-wbGold tracking-widest">WB SYSTEM</h2>
-                <p class="text-gray-500 text-sm">Acesso Restrito</p>
+                <p class="text-gray-500 text-sm mt-1">Plataforma de Gestão Jurídica</p>
             </div>
-            <form onsubmit="fazerLogin(event)" class="space-y-5">
+            <form onsubmit="fazerLogin(event)" class="space-y-6">
                 <div>
-                    <label class="text-xs text-wbGold font-bold uppercase ml-1">Login</label>
-                    <div class="relative">
+                    <label class="text-[10px] text-wbGold font-bold uppercase tracking-wider ml-1">Identificação</label>
+                    <div class="relative mt-1">
                         <i class="fa-solid fa-user absolute left-3 top-3.5 text-gray-500"></i>
-                        <input type="text" id="loginUser" class="input-wb pl-10" placeholder="Usuário ou CPF" required>
+                        <input type="text" id="loginUser" class="input-wb pl-10" placeholder="Usuário" required>
                     </div>
                 </div>
                 <div>
-                    <label class="text-xs text-wbGold font-bold uppercase ml-1">Senha</label>
-                    <div class="relative">
+                    <label class="text-[10px] text-wbGold font-bold uppercase tracking-wider ml-1">Senha de Acesso</label>
+                    <div class="relative mt-1">
                         <i class="fa-solid fa-lock absolute left-3 top-3.5 text-gray-500"></i>
                         <input type="password" id="loginPass" class="input-wb pl-10" placeholder="••••••••" required>
                     </div>
                 </div>
-                <button type="submit" class="w-full btn-gold py-4 rounded-lg mt-4 shadow-lg uppercase text-sm font-bold tracking-wider">
-                    Entrar <i class="fa-solid fa-arrow-right ml-2"></i>
-                </button>
+                <button type="submit" class="w-full btn-gold py-4 rounded-lg text-sm font-bold uppercase tracking-widest">Acessar Sistema</button>
             </form>
-            <div class="mt-6 text-center text-[10px] text-gray-600 space-y-1">
-                <p>Testes: <b>admin</b> (Diretor) | <b>vendas</b> (Equipe) | <b>cliente</b> (Visualização)</p>
+            <div class="mt-8 text-center border-t border-gray-800 pt-4">
+                <p class="text-[10px] text-gray-600">AMBIENTE SEGURO & CRIPTOGRAFADO</p>
             </div>
         </div>
     </div>
 
     <div id="dashboard-colaborador" class="hidden h-full flex">
         
-        <div class="w-64 bg-wbGray border-r border-gray-800 flex flex-col p-4 hidden md:flex">
-            <div class="flex items-center gap-3 mb-10 px-2 mt-4">
-                <img src="logo.jpeg" class="w-10 h-10 rounded-full border border-wbGold">
-                <div><h1 class="font-bold text-wbGold text-lg tracking-wider">WB ADMIN</h1></div>
+        <div class="w-72 bg-wbGray border-r border-gray-800 flex flex-col p-6 hidden md:flex">
+            <div class="flex items-center gap-4 mb-12">
+                <img src="logo.jpeg" class="w-12 h-12 rounded-full border border-wbGold">
+                <div><h1 class="font-bold text-wbGold text-xl tracking-wide">WB ADMIN</h1><p class="text-[10px] text-gray-500 uppercase">Versão 4.0</p></div>
             </div>
             
-            <nav class="space-y-1 flex-grow text-sm font-medium">
-                <div onclick="showTab('crm-board')" class="sidebar-item active" id="btn-crm-board"><i class="fa-solid fa-table-columns w-5"></i> Quadro CRM</div>
-                <div onclick="showTab('novo-cliente')" class="sidebar-item" id="btn-novo-cliente"><i class="fa-solid fa-user-plus w-5"></i> Novo Processo</div>
-                <div onclick="showTab('equipe')" class="sidebar-item role-diretor" id="btn-equipe"><i class="fa-solid fa-users-gear w-5"></i> Gestão Equipe</div>
-                <div onclick="showTab('financeiro')" class="sidebar-item role-diretor" id="btn-financeiro"><i class="fa-solid fa-chart-pie w-5"></i> Financeiro Geral</div>
+            <nav class="space-y-2 flex-grow text-sm">
+                <p class="text-[10px] text-gray-600 font-bold uppercase mb-2 mt-4 ml-2">Comercial</p>
+                <div onclick="showTab('novo-cliente')" class="sidebar-item active" id="btn-novo-cliente">
+                    <i class="fa-solid fa-file-contract w-6 text-center"></i> Novo Contrato
+                </div>
+                <div onclick="showTab('crm-board')" class="sidebar-item" id="btn-crm-board">
+                    <i class="fa-solid fa-list-check w-6 text-center"></i> Meus Clientes (CRM)
+                </div>
+
+                <div class="role-diretor">
+                    <p class="text-[10px] text-gray-600 font-bold uppercase mb-2 mt-8 ml-2">Diretoria</p>
+                    <div onclick="showTab('equipe')" class="sidebar-item" id="btn-equipe">
+                        <i class="fa-solid fa-users w-6 text-center"></i> Gestão de Equipe
+                    </div>
+                    <div onclick="showTab('financeiro')" class="sidebar-item" id="btn-financeiro">
+                        <i class="fa-solid fa-sack-dollar w-6 text-center"></i> Financeiro Global
+                    </div>
+                    <div onclick="showTab('config')" class="sidebar-item" id="btn-config">
+                        <i class="fa-solid fa-sliders w-6 text-center"></i> Configurações do Sistema
+                    </div>
+                </div>
             </nav>
 
-            <div class="border-t border-gray-800 pt-4 flex items-center gap-3">
-                <div class="w-8 h-8 bg-wbGold rounded-full flex items-center justify-center text-black font-bold" id="avatarLetter">A</div>
-                <div><p class="text-sm text-white font-bold" id="userNameDisplay">Admin</p><button onclick="location.reload()" class="text-xs text-red-500 hover:text-red-400">Sair</button></div>
+            <div class="bg-gray-900/50 p-4 rounded-lg border border-gray-800 flex items-center gap-3 mt-4">
+                <div class="w-10 h-10 bg-wbGold text-black font-bold rounded-full flex items-center justify-center text-lg" id="avatarLetter">A</div>
+                <div class="flex-grow">
+                    <p class="text-sm font-bold text-white" id="userNameDisplay">Admin</p>
+                    <p class="text-[10px] text-green-500 font-bold uppercase" id="userRoleDisplay">Diretor Online</p>
+                </div>
+                <button onclick="location.reload()" class="text-gray-500 hover:text-red-500"><i class="fa-solid fa-power-off"></i></button>
             </div>
         </div>
 
-        <div class="flex-grow overflow-y-auto p-6 md:p-10 bg-black relative">
+        <div class="flex-grow overflow-y-auto p-8 bg-black relative">
             
-            <div id="tab-crm-board" class="max-w-6xl mx-auto animate-fade-in">
-                <div class="flex justify-between items-center mb-6">
-                    <h2 class="text-2xl font-bold text-white"><i class="fa-solid fa-layer-group mr-2 text-wbGold"></i>Visão Geral</h2>
-                    <button onclick="showTab('novo-cliente')" class="bg-mondayBlue text-white px-5 py-2 rounded-full text-sm font-bold hover:bg-blue-600 transition shadow-lg">+ Adicionar Cliente</button>
+            <div id="tab-novo-cliente" class="max-w-5xl mx-auto animate-fade-in">
+                <div class="flex justify-between items-end mb-8 border-b border-gray-800 pb-6">
+                    <div>
+                        <h2 class="text-3xl font-bold text-white">Novo Contrato</h2>
+                        <p class="text-gray-500 text-sm mt-1">Preencha os dados para análise imediata da IA.</p>
+                    </div>
+                    <div class="text-right hidden md:block">
+                        <span class="bg-blue-900/30 text-blue-400 border border-blue-900 px-3 py-1 rounded text-xs font-bold uppercase">Meta do Dia: 5 Contratos</span>
+                    </div>
                 </div>
 
-                <div class="overflow-x-auto rounded-lg border border-gray-800 bg-wbInput">
+                <form id="formCliente" onsubmit="enviarDados(event, 'cliente')" class="space-y-6">
+                    <input type="hidden" name="tipo_cadastro" value="cliente">
+
+                    <div class="bg-wbInput p-6 rounded-xl border border-gray-800">
+                        <label class="text-wbGold text-xs font-bold uppercase mb-2 block">1. Qual serviço o cliente busca?</label>
+                        <select name="servico_interesse" class="input-wb text-lg font-bold" required>
+                            <option value="Naturalizacao_BR">🇧🇷 Naturalização Brasileira</option>
+                            <option value="Visto_EUA">🇺🇸 Visto Americano (Turismo/Negócios)</option>
+                            <option value="Residencia_BR">🇧🇷 Residência Permanente</option>
+                            <option value="Passaporte">🛂 Emissão de Passaporte</option>
+                        </select>
+                    </div>
+
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <div class="bg-wbInput p-6 rounded-xl border border-gray-800 h-full">
+                            <h3 class="text-white font-bold mb-4 flex items-center gap-2"><i class="fa-solid fa-user text-wbGold"></i> Dados Pessoais</h3>
+                            <div class="space-y-4">
+                                <div><label class="text-xs text-gray-500">Nome Completo</label><input type="text" name="nome" class="input-wb" required></div>
+                                <div><label class="text-xs text-gray-500">CPF (Obrigatório)</label><input type="text" name="cpf" oninput="maskCPF(this)" maxlength="14" class="input-wb" required></div>
+                                <div><label class="text-xs text-gray-500">Nacionalidade</label><input type="text" name="pais" class="input-wb" placeholder="Ex: Haitiana, Angolana..." required></div>
+                                
+                                <div class="grid grid-cols-2 gap-3">
+                                    <div><label class="text-xs text-gray-500">Filho Brasileiro?</label>
+                                        <select name="filho_br" class="input-wb text-sm">
+                                            <option value="Nao">Não</option>
+                                            <option value="Sim">Sim (Possui Certidão)</option>
+                                        </select>
+                                    </div>
+                                    <div><label class="text-xs text-gray-500">Cônjuge Brasileiro?</label>
+                                        <select name="conjuge_br" class="input-wb text-sm">
+                                            <option value="Nao">Não</option>
+                                            <option value="Sim">Sim (Casado/União)</option>
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="bg-wbInput p-6 rounded-xl border border-gray-800 h-full">
+                            <h3 class="text-white font-bold mb-4 flex items-center gap-2"><i class="fa-solid fa-passport text-wbGold"></i> Perfil Migratório</h3>
+                            <div class="space-y-4">
+                                <div>
+                                    <label class="text-xs text-gray-500">Tempo de Residência no Brasil</label>
+                                    <select name="tempo_brasil" class="input-wb text-wbGold font-bold">
+                                        <option value="">Selecione...</option>
+                                        <option value="Menos de 1 ano">Menos de 1 ano</option>
+                                        <option value="1 a 2 anos">1 a 2 anos</option>
+                                        <option value="2 a 3 anos">2 a 3 anos</option>
+                                        <option value="3 a 4 anos">3 a 4 anos</option>
+                                        <option value="4 anos ou mais">Mais de 4 anos (Elegível Padrão)</option>
+                                        <option value="Mais de 15 anos">Mais de 15 anos (VIP)</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    <label class="text-xs text-gray-500">Status Atual do RNE/Documento</label>
+                                    <select name="rne_tipo" class="input-wb">
+                                        <option value="Indocumentado">Sem Documentos (Indocumentado)</option>
+                                        <option value="Protocolo">Apenas Protocolo de Refúgio</option>
+                                        <option value="Temporario">Residência Temporária (2 anos)</option>
+                                        <option value="Provisorio">Provisório</option>
+                                        <option value="Permanente">Permanente (Indeterminado)</option>
+                                    </select>
+                                </div>
+                                <div><label class="text-xs text-gray-500">Observações de Vendas</label><textarea name="obs_vendas" class="input-wb h-24 resize-none" placeholder="Detalhes extras para ajudar a IA..."></textarea></div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-900 p-6 rounded-xl border border-green-900/30 shadow-lg">
+                        <h3 class="text-green-500 font-bold text-sm uppercase mb-4"><i class="fa-solid fa-money-bill-wave mr-2"></i>Fechamento Financeiro</h3>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <div><label class="text-[10px] text-gray-400 uppercase">Valor Total do Contrato</label><input type="text" name="valor_total" oninput="maskMoney(this)" class="input-wb border-green-800/50 text-green-400 font-bold text-lg" placeholder="R$ 0,00"></div>
+                            <div><label class="text-[10px] text-gray-400 uppercase">Valor Entrada</label><input type="text" name="valor_entrada" oninput="maskMoney(this)" class="input-wb" placeholder="R$ 0,00"></div>
+                            <div><label class="text-[10px] text-gray-400 uppercase">Qtd Parcelas</label><input type="number" name="qtd_parcelas" class="input-wb text-center" placeholder="Ex: 10"></div>
+                            <div><label class="text-[10px] text-gray-400 uppercase">Valor Parcela</label><input type="text" name="valor_parcela" oninput="maskMoney(this)" class="input-wb" placeholder="R$ 0,00"></div>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="btnSalvarCliente" class="w-full btn-gold py-5 rounded-xl font-bold text-lg shadow-xl hover:shadow-yellow-600/20 transition flex items-center justify-center gap-3">
+                        <span>CADASTRAR E SOLICITAR ANÁLISE</span> <i class="fa-solid fa-paper-plane"></i>
+                    </button>
+                </form>
+            </div>
+
+            <div id="tab-crm-board" class="hidden max-w-6xl mx-auto animate-fade-in">
+                <h2 class="text-2xl font-bold text-white mb-6">CRM - Meus Processos</h2>
+                <div class="overflow-x-auto rounded-xl border border-gray-800 bg-wbInput">
                     <table class="crm-table">
                         <thead>
                             <tr>
                                 <th class="crm-header">Cliente</th>
                                 <th class="crm-header">Serviço</th>
                                 <th class="crm-header text-center">Status</th>
-                                <th class="crm-header text-center">IA Analysis</th>
+                                <th class="crm-header text-center">Parecer IA</th>
                                 <th class="crm-header text-center">Progresso</th>
-                                <th class="crm-header">Responsável</th>
                             </tr>
                         </thead>
                         <tbody id="crm-body">
                             <tr class="crm-row border-l-4 border-mondayGreen">
-                                <td class="crm-cell"><div class="font-bold text-white">Jean Pierre</div></td>
+                                <td class="crm-cell"><div class="font-bold text-white">Pierre Louis</div><div class="text-[10px] text-gray-500">CPF: 123...</div></td>
                                 <td class="crm-cell text-gray-400">Naturalização</td>
-                                <td class="crm-cell text-center"><span class="badge bg-status-aprovado">Aprovado</span></td>
-                                <td class="crm-cell text-center"><i class="fa-solid fa-brain text-mondayPurple text-lg" title="IA Aprovou"></i></td>
-                                <td class="crm-cell text-center"><div class="w-24 bg-gray-700 h-2 rounded-full mx-auto"><div class="bg-mondayGreen h-full rounded-full" style="width: 100%"></div></div></td>
-                                <td class="crm-cell text-gray-400 text-sm">Renato</td>
-                            </tr>
-                            <tr class="crm-row border-l-4 border-mondayYellow">
-                                <td class="crm-cell"><div class="font-bold text-white">Marie Curie</div></td>
-                                <td class="crm-cell text-gray-400">Visto Permanente</td>
-                                <td class="crm-cell text-center"><span class="badge bg-status-analise">Em Análise</span></td>
-                                <td class="crm-cell text-center"><i class="fa-solid fa-circle-notch fa-spin text-mondayYellow"></i></td>
-                                <td class="crm-cell text-center"><div class="w-24 bg-gray-700 h-2 rounded-full mx-auto"><div class="bg-mondayYellow h-full rounded-full" style="width: 40%"></div></div></td>
-                                <td class="crm-cell text-gray-400 text-sm">Vendas</td>
+                                <td class="crm-cell text-center"><span class="badge" style="background:#00c875">Aprovado</span></td>
+                                <td class="crm-cell text-center text-xs text-gray-400">Elegível (4 anos + Filho)</td>
+                                <td class="crm-cell text-center"><div class="w-20 bg-gray-700 h-1.5 rounded-full mx-auto"><div class="bg-green-500 h-full rounded-full" style="width: 100%"></div></div></td>
                             </tr>
                         </tbody>
                     </table>
                 </div>
             </div>
 
-            <div id="tab-novo-cliente" class="max-w-5xl mx-auto hidden animate-fade-in">
-                <h2 class="text-2xl font-bold text-white mb-6 border-l-4 border-wbGold pl-4">Novo Cliente & Análise Jurídica</h2>
-                
-                <form id="formCliente" onsubmit="enviarDados(event, 'cliente')" class="bg-wbGray p-8 rounded-xl border border-gray-800 shadow-2xl space-y-8">
-                    <input type="hidden" name="tipo_cadastro" value="cliente">
-
-                    <div>
-                        <h3 class="text-wbGold text-sm font-bold uppercase border-b border-gray-800 pb-2 mb-4"><i class="fa-solid fa-user mr-2"></i>Dados Pessoais</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                            <div><label class="text-xs text-gray-500">Nome Completo</label><input type="text" name="nome" class="input-wb" required></div>
-                            <div><label class="text-xs text-gray-500">CPF</label><input type="text" name="cpf" oninput="maskCPF(this)" maxlength="14" class="input-wb" required></div>
-                        </div>
-                    </div>
-
-                    <div>
-                        <h3 class="text-wbGold text-sm font-bold uppercase border-b border-gray-800 pb-2 mb-4"><i class="fa-solid fa-passport mr-2"></i>Perfil Migratório</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-                            <div><label class="text-xs text-gray-500">País de Origem</label><input type="text" name="pais" class="input-wb" required></div>
-                            <div><label class="text-xs text-gray-500">Tempo no Brasil</label><input type="text" name="tempo_brasil" class="input-wb" placeholder="Ex: 4 anos"></div>
-                            <div><label class="text-xs text-gray-500">Status Legal</label>
-                                <select name="status_legal" class="input-wb text-gray-300">
-                                    <option value="Indocumentado">Indocumentado</option>
-                                    <option value="Regular">Regular (RNE)</option>
-                                    <option value="Turismo">Turismo</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mt-4">
-                            <div class="bg-black/40 p-3 rounded border border-gray-800 flex justify-between items-center"><span class="text-sm text-gray-400">Filho Brasileiro?</span><div class="space-x-4"><label><input type="radio" name="filho_br" value="Sim" class="accent-wbGold"> Sim</label><label><input type="radio" name="filho_br" value="Nao" class="accent-wbGold"> Não</label></div></div>
-                            <div class="bg-black/40 p-3 rounded border border-gray-800 flex justify-between items-center"><span class="text-sm text-gray-400">Cônjuge Brasileiro?</span><div class="space-x-4"><label><input type="radio" name="conjuge_br" value="Sim" class="accent-wbGold"> Sim</label><label><input type="radio" name="conjuge_br" value="Nao" class="accent-wbGold"> Não</label></div></div>
-                        </div>
-                    </div>
-
-                    <div>
-                        <h3 class="text-wbGold text-sm font-bold uppercase border-b border-gray-800 pb-2 mb-4"><i class="fa-solid fa-sack-dollar mr-2"></i>Financeiro do Contrato</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-4 gap-5 bg-black/30 p-4 rounded border border-wbGold/30">
-                            <div><label class="text-xs text-wbGold font-bold">Valor TOTAL (R$)</label><input type="text" name="valor_total" oninput="maskMoney(this)" class="input-wb text-wbGold font-bold"></div>
-                            <div><label class="text-xs text-gray-500">Entrada (R$)</label><input type="text" name="valor_entrada" oninput="maskMoney(this)" class="input-wb"></div>
-                            <div><label class="text-xs text-gray-500">Qtd. Parcelas</label><input type="number" name="qtd_parcelas" class="input-wb"></div>
-                            <div><label class="text-xs text-gray-500">Valor Parcela (R$)</label><input type="text" name="valor_parcela" oninput="maskMoney(this)" class="input-wb"></div>
-                        </div>
-                    </div>
-                    
-                    <button type="submit" id="btnSalvarCliente" class="w-full btn-gold py-4 rounded font-bold text-lg shadow-lg hover:shadow-wbGold/20 transition">
-                        <i class="fa-solid fa-robot mr-2"></i> CADASTRAR E ANALISAR (IA)
-                    </button>
-                </form>
+            <div id="tab-financeiro" class="hidden animate-fade-in text-center mt-20">
+                <i class="fa-solid fa-chart-line text-6xl text-wbGold mb-4 opacity-50"></i>
+                <h2 class="text-2xl font-bold text-white">Dashboard Financeiro Global</h2>
+                <p class="text-gray-500">Acesso Restrito à Diretoria.</p>
             </div>
-
-            <div id="tab-equipe" class="hidden text-center text-gray-500 mt-20"><i class="fa-solid fa-users-gear text-4xl mb-4"></i><p>Gestão de Colaboradores</p></div>
-            <div id="tab-financeiro" class="hidden text-center text-gray-500 mt-20"><i class="fa-solid fa-chart-pie text-4xl mb-4"></i><p>Painel Financeiro Geral</p></div>
+            
+             <div id="tab-equipe" class="hidden animate-fade-in text-center mt-20">
+                <i class="fa-solid fa-users-gear text-6xl text-wbGold mb-4 opacity-50"></i>
+                <h2 class="text-2xl font-bold text-white">Gestão de Colaboradores</h2>
+                <p class="text-gray-500">Adicionar/Remover Vendedores.</p>
+            </div>
 
         </div>
     </div>
 
     <div id="dashboard-cliente" class="hidden h-full flex flex-col bg-black">
         <div class="bg-wbGray p-4 border-b border-wbGold/30 flex justify-between items-center">
-            <div class="flex items-center gap-3"><img src="logo.jpeg" class="w-10 h-10 rounded-full border border-wbGold"><div><h1 class="font-bold text-white">MEU PROCESSO</h1><p class="text-xs text-wbGold">WB Assessoria</p></div></div>
+            <div class="flex items-center gap-3"><img src="logo.jpeg" class="w-10 h-10 rounded-full border border-wbGold"><div><h1 class="font-bold text-white">MEU PROCESSO</h1></div></div>
             <button onclick="location.reload()" class="text-red-500 text-xs font-bold border border-red-900 px-3 py-1 rounded">SAIR</button>
         </div>
-
         <div class="p-6 max-w-4xl mx-auto w-full space-y-6">
             <div class="bg-gradient-to-r from-gray-900 to-gray-800 p-6 rounded-xl border-l-4 border-wbGold shadow-lg">
                 <div class="flex justify-between items-start">
-                    <div>
-                        <p class="text-gray-400 text-sm mb-1">Status Atual</p>
-                        <h2 class="text-2xl font-bold text-white">EM ANÁLISE INICIAL</h2>
-                        <p class="text-xs text-blue-400 mt-2"><i class="fa-solid fa-circle-info mr-1"></i> A IA está verificando seus documentos.</p>
-                    </div>
-                    <div class="text-right"><span class="text-4xl font-bold text-wbGold">15%</span></div>
+                    <div><p class="text-gray-400 text-sm mb-1">Status</p><h2 class="text-2xl font-bold text-white">EM ANÁLISE</h2></div>
+                    <div class="text-right"><span class="text-4xl font-bold text-wbGold">...</span></div>
                 </div>
-                <div class="w-full bg-black h-2 rounded-full mt-4 overflow-hidden"><div class="bg-wbGold h-full" style="width: 15%"></div></div>
-            </div>
-
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div class="bg-wbGray p-5 rounded-xl border border-gray-800"><h3 class="text-wbGold font-bold mb-4"><i class="fa-solid fa-file-invoice-dollar mr-2"></i>Financeiro</h3><p class="text-gray-500 text-sm">Visualize suas parcelas aqui em breve.</p></div>
-                <div class="bg-wbGray p-5 rounded-xl border border-gray-800"><h3 class="text-wbGold font-bold mb-4"><i class="fa-solid fa-file-pdf mr-2"></i>Documentos</h3><p class="text-gray-500 text-sm">Nenhum documento anexado.</p></div>
             </div>
         </div>
     </div>
 
-    <div id="notificacao" class="fixed bottom-6 right-6 bg-green-600 text-white px-6 py-4 rounded-lg shadow-2xl hidden flex items-center gap-3 animate-fade-in z-50">
-        <i class="fa-solid fa-check-circle text-2xl"></i>
-        <div><h4 class="font-bold">Sucesso!</h4><p class="text-sm">Dados enviados para a IA analisar.</p></div>
-    </div>
-
     <script>
-        // --- CONFIGURAÇÃO ---
-        const WEBHOOK_URL = "https://hook.us2.make.com/91fgciu87cnwl72ftfohkycnhyeylv8q";
+        const WEBHOOK_URL = "https://hook.us2.make.com/91fgciu87cnwl72ftfohkycnhyeylv8q"; 
 
-        // 1. MÁSCARAS
+        // MÁSCARAS
         function maskCPF(i) { i.value = i.value.replace(/\D/g,"").replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d{1,2})$/,"$1-$2"); }
         function maskMoney(i) { let v = i.value.replace(/\D/g,""); v = (v/100).toFixed(2) + ""; i.value = "R$ " + v.replace(".", ",").replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1."); }
 
-        // 2. LÓGICA DE LOGIN
+        // LOGIN E PERMISSÕES
         function fazerLogin(e) {
             e.preventDefault();
             const user = document.getElementById('loginUser').value.toLowerCase();
@@ -262,16 +294,22 @@
             } else {
                 document.getElementById('dashboard-colaborador').classList.remove('hidden');
                 
-                // Perfil Vendas (Esconde coisas de Diretor)
+                // LÓGICA VENDAS vs DIRETOR
                 if (user === 'vendas') {
+                    // Esconde tudo que é de diretor
                     document.querySelectorAll('.role-diretor').forEach(el => el.classList.add('hidden-role'));
                     document.getElementById('userNameDisplay').innerText = "Vendedor";
+                    document.getElementById('userRoleDisplay').innerText = "Comercial";
+                    document.getElementById('userRoleDisplay').className = "text-[10px] text-blue-500 font-bold uppercase";
                     document.getElementById('avatarLetter').innerText = "V";
+                    document.getElementById('avatarLetter').className = "w-10 h-10 bg-blue-600 text-white font-bold rounded-full flex items-center justify-center text-lg";
+                } else if (user === 'admin') {
+                    // Admin vê tudo (não faz nada, pois o padrão é ver tudo)
                 }
             }
         }
 
-        // 3. NAVEGAÇÃO ENTRE ABAS
+        // NAVEGAÇÃO
         function showTab(tabName) {
             document.querySelectorAll('[id^="tab-"]').forEach(el => el.classList.add('hidden'));
             document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
@@ -279,26 +317,22 @@
             document.getElementById('btn-' + tabName).classList.add('active');
         }
 
-        // 4. ENVIO PARA O MAKE (IA)
+        // ENVIO
         async function enviarDados(event, tipo) {
             event.preventDefault();
             const btn = document.getElementById('btnSalvarCliente');
             const originalText = btn.innerHTML;
-            btn.innerHTML = '<i class="fa-solid fa-circle-notch fa-spin"></i> Processando IA...'; 
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Analisando...'; 
             btn.disabled = true;
 
             const formData = new FormData(document.getElementById('formCliente'));
 
             try {
                 await fetch(WEBHOOK_URL, { method: 'POST', body: formData });
-                
-                // Feedback Visual
-                const notif = document.getElementById('notificacao');
-                notif.classList.remove('hidden');
-                setTimeout(() => notif.classList.add('hidden'), 4000);
+                alert("✅ Cadastro Enviado! Verifique a análise da IA no CRM ou Planilha.");
                 document.getElementById('formCliente').reset();
             } catch (err) {
-                alert("Erro de conexão: " + err.message);
+                alert("Erro ao enviar: " + err.message);
             } finally {
                 btn.innerHTML = originalText;
                 btn.disabled = false;
