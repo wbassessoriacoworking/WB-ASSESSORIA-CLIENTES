@@ -3,17 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WB System - Naturalização</title>
+    <title>WB System - Análise Jurídica</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    colors: { 
-                        wbGold: '#d4af37', wbDark: '#050505', wbGray: '#121212', wbInput: '#1a1a1a',
-                        mondayGreen: '#00c875', mondayRed: '#e2445c', mondayYellow: '#fdab3d', mondayBlue: '#0086c0'
-                    },
+                    colors: { wbGold: '#d4af37', wbGray: '#121212', wbInput: '#1a1a1a', mondayGreen: '#00c875' },
                     animation: { 'fade-in': 'fadeIn 0.5s ease-out' },
                     keyframes: { fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } } }
                 }
@@ -22,221 +19,184 @@
     </script>
     <style>
         body { background-color: #000; color: #e5e5e5; font-family: 'Segoe UI', sans-serif; }
-        .input-wb { width: 100%; background: #1a1a1a; border: 1px solid #333; padding: 12px; border-radius: 6px; color: white; transition: 0.3s; font-size: 0.95rem; }
-        .input-wb:focus { border-color: #d4af37; outline: none; background: #222; }
-        .crm-table { width: 100%; border-collapse: separate; border-spacing: 0 8px; }
-        .crm-header { text-align: left; color: #888; font-size: 11px; font-weight: 700; padding: 12px; text-transform: uppercase; letter-spacing: 1px; }
-        .crm-row { background: #1a1a1a; transition: 0.2s; border-radius: 8px; }
-        .crm-row:hover { background: #222; transform: translateY(-2px); }
-        .crm-cell { padding: 16px; border-top: 1px solid #333; border-bottom: 1px solid #333; font-size: 0.9rem; }
-        .crm-row td:first-child { border-left: 4px solid transparent; border-top-left-radius: 8px; border-bottom-left-radius: 8px; }
-        .crm-row td:last-child { border-top-right-radius: 8px; border-bottom-right-radius: 8px; border-right: 1px solid #333; }
-        .badge { padding: 4px 12px; border-radius: 20px; font-size: 10px; font-weight: 800; color: white; text-transform: uppercase; }
-        .sidebar-item { cursor: pointer; padding: 14px; border-radius: 8px; transition: 0.3s; color: #888; display: flex; align-items: center; gap: 12px; margin-bottom: 5px; font-weight: 500; }
-        .sidebar-item:hover, .sidebar-item.active { background-color: #1a1a1a; color: #d4af37; border-left: 3px solid #d4af37; }
-        .hidden-role { display: none !important; }
-        .btn-gold { background: linear-gradient(45deg, #d4af37, #b5952f); color: black; font-weight: bold; border: none; }
+        .input-wb { width: 100%; background: #1a1a1a; border: 1px solid #333; padding: 12px; border-radius: 6px; color: white; }
+        .input-wb:focus { border-color: #d4af37; outline: none; }
+        .btn-gold { background: linear-gradient(45deg, #d4af37, #b5952f); color: black; font-weight: bold; }
+        
+        /* Modal Style */
+        .modal-overlay { background-color: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px); }
+        .typing-effect::after { content: '|'; animation: blink 1s infinite; }
+        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
     </style>
 </head>
 <body class="h-screen overflow-hidden flex flex-col">
 
-    <div id="login-screen" class="flex-grow flex items-center justify-center bg-gradient-to-br from-black to-gray-900 relative">
-        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
-        <div class="relative z-10 bg-wbGray p-10 rounded-2xl shadow-2xl w-full max-w-md border border-wbGold/20 animate-fade-in">
-            <div class="text-center mb-8">
-                <img src="logo.jpeg" class="w-24 h-24 mx-auto mb-4 rounded-full border-2 border-wbGold p-1">
-                <h2 class="text-3xl font-bold text-wbGold tracking-widest">WB SYSTEM</h2>
-                <p class="text-gray-500 text-sm">Acesso Restrito</p>
-            </div>
-            <form onsubmit="fazerLogin(event)" class="space-y-6">
-                <div><label class="text-[10px] text-wbGold font-bold uppercase ml-1">Usuário</label><input type="text" id="loginUser" class="input-wb" required></div>
-                <div><label class="text-[10px] text-wbGold font-bold uppercase ml-1">Senha</label><input type="password" id="loginPass" class="input-wb" required></div>
-                <button type="submit" class="w-full btn-gold py-4 rounded-lg text-sm font-bold uppercase tracking-widest">Entrar</button>
-            </form>
-            <div class="mt-8 text-center"><p class="text-[10px] text-gray-600">Testes: admin | vendas | cliente</p></div>
-        </div>
-    </div>
-
-    <div id="dashboard-colaborador" class="hidden h-full flex">
-        
-        <div class="w-72 bg-wbGray border-r border-gray-800 flex flex-col p-6 hidden md:flex">
-            <div class="flex items-center gap-4 mb-12">
-                <img src="logo.jpeg" class="w-12 h-12 rounded-full border border-wbGold">
-                <div><h1 class="font-bold text-wbGold text-xl">WB ADMIN</h1></div>
-            </div>
-            <nav class="space-y-2 flex-grow text-sm">
-                <div onclick="showTab('novo-cliente')" class="sidebar-item active" id="btn-novo-cliente"><i class="fa-solid fa-passport w-6 text-center"></i> Nova Naturalização</div>
-                <div onclick="showTab('crm-board')" class="sidebar-item" id="btn-crm-board"><i class="fa-solid fa-users w-6 text-center"></i> CRM (Ativos)</div>
-                <div class="role-diretor mt-8">
-                    <p class="text-[10px] text-gray-600 font-bold uppercase mb-2 ml-2">Diretoria</p>
-                    <div onclick="showTab('equipe')" class="sidebar-item"><i class="fa-solid fa-user-gear w-6 text-center"></i> Equipe</div>
-                    <div onclick="showTab('financeiro')" class="sidebar-item"><i class="fa-solid fa-chart-line w-6 text-center"></i> Financeiro Geral</div>
+    <div id="modalAnalise" class="hidden fixed inset-0 z-50 flex items-center justify-center modal-overlay p-4">
+        <div class="bg-wbGray border-2 border-wbGold rounded-2xl shadow-2xl max-w-2xl w-full animate-fade-in flex flex-col max-h-[90vh]">
+            <div class="p-6 border-b border-gray-800 flex justify-between items-center bg-gray-900 rounded-t-2xl">
+                <div class="flex items-center gap-3">
+                    <div class="w-10 h-10 bg-wbGold rounded-full flex items-center justify-center"><i class="fa-solid fa-gavel text-black text-lg"></i></div>
+                    <div><h3 class="text-xl font-bold text-white">Parecer Jurídico</h3><p class="text-xs text-wbGold">Dra. WB (IA)</p></div>
                 </div>
-            </nav>
-            <div class="flex items-center gap-3 mt-4 text-white"><div class="w-8 h-8 bg-wbGold text-black font-bold rounded-full flex items-center justify-center" id="avatarLetter">A</div><span id="userNameDisplay">Admin</span></div>
-        </div>
-
-        <div class="flex-grow overflow-y-auto p-8 bg-black relative">
+                <button onclick="fecharModal()" class="text-gray-500 hover:text-white"><i class="fa-solid fa-xmark text-2xl"></i></button>
+            </div>
             
-            <div id="tab-novo-cliente" class="max-w-6xl mx-auto animate-fade-in">
-                <div class="flex justify-between items-end mb-6">
-                    <div>
-                        <h2 class="text-3xl font-bold text-white mb-2">Processo de Naturalização</h2>
-                        <p class="text-gray-500 text-sm">Preencha os dados para análise da Lei 13.445.</p>
-                    </div>
+            <div class="p-8 overflow-y-auto">
+                <div id="loaderIA" class="text-center py-10 hidden">
+                    <i class="fa-solid fa-circle-notch fa-spin text-4xl text-wbGold mb-4"></i>
+                    <p class="text-gray-400 animate-pulse">Consultando Portaria 623/2020 e Decreto 9.199...</p>
                 </div>
-
-                <form id="formCliente" onsubmit="enviarDados(event)" class="space-y-6">
-                    <input type="hidden" name="tipo_cadastro" value="cliente">
-                    <input type="hidden" name="servico_interesse" value="Naturalizacao_BR">
-
-                    <div class="bg-wbInput p-6 rounded-xl border border-gray-800">
-                        <h3 class="text-wbGold font-bold text-sm uppercase mb-4 border-b border-gray-800 pb-2"><i class="fa-solid fa-user mr-2"></i>Dados do Estrangeiro</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-                            <div><label class="text-xs text-gray-500">Nome Completo</label><input type="text" name="nome" id="inputNome" class="input-wb" required></div>
-                            <div><label class="text-xs text-gray-500">CPF</label><input type="text" name="cpf" oninput="maskCPF(this)" class="input-wb" required></div>
-                            <div><label class="text-xs text-gray-500">RG / RNE</label><input type="text" name="rg" class="input-wb"></div>
-                            <div><label class="text-xs text-gray-500">Nacionalidade</label><input type="text" name="pais" class="input-wb" required></div>
-                            <div><label class="text-xs text-gray-500">WhatsApp</label><input type="text" name="whatsapp" oninput="maskPhone(this)" class="input-wb"></div>
-                            <div><label class="text-xs text-gray-500">Email</label><input type="email" name="email" class="input-wb"></div>
-                        </div>
+                <div id="conteudoIA" class="space-y-4 text-sm leading-relaxed">
                     </div>
-
-                    <div class="bg-wbInput p-6 rounded-xl border border-gray-800">
-                        <h3 class="text-green-500 font-bold text-sm uppercase mb-4 border-b border-gray-800 pb-2"><i class="fa-solid fa-scale-balanced mr-2"></i>Critérios Legais</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-                            <div><label class="text-xs text-gray-500">Tempo de Residência no Brasil</label>
-                                <select name="tempo_brasil" class="input-wb text-wbGold font-bold">
-                                    <option value="Menos de 1 ano">Menos de 1 ano</option>
-                                    <option value="1 a 2 anos">1 a 2 anos</option>
-                                    <option value="2 a 3 anos">2 a 3 anos</option>
-                                    <option value="3 a 4 anos">3 a 4 anos</option>
-                                    <option value="4 anos ou mais">4 anos ou mais (Regra Geral)</option>
-                                </select>
-                            </div>
-                            <div><label class="text-xs text-gray-500">Tipo de RNE Atual</label>
-                                <select name="rne_tipo" class="input-wb">
-                                    <option value="Provisorio">Provisório / Protocolo</option>
-                                    <option value="Temporario">Temporário (2 anos)</option>
-                                    <option value="Permanente">Permanente (Indeterminado)</option>
-                                    <option value="Indocumentado">Indocumentado</option>
-                                </select>
-                            </div>
-                            <div class="flex flex-col justify-center gap-2">
-                                <label class="text-xs text-gray-500 block">Vínculos Familiares (Reduz prazo)</label>
-                                <div class="flex gap-4">
-                                    <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" name="filho_br" value="Sim" class="accent-wbGold w-4 h-4"> Filho BR</label>
-                                    <label class="flex items-center gap-2 cursor-pointer"><input type="checkbox" name="conjuge_br" value="Sim" class="accent-wbGold w-4 h-4"> Cônjuge BR</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="mt-4">
-                            <label class="text-xs text-gray-500">Observações Extras do Vendedor</label>
-                            <textarea name="obs_vendas" class="input-wb h-16" placeholder="Ex: Cliente tem antecedentes? Tem urgência?"></textarea>
-                        </div>
-                    </div>
-
-                    <div class="bg-gray-900 p-6 rounded-xl border border-green-900/30 shadow-lg">
-                        <div class="flex justify-between items-center mb-4">
-                            <h3 class="text-green-500 font-bold text-sm uppercase"><i class="fa-solid fa-money-bill-wave mr-2"></i>Fechamento Financeiro</h3>
-                            <span class="text-[10px] text-gray-500 uppercase tracking-widest">Apenas Admin Vê Relatórios Completos</span>
-                        </div>
-                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
-                            <div><label class="text-[10px] text-gray-400">VALOR TOTAL</label><input type="text" name="valor_total" oninput="maskMoney(this)" class="input-wb text-green-400 font-bold text-lg" placeholder="R$"></div>
-                            <div><label class="text-[10px] text-gray-400">ENTRADA</label><input type="text" name="valor_entrada" oninput="maskMoney(this)" class="input-wb" placeholder="R$"></div>
-                            <div><label class="text-[10px] text-gray-400">PARCELAS</label><input type="number" name="qtd_parcelas" class="input-wb text-center" placeholder="Qtd"></div>
-                            <div><label class="text-[10px] text-gray-400">VALOR PARC.</label><input type="text" name="valor_parcela" oninput="maskMoney(this)" class="input-wb" placeholder="R$"></div>
-                        </div>
-                    </div>
-
-                    <button type="submit" id="btnSalvarCliente" class="w-full btn-gold py-5 rounded-xl font-bold text-lg shadow-xl hover:shadow-yellow-600/20 transition flex items-center justify-center gap-3">
-                        <span>CADASTRAR E ANALISAR</span> <i class="fa-solid fa-gavel"></i>
-                    </button>
-                </form>
             </div>
-
-            <div id="tab-crm-board" class="max-w-6xl mx-auto mt-10">
-                <h2 class="text-white mb-4 text-xl font-bold border-l-4 border-wbGold pl-3">Meus Processos</h2>
-                <div class="overflow-x-auto rounded border border-gray-800 bg-wbInput">
-                    <table class="crm-table w-full">
-                        <thead>
-                            <tr>
-                                <th class="crm-header">Cliente</th>
-                                <th class="crm-header">Tipo RNE</th>
-                                <th class="crm-header text-center">Família BR</th>
-                                <th class="crm-header text-center">Valor</th>
-                            </tr>
-                        </thead>
-                        <tbody id="crm-body">
-                            <tr class="crm-row border-l-4 border-gray-600">
-                                <td class="crm-cell text-gray-500 italic" colspan="4">Nenhum cadastro recente.</td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
+            
+            <div class="p-4 border-t border-gray-800 bg-gray-900 rounded-b-2xl text-right">
+                <button onclick="fecharModal()" class="bg-gray-700 text-white px-6 py-2 rounded-lg font-bold hover:bg-gray-600">Fechar</button>
             </div>
-
-            <div id="tab-financeiro" class="hidden animate-fade-in text-center mt-20"><h2 class="text-white">Financeiro Geral</h2></div>
-            <div id="tab-equipe" class="hidden text-center mt-20 text-white">Equipe</div>
         </div>
     </div>
 
-    <div id="dashboard-cliente" class="hidden h-full flex flex-col bg-black">
-        <div class="bg-wbGray p-4 border-b border-wbGold/30 flex justify-between items-center"><h1 class="font-bold text-white">Área do Cliente</h1><button onclick="location.reload()" class="text-red-500 text-xs px-3 border border-red-900 rounded">SAIR</button></div>
-        <div class="p-10 text-center text-white"><h2 class="text-2xl">Em análise...</h2></div>
+    <div class="flex h-full">
+        <div class="w-64 bg-wbGray border-r border-gray-800 p-6 hidden md:block">
+            <img src="logo.jpeg" class="w-12 h-12 rounded-full border border-wbGold mb-8">
+            <nav class="space-y-2 text-sm text-gray-400">
+                <div class="p-3 bg-wbInput rounded text-wbGold font-bold border-l-2 border-wbGold">Novo Cadastro</div>
+                <div class="p-3 hover:text-white cursor-pointer">CRM / Clientes</div>
+            </nav>
+        </div>
+
+        <div class="flex-grow p-8 bg-black overflow-y-auto">
+            <h2 class="text-2xl font-bold text-white mb-6">Análise de Naturalização</h2>
+            
+            <form id="formCliente" onsubmit="enviarDados(event)" class="bg-wbInput p-8 rounded-xl border border-gray-800 space-y-6 max-w-4xl">
+                <input type="hidden" name="servico_interesse" value="Naturalizacao_BR">
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                    <div><label class="text-xs text-gray-500">Nome</label><input type="text" name="nome" id="inputNome" class="input-wb" required></div>
+                    <div><label class="text-xs text-gray-500">Nacionalidade</label><input type="text" name="pais" class="input-wb" required></div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                    <div><label class="text-xs text-gray-500">Tempo Brasil</label>
+                        <select name="tempo_brasil" class="input-wb">
+                            <option value="Menos de 1 ano">Menos de 1 ano</option>
+                            <option value="1 a 3 anos">1 a 3 anos</option>
+                            <option value="4 anos ou mais">4 anos ou mais</option>
+                        </select>
+                    </div>
+                    <div><label class="text-xs text-gray-500">RNE</label>
+                        <select name="rne_tipo" class="input-wb">
+                            <option value="Provisorio">Provisório</option>
+                            <option value="Permanente">Permanente</option>
+                            <option value="Indocumentado">Indocumentado</option>
+                        </select>
+                    </div>
+                    <div class="flex flex-col justify-center gap-2 text-sm text-gray-300">
+                        <label><input type="checkbox" name="filho_br" value="Sim" class="accent-wbGold"> Filho BR</label>
+                        <label><input type="checkbox" name="conjuge_br" value="Sim" class="accent-wbGold"> Cônjuge BR</label>
+                    </div>
+                </div>
+
+                <div class="pt-4">
+                    <button type="submit" id="btnSalvar" class="w-full btn-gold py-4 rounded-xl font-bold shadow-lg flex items-center justify-center gap-2">
+                        CADASTRAR E CONSULTAR IA <i class="fa-solid fa-magnifying-glass"></i>
+                    </button>
+                </div>
+            </form>
+
+            <div class="mt-10">
+                <h3 class="text-white font-bold mb-4 border-l-4 border-wbGold pl-3">Últimos Cadastros</h3>
+                <table class="w-full text-left text-sm text-gray-400">
+                    <thead class="bg-gray-900 text-xs uppercase"><tr><th class="p-3">Cliente</th><th class="p-3">Status</th><th class="p-3 text-right">Ação</th></tr></thead>
+                    <tbody id="crm-body">
+                        </tbody>
+                </table>
+            </div>
+        </div>
     </div>
 
     <script>
         const WEBHOOK_URL = "https://hook.us2.make.com/91fgciu87cnwl72ftfohkycnhyeylv8q";
 
-        function maskCPF(i) { i.value = i.value.replace(/\D/g,"").replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d{1,2})$/,"$1-$2"); }
-        function maskPhone(i) { i.value = i.value.replace(/\D/g,"").replace(/^(\d{2})(\d)/,"($1) $2").replace(/(\d)(\d{4})$/,"$1-$2"); }
-        function maskMoney(i) { let v = i.value.replace(/\D/g,""); v = (v/100).toFixed(2) + ""; i.value = "R$ " + v.replace(".", ",").replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1."); }
-
-        function fazerLogin(e) {
+        async function enviarDados(e) {
             e.preventDefault();
-            const u = document.getElementById('loginUser').value.toLowerCase();
-            document.getElementById('login-screen').classList.add('hidden');
-            if(u === 'cliente') document.getElementById('dashboard-cliente').classList.remove('hidden');
-            else {
-                document.getElementById('dashboard-colaborador').classList.remove('hidden');
-                if(u === 'vendas') document.querySelectorAll('.role-diretor').forEach(el => el.classList.add('hidden-role'));
+            const btn = document.getElementById('btnSalvar');
+            const originalText = btn.innerHTML;
+            
+            // 1. Prepara UI
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Analisando Leis...';
+            btn.disabled = true;
+            abrirModal(true); // Abre modal carregando
+
+            try {
+                // 2. Envia para Make e AGUARDA resposta (await)
+                const formData = new FormData(document.getElementById('formCliente'));
+                const response = await fetch(WEBHOOK_URL, { method: 'POST', body: formData });
+                const textoIA = await response.text(); // Pega o texto que o Make devolveu
+
+                // 3. Mostra o Parecer no Modal
+                mostrarResultadoModal(textoIA);
+
+                // 4. Adiciona na Tabela CRM com botão para ver de novo
+                adicionarNaTabela(formData.get('nome'), textoIA);
+
+            } catch (err) {
+                document.getElementById('conteudoIA').innerHTML = `<p class="text-red-500">Erro na conexão: ${err.message}</p>`;
+            } finally {
+                btn.innerHTML = originalText;
+                btn.disabled = false;
+                document.getElementById('formCliente').reset();
             }
         }
 
-        function showTab(t) {
-            document.querySelectorAll('[id^="tab-"]').forEach(el => el.classList.add('hidden'));
-            document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
-            document.getElementById('tab-'+t).classList.remove('hidden');
-            document.getElementById('btn-'+t).classList.add('active');
+        function abrirModal(loading = false) {
+            document.getElementById('modalAnalise').classList.remove('hidden');
+            if(loading) {
+                document.getElementById('loaderIA').classList.remove('hidden');
+                document.getElementById('conteudoIA').classList.add('hidden');
+            }
         }
 
-        async function enviarDados(e) {
-            e.preventDefault();
-            const btn = document.getElementById('btnSalvarCliente');
-            btn.innerHTML = 'Enviando...'; btn.disabled = true;
+        function mostrarResultadoModal(texto) {
+            document.getElementById('loaderIA').classList.add('hidden');
+            const content = document.getElementById('conteudoIA');
+            content.classList.remove('hidden');
+            
+            // Formatação bonita do texto
+            content.innerHTML = texto
+                .replace(/\n/g, '<br>')
+                .replace(/STATUS:/g, '<strong class="text-wbGold text-lg">STATUS:</strong>')
+                .replace(/ELEGÍVEL/g, '<span class="text-green-500 font-bold">ELEGÍVEL</span>')
+                .replace(/NÃO ELEGÍVEL/g, '<span class="text-red-500 font-bold">NÃO ELEGÍVEL</span>');
+        }
 
-            const nome = document.getElementById('inputNome').value;
-            const valor = document.getElementsByName('valor_total')[0].value;
-            const rne = document.getElementsByName('rne_tipo')[0].value;
+        function adicionarNaTabela(nome, analiseGuardada) {
+            const tbody = document.getElementById('crm-body');
+            const idUnico = Date.now(); // ID para recuperar o texto depois
+            
+            // Salva o texto num atributo escondido (data-analise)
+            const novaLinha = `
+                <tr class="border-b border-gray-800 hover:bg-gray-900 transition">
+                    <td class="p-4 font-bold text-white">${nome}</td>
+                    <td class="p-4"><span class="bg-blue-900 text-blue-300 px-2 py-1 rounded text-xs">Novo</span></td>
+                    <td class="p-4 text-right">
+                        <button onclick="verAnaliseDeNovo(this)" data-analise="${encodeURIComponent(analiseGuardada)}" class="text-wbGold hover:text-white font-bold text-xs border border-wbGold px-3 py-1 rounded">
+                            <i class="fa-solid fa-eye mr-1"></i> VER PARECER
+                        </button>
+                    </td>
+                </tr>
+            `;
+            tbody.innerHTML = novaLinha + tbody.innerHTML;
+        }
 
-            try {
-                await fetch(WEBHOOK_URL, { method: 'POST', body: new FormData(document.getElementById('formCliente')) });
-                alert("✅ Naturalização enviada para Análise!");
-                
-                const tbody = document.getElementById('crm-body');
-                if(tbody.innerHTML.includes("Nenhum")) tbody.innerHTML = "";
-                const novaLinha = `
-                    <tr class="crm-row border-l-4 border-mondayGreen animate-fade-in">
-                        <td class="crm-cell"><div class="font-bold text-white">${nome}</div></td>
-                        <td class="crm-cell text-gray-400">${rne}</td>
-                        <td class="crm-cell text-center text-gray-400">-</td>
-                        <td class="crm-cell text-center text-green-400 font-bold">${valor}</td>
-                    </tr>`;
-                tbody.innerHTML = novaLinha + tbody.innerHTML;
-                document.getElementById('formCliente').reset();
-            } catch (err) { alert("Erro de conexão"); } 
-            finally { btn.innerHTML = 'CADASTRAR E ANALISAR'; btn.disabled = false; }
+        function verAnaliseDeNovo(btn) {
+            const texto = decodeURIComponent(btn.getAttribute('data-analise'));
+            abrirModal(false);
+            mostrarResultadoModal(texto);
+        }
+
+        function fecharModal() {
+            document.getElementById('modalAnalise').classList.add('hidden');
         }
     </script>
 </body>
