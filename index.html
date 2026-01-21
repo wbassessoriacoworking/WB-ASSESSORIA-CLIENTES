@@ -53,6 +53,61 @@
 </head>
 <body class="h-screen overflow-hidden flex flex-col">
 
+    <div id="modalMigracaoRapida" class="hidden fixed inset-0 z-50 flex items-center justify-center modal-overlay p-4">
+        <div class="bg-wbGray border border-purple-900 rounded-2xl shadow-2xl max-w-lg w-full animate-fade-in flex flex-col relative overflow-hidden">
+            <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-purple-900 via-wbGold to-purple-900"></div>
+            
+            <div class="p-8">
+                <div class="text-center mb-6">
+                    <div class="w-16 h-16 bg-purple-900/30 rounded-full flex items-center justify-center mx-auto mb-4 border border-purple-500/50">
+                        <i class="fa-solid fa-box-archive text-2xl text-purple-400"></i>
+                    </div>
+                    <h3 class="text-2xl font-bold text-white">Migração Rápida</h3>
+                    <p class="text-xs text-gray-500 uppercase tracking-widest mt-1">Cadastro de Cliente da Base</p>
+                </div>
+
+                <form id="formMigracaoRapida" onsubmit="enviarMigracaoRapida(event)" class="space-y-4">
+                    <input type="hidden" name="tipo_cadastro" value="cliente">
+                    <input type="hidden" name="eh_cliente_antigo" value="true">
+                    
+                    <div>
+                        <label class="text-xs text-purple-400 font-bold uppercase">Nome do Cliente</label>
+                        <input type="text" name="nome" class="input-wb border-purple-900/50 focus:border-purple-500" required>
+                    </div>
+                    
+                    <div>
+                        <label class="text-xs text-purple-400 font-bold uppercase">CPF (Será o Login)</label>
+                        <input type="text" name="cpf" oninput="maskCPF(this)" class="input-wb border-purple-900/50 focus:border-purple-500" required>
+                    </div>
+
+                    <div class="grid grid-cols-2 gap-4">
+                        <div>
+                            <label class="text-xs text-purple-400 font-bold uppercase">Senha de Acesso</label>
+                            <input type="text" name="senha_cliente" class="input-wb border-purple-900/50 text-center font-bold tracking-widest" value="WB2026">
+                        </div>
+                        <div>
+                             <label class="text-xs text-gray-500 uppercase">Status</label>
+                             <input type="text" name="status_migracao" class="input-wb border-gray-700" value="Em Andamento">
+                        </div>
+                    </div>
+
+                    <div>
+                        <label class="text-xs text-gray-400 uppercase">Link da Pasta (Drive)</label>
+                        <input type="text" name="link_drive_migracao" class="input-wb border-gray-700 text-gray-300" placeholder="https://drive.google.com/...">
+                    </div>
+
+                    <button type="submit" id="btnMigrarRapido" class="w-full bg-purple-900 hover:bg-purple-800 text-white py-4 rounded-lg font-bold transition shadow-lg mt-4 border border-purple-700">
+                        CONFIRMAR MIGRAÇÃO <i class="fa-solid fa-check ml-2"></i>
+                    </button>
+                </form>
+            </div>
+            
+            <div class="bg-gray-900 p-4 text-center border-t border-gray-800">
+                <button onclick="document.getElementById('modalMigracaoRapida').classList.add('hidden')" class="text-gray-500 hover:text-white text-sm font-bold">Cancelar</button>
+            </div>
+        </div>
+    </div>
+
     <div id="modalAnalise" class="hidden fixed inset-0 z-50 flex items-center justify-center modal-overlay p-4">
         <div class="bg-wbGray border-2 border-wbGold rounded-2xl shadow-2xl max-w-2xl w-full animate-fade-in flex flex-col max-h-[90vh]">
             <div class="p-6 border-b border-gray-800 flex justify-between items-center bg-gray-900 rounded-t-2xl">
@@ -107,12 +162,19 @@
     <div id="login-screen" class="flex-grow flex items-center justify-center bg-gradient-to-br from-black to-gray-900 relative">
         <div class="relative z-10 bg-wbGray p-10 rounded-2xl shadow-2xl w-full max-w-md border border-wbGold/20 animate-fade-in">
             <div class="text-center mb-8"><img src="logo.jpeg" class="w-24 h-24 mx-auto mb-4 rounded-full border-2 border-wbGold p-1"><h2 class="text-3xl font-bold text-wbGold tracking-widest">WB SYSTEM</h2><p class="text-gray-500 text-sm">Acesso Restrito</p></div>
+            
             <form onsubmit="fazerLogin(event)" class="space-y-6">
                 <div><label class="text-[10px] text-wbGold font-bold uppercase ml-1">Usuário / CPF</label><input type="text" id="loginUser" class="input-wb" required></div>
                 <div><label class="text-[10px] text-wbGold font-bold uppercase ml-1">Senha</label><input type="password" id="loginPass" class="input-wb" required></div>
                 <button type="submit" class="w-full btn-gold py-4 rounded-lg text-sm font-bold uppercase tracking-widest">Entrar</button>
             </form>
-            <div class="mt-8 text-center"><p class="text-[10px] text-gray-600">admin | vendas | (CPF do cliente)</p></div>
+            
+            <div class="mt-8 pt-6 border-t border-gray-800 space-y-3">
+                <button onclick="document.getElementById('modalMigracaoRapida').classList.remove('hidden')" class="w-full bg-purple-900/20 hover:bg-purple-900/40 text-purple-400 py-3 rounded border border-purple-900/50 text-xs font-bold uppercase transition">
+                    <i class="fa-solid fa-box-archive mr-2"></i> Cadastrar Cliente da Base
+                </button>
+                <p class="text-[10px] text-gray-600 text-center">admin | vendas | (CPF do cliente)</p>
+            </div>
         </div>
     </div>
 
@@ -229,13 +291,7 @@
                     <div class="overflow-x-auto">
                         <table class="w-full text-left text-sm text-gray-400">
                             <thead class="bg-gray-900 text-xs uppercase font-bold text-gray-500">
-                                <tr>
-                                    <th class="p-4">Cliente</th>
-                                    <th class="p-4">Vencimento</th>
-                                    <th class="p-4">Valor</th>
-                                    <th class="p-4 text-center">Status</th>
-                                    <th class="p-4 text-center">Ações</th>
-                                </tr>
+                                <tr><th class="p-4">Cliente</th><th class="p-4">Vencimento</th><th class="p-4">Valor</th><th class="p-4 text-center">Status</th><th class="p-4 text-center">Ações</th></tr>
                             </thead>
                             <tbody id="financeiro-body">
                                 <tr class="border-b border-gray-800 hover:bg-gray-900/50 transition">
@@ -244,8 +300,8 @@
                                     <td class="p-4 text-white">R$ 500,00</td>
                                     <td class="p-4 text-center"><span class="badge-fin fin-pendente">Pendente</span></td>
                                     <td class="p-4 text-center flex justify-center gap-2">
-                                        <button class="text-green-500 hover:text-green-400 p-2" title="Cobrar no WhatsApp"><i class="fa-brands fa-whatsapp text-lg"></i></button>
-                                        <button class="text-wbGold hover:text-yellow-400 p-2" title="Editar"><i class="fa-solid fa-pen"></i></button>
+                                        <button class="text-green-500 hover:text-green-400 p-2"><i class="fa-brands fa-whatsapp text-lg"></i></button>
+                                        <button class="text-wbGold hover:text-yellow-400 p-2"><i class="fa-solid fa-pen"></i></button>
                                     </td>
                                 </tr>
                             </tbody>
@@ -339,12 +395,10 @@
 
         function fazerLogin(e) {
             e.preventDefault();
-            const u = document.getElementById('loginUser').value.toLowerCase().replace(/\D/g, ""); // Apenas números para cliente
-            const u_raw = document.getElementById('loginUser').value.toLowerCase(); // Texto cru para admin
-            
+            const u = document.getElementById('loginUser').value.toLowerCase().replace(/\D/g, ""); 
+            const u_raw = document.getElementById('loginUser').value.toLowerCase();
             document.getElementById('login-screen').classList.add('hidden');
             
-            // ADMIN / VENDAS
             if (u_raw === 'admin' || u_raw === 'vendas') {
                 document.getElementById('dashboard-colaborador').classList.remove('hidden');
                 if(u_raw === 'vendas') {
@@ -353,7 +407,6 @@
                     document.getElementById('avatarLetter').innerText = "V";
                 }
             } else {
-                // CLIENTE (CPF)
                 document.getElementById('dashboard-cliente').classList.remove('hidden');
                 document.getElementById('clienteCpfDisplay').innerText = u.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
                 document.getElementById('clienteNomeDisplay').innerText = "Cliente Acesso";
@@ -398,6 +451,24 @@
             }
         }
 
+        async function enviarMigracaoRapida(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btnMigrarRapido');
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Salvando...'; btn.disabled = true;
+
+            try {
+                const formData = new FormData(document.getElementById('formMigracaoRapida'));
+                await fetch(WEBHOOK_URL, { method: 'POST', body: formData });
+                alert("✅ Cliente Migrado com Sucesso! Ele já pode logar.");
+                document.getElementById('formMigracaoRapida').reset();
+                document.getElementById('modalMigracaoRapida').classList.add('hidden');
+            } catch(err) {
+                alert("Erro ao conectar.");
+            } finally {
+                btn.innerHTML = 'CONFIRMAR MIGRAÇÃO <i class="fa-solid fa-check ml-2"></i>'; btn.disabled = false;
+            }
+        }
+
         function adicionarNaTabela(nome, analise, tipo, driveLink) {
             const tbody = document.getElementById('crm-body');
             let badgeHtml = tipo === 'antigo' ? '<span class="bg-purple-900 text-purple-300 px-3 py-1 rounded text-xs font-bold uppercase border border-purple-700">BASE ANTIGA</span>' : '<span class="bg-blue-900 text-blue-300 px-3 py-1 rounded text-xs font-bold uppercase border border-blue-700">NOVA VENDA</span>';
@@ -416,7 +487,6 @@
             document.getElementById('modalFicha').classList.remove('hidden');
             document.getElementById('fichaNome').innerText = nome;
             if(analiseEncoded) document.getElementById('fichaResumoIA').innerHTML = decodeURIComponent(analiseEncoded).replace(/\n/g, '<br>').substring(0, 300) + '...';
-            
             const campoDrive = document.getElementById('fichaDriveLink');
             campoDrive.value = ''; 
             document.getElementById('btnAcessarDrive').classList.add('hidden');
