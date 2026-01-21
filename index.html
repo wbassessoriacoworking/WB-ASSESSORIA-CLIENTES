@@ -3,23 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WB System - Versão Final Pro</title>
+    <title>WB System - Oficial</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    colors: { 
-                        wbGold: '#d4af37', 
-                        wbDark: '#050505', 
-                        wbGray: '#121212', 
-                        wbInput: '#1a1a1a',
-                        mondayGreen: '#00c875',
-                        mondayBlue: '#0086c0',
-                        mondayRed: '#e2445c',
-                        mondayPurple: '#a25ddc'
-                    },
+                    colors: { wbGold: '#d4af37', wbDark: '#050505', wbGray: '#121212', wbInput: '#1a1a1a', mondayGreen: '#00c875', mondayBlue: '#0086c0', mondayRed: '#e2445c', mondayPurple: '#a25ddc' },
                     animation: { 'fade-in': 'fadeIn 0.5s ease-out', 'pulse-slow': 'pulse 3s infinite' },
                     keyframes: { fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } } }
                 }
@@ -39,10 +30,6 @@
         .toggle-container { display: flex; background: #0a0a0a; border-radius: 8px; padding: 4px; border: 1px solid #333; margin-bottom: 20px; }
         .toggle-option { flex: 1; text-align: center; padding: 10px; cursor: pointer; border-radius: 6px; font-size: 13px; font-weight: bold; color: #666; transition: 0.3s; }
         .toggle-option.selected { background: #d4af37; color: black; box-shadow: 0 2px 10px rgba(212, 175, 55, 0.2); }
-        .badge-fin { padding: 4px 10px; border-radius: 4px; font-size: 11px; font-weight: bold; text-transform: uppercase; }
-        .fin-pago { background: rgba(0, 200, 117, 0.2); color: #00c875; border: 1px solid #00c875; }
-        .fin-pendente { background: rgba(253, 171, 61, 0.2); color: #fdab3d; border: 1px solid #fdab3d; }
-        .fin-atrasado { background: rgba(226, 68, 92, 0.2); color: #e2445c; border: 1px solid #e2445c; }
         .btn-whatsapp-float { position: fixed; bottom: 30px; right: 30px; background-color: #25D366; color: white; padding: 15px 25px; border-radius: 50px; font-weight: bold; font-size: 16px; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4); display: flex; align-items: center; gap: 10px; z-index: 9999; transition: transform 0.3s; text-decoration: none; }
         .btn-whatsapp-float:hover { transform: scale(1.05); background-color: #1ebc57; }
     </style>
@@ -56,7 +43,7 @@
                 <button onclick="document.getElementById('modalMigracaoRapida').classList.add('hidden')" class="absolute top-4 right-4 text-gray-500 hover:text-white transition"><i class="fa-solid fa-xmark text-2xl"></i></button>
                 <div class="text-center mb-6"><div class="w-16 h-16 bg-purple-900/30 rounded-full flex items-center justify-center mx-auto mb-4 border border-purple-500/50"><i class="fa-solid fa-box-archive text-2xl text-purple-400"></i></div><h3 class="text-2xl font-bold text-white">Migração Rápida</h3><p class="text-xs text-gray-500 uppercase tracking-widest mt-1">Cadastro de Cliente da Base</p></div>
                 <form id="formMigracaoRapida" onsubmit="enviarMigracaoRapida(event)" class="space-y-4">
-                    <input type="hidden" name="tipo_cadastro" value="cliente"><input type="hidden" name="eh_cliente_antigo" value="true">
+                    <input type="hidden" name="tipo_acao" value="cadastro"> <input type="hidden" name="tipo_cadastro" value="cliente"><input type="hidden" name="eh_cliente_antigo" value="true">
                     <div><label class="text-xs text-purple-400 font-bold uppercase">Nome</label><input type="text" name="nome" class="input-wb border-purple-900/50" required></div>
                     <div><label class="text-xs text-purple-400 font-bold uppercase">CPF (Login)</label><input type="text" name="cpf" oninput="maskCPF(this)" class="input-wb border-purple-900/50" required></div>
                     <div class="grid grid-cols-2 gap-4"><div><label class="text-xs text-purple-400 font-bold uppercase">Senha</label><input type="text" name="senha_cliente" class="input-wb border-purple-900/50 text-center font-bold tracking-widest" value="WB2026"></div><div><label class="text-xs text-gray-500 uppercase">Status</label><input type="text" name="status_migracao" class="input-wb border-gray-700" value="Novo Cliente"></div></div>
@@ -68,74 +55,13 @@
         </div>
     </div>
 
-    <div id="modalFicha" class="hidden fixed inset-0 z-50 flex items-center justify-center modal-overlay p-4">
-        <div class="bg-wbGray border border-gray-700 rounded-2xl shadow-2xl max-w-5xl w-full h-[90vh] animate-fade-in flex flex-col">
-            <div class="p-6 border-b border-gray-800 flex justify-between items-center bg-gray-900 rounded-t-2xl">
-                <div><h3 class="text-2xl font-bold text-white" id="fichaNome">Cliente</h3><p class="text-xs text-wbGold uppercase tracking-widest">Gestão de Processo (Admin)</p></div>
-                <button onclick="fecharModal('modalFicha')" class="text-gray-500 hover:text-white bg-gray-800 p-2 rounded-full w-10 h-10 flex items-center justify-center transition hover:bg-red-600"><i class="fa-solid fa-xmark text-lg"></i></button>
-            </div>
-            <div class="flex border-b border-gray-800 bg-black/20 px-6 overflow-x-auto">
-                <button onclick="mudarAbaFicha('geral')" id="tab-btn-geral" class="text-sm font-bold p-4 text-wbGold border-b-2 border-wbGold whitespace-nowrap">Geral & Drive</button>
-                <button onclick="mudarAbaFicha('processo')" id="tab-btn-processo" class="text-sm font-bold p-4 text-gray-500 hover:text-white whitespace-nowrap">Andamento & Curso</button>
-                <button onclick="mudarAbaFicha('checklist')" id="tab-btn-checklist" class="text-sm font-bold p-4 text-gray-500 hover:text-white whitespace-nowrap">Checklist DOCS</button>
-            </div>
-            <div class="flex-grow overflow-y-auto p-8 space-y-8">
-                <div id="ficha-aba-geral">
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                        <div class="bg-wbInput p-5 rounded-xl border border-gray-800">
-                            <h4 class="text-wbGold font-bold mb-4"><i class="fa-brands fa-google-drive mr-2"></i>Link da Pasta (Drive)</h4>
-                            <div class="flex gap-2"><input type="text" id="fichaDriveLink" class="input-wb text-sm" placeholder="Cole o link do Drive..."><button onclick="salvarFicha()" class="bg-blue-900 text-white px-4 rounded hover:bg-blue-800"><i class="fa-solid fa-save"></i></button></div>
-                            <div class="mt-6 pt-6 border-t border-gray-700">
-                                <h4 class="text-white font-bold mb-2">Ações Rápidas</h4>
-                                <button onclick="alert('Funcionalidade Futura: Conecte o Make para gerar PDF automático.')" class="w-full bg-gray-800 hover:bg-gray-700 text-white py-2 rounded border border-gray-600 flex items-center justify-center gap-2"><i class="fa-solid fa-file-pdf text-red-500"></i> Gerar Minuta de Contrato</button>
-                            </div>
-                        </div>
-                        <div class="bg-wbInput p-5 rounded-xl border border-gray-800">
-                            <h4 class="text-wbGold font-bold mb-4"><i class="fa-solid fa-money-check-dollar mr-2"></i>Status Financeiro</h4>
-                             <select class="input-wb text-sm"><option value="em_dia">✅ Em Dia</option><option value="pendente">⚠️ Pendente</option><option value="atrasado">❌ Atrasado</option></select>
-                        </div>
-                    </div>
-                </div>
-                <div id="ficha-aba-processo" class="hidden space-y-6">
-                    <div class="bg-wbInput p-6 rounded-xl border border-gray-800">
-                        <h4 class="text-green-500 font-bold mb-4"><i class="fa-solid fa-gavel mr-2"></i>Status (GOV.BR)</h4>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-                            <div><label class="text-[10px] text-gray-500 uppercase">Fase Atual</label><select id="fichaStatusProcesso" class="input-wb text-sm font-bold text-wbGold"><option value="Novo Cliente">Novo Cliente</option><option value="Montando Documentações">Montando Documentações</option><option value="Processo Sendo Montado">Processo Sendo Montado</option><option value="Ainda Não Protocolado">Ainda Não Protocolado</option><option value="Processo Protocolado">Processo Protocolado (GOV.BR)</option><option value="Deferido">DEFERIDO (Aprovado)</option><option value="Indeferido">Indeferido (Negado)</option></select></div>
-                            <div><label class="text-[10px] text-gray-500 uppercase">Número do Processo</label><input type="text" id="fichaNumProcesso" class="input-wb text-sm" placeholder="Ex: 08018.000..."></div>
-                            <div><label class="text-[10px] text-gray-500 uppercase">Link do Print (Imagem)</label><input type="text" id="fichaLinkPrint" class="input-wb text-sm" placeholder="URL da imagem..."></div>
-                        </div>
-                    </div>
-                    <div class="bg-gray-900 border border-purple-900/50 p-6 rounded-xl">
-                        <h4 class="text-purple-400 font-bold mb-4"><i class="fa-solid fa-graduation-cap mr-2"></i>Curso de Língua Portuguesa</h4>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-5"><div><label class="text-[10px] text-gray-500 uppercase">Link</label><input type="text" id="fichaCursoLink" class="input-wb text-sm"></div><div><label class="text-[10px] text-gray-500 uppercase">Login</label><input type="text" id="fichaCursoLogin" class="input-wb text-sm"></div><div><label class="text-[10px] text-gray-500 uppercase">Senha</label><input type="text" id="fichaCursoSenha" class="input-wb text-sm"></div></div>
-                    </div>
-                </div>
-                <div id="ficha-aba-checklist" class="hidden">
-                    <div class="bg-wbInput p-6 rounded-xl border border-gray-800">
-                        <h4 class="text-wbGold font-bold mb-4">Documentação Obrigatória (Admin Check)</h4>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-2" id="checklist-container-admin"></div>
-                    </div>
-                </div>
-            </div>
-            <div class="p-4 border-t border-gray-800 bg-gray-900 rounded-b-2xl flex justify-between items-center"><span class="text-xs text-gray-500">Alterações salvas.</span><div class="flex gap-2"><button onclick="fecharModal('modalFicha')" class="bg-gray-700 text-white px-6 py-3 rounded-lg font-bold hover:bg-gray-600">Fechar</button><button onclick="salvarFicha()" class="bg-wbGold text-black px-6 py-3 rounded-lg font-bold hover:bg-yellow-500">Salvar Alterações</button></div></div>
-        </div>
-    </div>
-
-    <div id="modalAnalise" class="hidden fixed inset-0 z-50 flex items-center justify-center modal-overlay p-4">
-        <div class="bg-wbGray border-2 border-wbGold rounded-2xl shadow-2xl max-w-2xl w-full animate-fade-in flex flex-col max-h-[90vh]">
-            <div class="p-6 border-b border-gray-800 flex justify-between items-center bg-gray-900 rounded-t-2xl"><div class="flex items-center gap-3"><div class="w-10 h-10 bg-wbGold rounded-full flex items-center justify-center"><i class="fa-solid fa-robot text-black text-lg"></i></div><div><h3 class="text-xl font-bold text-white">Parecer Jurídico (IA)</h3></div></div><button onclick="fecharModal('modalAnalise')" class="text-gray-500 hover:text-white"><i class="fa-solid fa-xmark text-2xl"></i></button></div>
-            <div class="p-8 overflow-y-auto"><div id="loaderIA" class="text-center py-10 hidden"><i class="fa-solid fa-circle-notch fa-spin text-4xl text-wbGold mb-4"></i><p class="text-gray-400 animate-pulse">Consultando Lei 13.445...</p></div><div id="conteudoIA" class="space-y-4 text-sm leading-relaxed text-gray-300"></div></div>
-            <div class="p-4 border-t border-gray-800 bg-gray-900 rounded-b-2xl text-right"><button onclick="fecharModal('modalAnalise')" class="bg-gray-700 text-white px-6 py-2 rounded-lg font-bold">Fechar</button></div>
-        </div>
-    </div>
-
     <div id="login-screen" class="flex-grow flex items-center justify-center bg-gradient-to-br from-black to-gray-900 relative">
         <div class="relative z-10 bg-wbGray p-10 rounded-2xl shadow-2xl w-full max-w-md border border-wbGold/20 animate-fade-in">
             <div class="text-center mb-8"><img src="logo.jpeg" class="w-24 h-24 mx-auto mb-4 rounded-full border-2 border-wbGold p-1"><h2 class="text-3xl font-bold text-wbGold tracking-widest">WB SYSTEM</h2><p class="text-gray-500 text-sm">Acesso Restrito</p></div>
             <form onsubmit="fazerLogin(event)" class="space-y-6">
                 <div><label class="text-[10px] text-wbGold font-bold uppercase ml-1">Usuário / CPF</label><input type="text" id="loginUser" class="input-wb" required></div>
                 <div><label class="text-[10px] text-wbGold font-bold uppercase ml-1">Senha</label><input type="password" id="loginPass" class="input-wb" required></div>
-                <button type="submit" class="w-full btn-gold py-4 rounded-lg text-sm font-bold uppercase tracking-widest">Entrar</button>
+                <button type="submit" id="btnLogin" class="w-full btn-gold py-4 rounded-lg text-sm font-bold uppercase tracking-widest">Entrar</button>
             </form>
             <div class="mt-8 pt-6 border-t border-gray-800 space-y-3">
                 <button onclick="document.getElementById('modalMigracaoRapida').classList.remove('hidden')" class="w-full bg-purple-900/20 hover:bg-purple-900/40 text-purple-400 py-3 rounded border border-purple-900/50 text-xs font-bold uppercase transition"><i class="fa-solid fa-box-archive mr-2"></i> Cadastrar Cliente da Base</button>
@@ -162,7 +88,7 @@
                 <h2 class="text-3xl font-bold text-white mb-6">Registro de Processo</h2>
                 <div class="toggle-container max-w-md"><div id="opt-novo" class="toggle-option selected" onclick="mudarModo('novo')"><i class="fa-solid fa-star mr-2"></i>NOVA VENDA</div><div id="opt-antigo" class="toggle-option" onclick="mudarModo('antigo')"><i class="fa-solid fa-box-archive mr-2"></i>MIGRAR CLIENTE ANTIGO</div></div>
                 <form id="formCliente" onsubmit="enviarDados(event)" class="space-y-6">
-                    <input type="hidden" name="tipo_cadastro" value="cliente"><input type="hidden" name="servico_interesse" value="Naturalizacao_BR"><input type="hidden" name="eh_cliente_antigo" id="inputEhAntigo" value="false">
+                    <input type="hidden" name="tipo_acao" value="cadastro"> <input type="hidden" name="tipo_cadastro" value="cliente"><input type="hidden" name="servico_interesse" value="Naturalizacao_BR"><input type="hidden" name="eh_cliente_antigo" id="inputEhAntigo" value="false">
                     <div id="bloco-migracao" class="bg-gray-900 border border-purple-900/50 p-6 rounded-xl hidden animate-fade-in"><h3 class="text-mondayPurple font-bold text-sm uppercase mb-4"><i class="fa-solid fa-database mr-2"></i>Dados de Migração</h3><div class="grid grid-cols-1 md:grid-cols-2 gap-5"><div><label class="text-xs text-gray-400">Link Drive</label><input type="text" name="link_drive_migracao" id="inputDriveMigracao" class="input-wb border-purple-900 text-purple-200"></div><div><label class="text-xs text-gray-400">Status Atual</label><input type="text" name="status_migracao" class="input-wb border-purple-900"></div></div></div>
                     <div class="bg-wbInput p-6 rounded-xl border border-gray-800">
                         <h3 class="text-wbGold font-bold text-sm uppercase mb-4">Dados Pessoais</h3>
@@ -170,12 +96,7 @@
                         <div class="bg-gray-800 p-4 rounded border border-gray-600 mb-4 flex items-end gap-3"><div class="flex-grow"><label class="text-xs text-wbGold font-bold uppercase">Senha de Acesso</label><input type="text" name="senha_cliente" id="inputSenhaCliente" class="input-wb text-center font-bold tracking-widest text-lg" value="WB2026"></div><button type="button" onclick="document.getElementById('inputSenhaCliente').value = Math.random().toString(36).slice(-8).toUpperCase()" class="bg-gray-700 text-white px-3 py-3 rounded"><i class="fa-solid fa-shuffle"></i> Gerar</button></div>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-5"><div><label class="text-xs text-gray-500">Nacionalidade</label><input type="text" name="pais" class="input-wb" required></div><div><label class="text-xs text-gray-500">WhatsApp</label><input type="text" name="whatsapp" oninput="maskPhone(this)" class="input-wb"></div><div><label class="text-xs text-gray-500">Email</label><input type="email" name="email" class="input-wb"></div></div>
                     </div>
-                    <div class="bg-black/30 p-4 rounded border border-gray-700">
-                        <label class="flex items-center gap-3 cursor-pointer">
-                            <input type="checkbox" required class="w-5 h-5 accent-wbGold rounded bg-gray-700 border-gray-600">
-                            <span class="text-xs text-gray-400">Declaro que o cliente está ciente e concorda com o processamento de dados conforme a <strong>LGPD (Lei 13.709/2018)</strong> para fins de processo migratório.</span>
-                        </label>
-                    </div>
+                    <div class="bg-black/30 p-4 rounded border border-gray-700"><label class="flex items-center gap-3 cursor-pointer"><input type="checkbox" required class="w-5 h-5 accent-wbGold rounded bg-gray-700 border-gray-600"><span class="text-xs text-gray-400">Declaro que o cliente está ciente e concorda com o processamento de dados conforme a <strong>LGPD</strong>.</span></label></div>
                     <div class="bg-wbInput p-6 rounded-xl border border-gray-800">
                         <h3 class="text-green-500 font-bold text-sm uppercase mb-4">Critérios Legais</h3>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-5"><div><label class="text-xs text-gray-500">Tempo Brasil</label><select name="tempo_brasil" class="input-wb text-wbGold font-bold"><option value="4 anos ou mais">4 anos ou mais</option><option value="1 a 3 anos">1 a 3 anos</option><option value="Menos de 1 ano">Menos de 1 ano</option></select></div><div><label class="text-xs text-gray-500">RNE</label><select name="rne_tipo" class="input-wb"><option value="Permanente">Permanente</option><option value="Provisorio">Provisório</option><option value="Temporario">Temporário</option></select></div><div class="flex gap-4 pt-6"><label class="text-sm text-gray-300 flex items-center gap-2"><input type="checkbox" name="filho_br" value="Sim" class="accent-wbGold"> Filho BR</label><label class="text-sm text-gray-300 flex items-center gap-2"><input type="checkbox" name="conjuge_br" value="Sim" class="accent-wbGold"> Cônjuge BR</label></div></div>
@@ -193,18 +114,15 @@
     <div id="dashboard-cliente" class="hidden h-full flex flex-col bg-black relative">
         <div class="bg-wbGray p-6 border-b border-wbGold/30 flex justify-between items-center shadow-lg z-10 sticky top-0">
             <div class="flex items-center gap-4"><img src="logo.jpeg" class="w-12 h-12 rounded-full border border-wbGold"><div><h1 class="font-bold text-white text-xl">WB ASSESSORIA</h1><p class="text-xs text-wbGold">Área do Cliente</p></div></div>
-            <div class="flex items-center gap-4">
-                <div class="text-right hidden md:block"><p class="text-white font-bold text-sm" id="clienteNomeDisplay">Cliente</p><p class="text-xs text-gray-500">CPF: <span id="clienteCpfDisplay">...</span></p></div>
-                <button onclick="location.reload()" class="bg-red-900/30 hover:bg-red-600 text-red-500 hover:text-white px-4 py-2 rounded text-xs font-bold border border-red-900/50 transition flex items-center gap-2">SAIR <i class="fa-solid fa-right-from-bracket"></i></button>
-            </div>
+            <div class="flex items-center gap-4"><div class="text-right hidden md:block"><p class="text-white font-bold text-sm" id="clienteNomeDisplay">Cliente</p><p class="text-xs text-gray-500">CPF: <span id="clienteCpfDisplay">...</span></p></div><button onclick="location.reload()" class="bg-red-900/30 hover:bg-red-600 text-red-500 hover:text-white px-4 py-2 rounded text-xs font-bold border border-red-900/50 transition flex items-center gap-2">SAIR <i class="fa-solid fa-right-from-bracket"></i></button></div>
         </div>
         <div class="flex-grow overflow-y-auto p-6 md:p-10 max-w-7xl mx-auto w-full space-y-8">
             <div class="bg-gradient-to-r from-gray-900 to-gray-800 p-8 rounded-2xl border border-gray-700 shadow-2xl relative overflow-hidden">
                 <div class="absolute top-0 right-0 w-32 h-32 bg-wbGold blur-3xl opacity-10 rounded-full"></div>
                 <div class="flex justify-between items-start mb-6"><h2 class="text-2xl font-bold text-white flex items-center gap-3"><i class="fa-solid fa-scale-balanced text-wbGold"></i> Status do Processo</h2><span class="text-xs font-bold bg-black/50 px-3 py-1 rounded text-gray-400 border border-gray-600">GOV.BR</span></div>
                 <div class="space-y-6">
-                    <div><div class="flex justify-between text-sm mb-2 text-white font-bold"><span id="labelStatus">Novo Cliente</span><span id="percentStatus">10%</span></div><div class="w-full bg-gray-700 h-4 rounded-full overflow-hidden"><div id="barraProgresso" class="bg-blue-600 h-full transition-all duration-1000" style="width: 10%"></div></div></div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4"><div class="bg-black/50 p-4 rounded border border-gray-600 flex items-center gap-4"><div class="text-3xl text-gray-500"><i class="fa-solid fa-fingerprint"></i></div><div><p class="text-[10px] text-gray-400 uppercase">Número do Processo</p><p class="text-white font-bold text-lg" id="displayNumProcesso">Aguardando Protocolo</p></div></div><div class="bg-black/50 p-4 rounded border border-gray-600 flex items-center gap-4 cursor-pointer hover:bg-gray-800 transition"><div class="text-3xl text-gray-500"><i class="fa-solid fa-image"></i></div><div><p class="text-[10px] text-gray-400 uppercase">Print do Sistema (GOV.BR)</p><p class="text-wbGold font-bold text-sm">Visualizar Comprovante</p></div></div></div>
+                    <div><div class="flex justify-between text-sm mb-2 text-white font-bold"><span id="labelStatus">Carregando...</span><span id="percentStatus">0%</span></div><div class="w-full bg-gray-700 h-4 rounded-full overflow-hidden"><div id="barraProgresso" class="bg-blue-600 h-full transition-all duration-1000" style="width: 0%"></div></div></div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4"><div class="bg-black/50 p-4 rounded border border-gray-600 flex items-center gap-4"><div class="text-3xl text-gray-500"><i class="fa-solid fa-fingerprint"></i></div><div><p class="text-[10px] text-gray-400 uppercase">Número do Processo</p><p class="text-white font-bold text-lg" id="displayNumProcesso">...</p></div></div><div class="bg-black/50 p-4 rounded border border-gray-600 flex items-center gap-4 cursor-pointer hover:bg-gray-800 transition"><div class="text-3xl text-gray-500"><i class="fa-solid fa-image"></i></div><div><p class="text-[10px] text-gray-400 uppercase">Print do Sistema (GOV.BR)</p><p class="text-wbGold font-bold text-sm">Visualizar Comprovante</p></div></div></div>
                 </div>
             </div>
             <div class="bg-gray-900 border border-purple-900/50 p-6 rounded-2xl shadow-lg relative overflow-hidden">
@@ -212,55 +130,123 @@
                 <h3 class="text-white font-bold mb-6 flex items-center gap-2"><i class="fa-solid fa-graduation-cap text-purple-400"></i> Curso de Língua Portuguesa</h3>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-6 items-center">
                     <div class="text-gray-400 text-sm">Obrigatório conforme <strong class="text-white">Portaria 623/2020 Art. 5</strong>. Acesse abaixo:</div>
-                    <div class="bg-black/50 p-4 rounded border border-purple-900/30 text-center"><p class="text-[10px] text-gray-500 uppercase">Login / Senha</p><p class="text-white font-bold font-mono text-lg tracking-wider" id="displayCursoCredenciais">WB_ALUNO / 12345</p></div>
+                    <div class="bg-black/50 p-4 rounded border border-purple-900/30 text-center"><p class="text-[10px] text-gray-500 uppercase">Login / Senha</p><p class="text-white font-bold font-mono text-lg tracking-wider" id="displayCursoCredenciais">...</p></div>
                     <a href="#" target="_blank" class="bg-purple-700 hover:bg-purple-600 text-white font-bold py-3 px-6 rounded-lg text-center shadow-lg transition transform hover:scale-105">ACESSAR AULA AGORA <i class="fa-solid fa-arrow-right ml-2"></i></a>
                 </div>
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div class="bg-wbInput p-6 rounded-2xl border border-gray-800"><h3 class="text-white font-bold mb-6 flex items-center gap-2"><i class="fa-solid fa-clipboard-check text-blue-400"></i> Checklist de Documentos</h3><div class="space-y-2 max-h-60 overflow-y-auto pr-2" id="checklist-cliente"></div></div>
-                <div class="bg-wbInput p-6 rounded-2xl border border-gray-800"><h3 class="text-white font-bold mb-6 flex items-center gap-2"><i class="fa-solid fa-sack-dollar text-green-500"></i> Meu Financeiro</h3><div class="space-y-6"><div><div class="flex justify-between text-sm mb-1"><span class="text-gray-400">Progresso</span><span class="text-green-400 font-bold">60% Pago</span></div><div class="w-full bg-gray-700 h-3 rounded-full overflow-hidden"><div class="bg-green-500 h-full" style="width: 60%"></div></div></div><div class="grid grid-cols-2 gap-4 mt-4"><div class="bg-black/40 p-3 rounded border border-gray-700 text-center"><p class="text-[10px] text-gray-500 uppercase">Total Pago</p><p class="text-green-400 font-bold text-lg">R$ 1.200,00</p></div><div class="bg-black/40 p-3 rounded border border-gray-700 text-center"><p class="text-[10px] text-gray-500 uppercase">Pendente</p><p class="text-red-400 font-bold text-lg">R$ 800,00</p></div></div></div></div>
+                <div class="bg-wbInput p-6 rounded-2xl border border-gray-800"><h3 class="text-white font-bold mb-6 flex items-center gap-2"><i class="fa-solid fa-sack-dollar text-green-500"></i> Meu Financeiro</h3><div class="space-y-6"><div><div class="flex justify-between text-sm mb-1"><span class="text-gray-400">Progresso</span><span class="text-green-400 font-bold" id="displayFinanceiroPercent">0% Pago</span></div><div class="w-full bg-gray-700 h-3 rounded-full overflow-hidden"><div id="barraFinanceiro" class="bg-green-500 h-full" style="width: 0%"></div></div></div><div class="grid grid-cols-2 gap-4 mt-4"><div class="bg-black/40 p-3 rounded border border-gray-700 text-center"><p class="text-[10px] text-gray-500 uppercase">Total Pago</p><p class="text-green-400 font-bold text-lg" id="displayValorPago">R$ 0,00</p></div><div class="bg-black/40 p-3 rounded border border-gray-700 text-center"><p class="text-[10px] text-gray-500 uppercase">Total Contrato</p><p class="text-white font-bold text-lg" id="displayValorTotal">R$ 0,00</p></div></div></div></div>
             </div>
             <a href="https://wa.link/pp2gw8" target="_blank" class="btn-whatsapp-float animate-pulse-slow"><i class="fa-brands fa-whatsapp text-2xl"></i> Falar com Especialista</a>
         </div>
     </div>
 
     <script>
-        const WEBHOOK_URL = "https://hook.us2.make.com/91fgciu87cnwl72ftfohkycnhyeylv8q";
+        const WEBHOOK_URL = "https://hook.us2.make.com/91fgciu87cnwl72ftfohkycnhyeylv8q"; // SEU LINK DO MAKE
         let modoCadastro = 'novo';
         const checklistItems = ["RNM/RNE (Cópia)", "CPF (Cópia)", "Comprovante de Endereço", "Passaporte/Entrada País", "Comprovante 4 Anos (Se s/ vínculo)", "Antecedente Criminal Apostilado", "Certificado Língua Portuguesa", "Certidão Prova Presencial", "Senha do GOV.BR", "Cert. Nasc./RG Filho BR", "Cert. Casamento/União Estável", "Carteira de Trabalho/CNPJ"];
 
         window.onload = function() { renderChecklistAdmin(); renderChecklistCliente(); }
 
-        function renderChecklistAdmin() {
-            const container = document.getElementById('checklist-container-admin');
-            container.innerHTML = checklistItems.map((item, idx) => `<label class="flex items-center space-x-3 p-3 bg-black/30 rounded border border-gray-800 cursor-pointer hover:bg-gray-800"><input type="checkbox" class="w-5 h-5 accent-wbGold rounded bg-gray-700 border-gray-600" id="chk_adm_${idx}"><span class="text-gray-300 text-sm">${item}</span></label>`).join('');
-        }
-        
-        // UPGRADE: BOTÃO DE UPLOAD NO CHECKLIST DO CLIENTE
-        function renderChecklistCliente() {
-            const container = document.getElementById('checklist-cliente');
-            container.innerHTML = checklistItems.map((item, idx) => {
-                const checked = idx < 5; 
-                const icon = checked ? '<i class="fa-solid fa-circle-check text-green-500"></i>' : '<i class="fa-regular fa-circle text-gray-600"></i>';
-                const color = checked ? 'text-white' : 'text-gray-500';
-                // Novo Botão de Upload
-                const uploadBtn = `<button onclick="alert('Enviaremos este arquivo para o Drive do Admin.')" class="ml-2 text-xs bg-gray-800 hover:bg-gray-700 text-wbGold px-2 py-1 rounded border border-gray-600"><i class="fa-solid fa-upload"></i> Enviar</button>`;
+        async function fazerLogin(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btnLogin');
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Acessando...'; btn.disabled = true;
+
+            const u = document.getElementById('loginUser').value.toLowerCase().replace(/\D/g, ""); // Apenas números para cliente
+            const u_raw = document.getElementById('loginUser').value.toLowerCase();
+            const senha = document.getElementById('loginPass').value;
+
+            // 1. ADMIN E VENDAS (Login Local Rápido)
+            if ((u_raw === 'admin' && senha === 'admin') || (u_raw === 'vendas' && senha === 'vendas')) {
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('dashboard-colaborador').classList.remove('hidden');
+                if(u_raw === 'vendas') { 
+                    document.querySelectorAll('.role-diretor').forEach(el => el.classList.add('hidden-role'));
+                    document.getElementById('userNameDisplay').innerText = "Vendedor";
+                    document.getElementById('avatarLetter').innerText = "V";
+                }
+                btn.innerHTML = originalText; btn.disabled = false;
+                return;
+            }
+
+            // 2. CLIENTE (Login via Make)
+            try {
+                // Prepara JSON para o Webhook
+                const payload = {
+                    tipo_acao: 'login',
+                    cpf: u,
+                    senha: senha
+                };
+
+                const response = await fetch(WEBHOOK_URL, {
+                    method: 'POST',
+                    headers: {'Content-Type': 'application/json'},
+                    body: JSON.stringify(payload)
+                });
+
+                if (!response.ok) throw new Error('Erro na conexão');
+
+                const data = await response.json(); // Make deve retornar JSON
                 
-                return `<div class="flex items-center justify-between p-3 border-b border-gray-800">
-                    <div class="flex items-center gap-2">${icon} <span class="${color} text-sm">${item}</span></div>
-                    <div class="flex items-center gap-2">
-                        ${!checked ? uploadBtn : ''}
-                        <span class="text-[10px] uppercase font-bold ${checked ? 'text-green-500' : 'text-red-500'}">${checked ? 'OK' : 'Pendente'}</span>
-                    </div>
-                </div>`;
-            }).join('');
+                // Se o Make retornar erro ou vazio
+                if (!data || data.erro) {
+                    alert("❌ Acesso Negado! Verifique CPF e Senha.");
+                    btn.innerHTML = originalText; btn.disabled = false;
+                    return;
+                }
+
+                // SUCESSO! Preencher Dashboard
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('dashboard-cliente').classList.remove('hidden');
+                
+                // Preencher Campos com dados do Make
+                document.getElementById('clienteNomeDisplay').innerText = data.nome || "Cliente";
+                document.getElementById('clienteCpfDisplay').innerText = u.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
+                
+                atualizarStatusVisual(data.status_processo || "Novo Cliente");
+                if(data.numero_processo) document.getElementById('displayNumProcesso').innerText = data.numero_processo;
+                if(data.login_curso) document.getElementById('displayCursoCredenciais').innerText = `${data.login_curso} / ${data.senha_curso || '****'}`;
+
+                // Financeiro
+                const pago = parseFloat(data.financeiro_pago || 0);
+                const total = parseFloat(data.financeiro_total || 1);
+                const percent = Math.min(100, Math.round((pago / total) * 100));
+                
+                document.getElementById('displayValorPago').innerText = pago.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'});
+                document.getElementById('displayValorTotal').innerText = total.toLocaleString('pt-BR', {style: 'currency', currency: 'BRL'});
+                document.getElementById('displayFinanceiroPercent').innerText = percent + "% Pago";
+                document.getElementById('barraFinanceiro').style.width = percent + "%";
+
+            } catch (err) {
+                console.error(err);
+                // MODO DEMO (FALLBACK SE O MAKE FALHAR OU NÃO ESTIVER CONFIGURADO)
+                // Remove isso quando o Make estiver 100%
+                alert("⚠️ Modo Offline (Demo). Conecte o Router no Make para dados reais.");
+                document.getElementById('login-screen').classList.add('hidden');
+                document.getElementById('dashboard-cliente').classList.remove('hidden');
+                atualizarStatusVisual('Montando Documentações');
+            } finally {
+                btn.innerHTML = originalText; btn.disabled = false;
+            }
         }
 
+        // --- FUNÇÕES DE CADASTRO E SISTEMA (MANTIDAS) ---
+        function renderChecklistAdmin() { document.getElementById('checklist-container-admin').innerHTML = checklistItems.map((item, idx) => `<label class="flex items-center space-x-3 p-3 bg-black/30 rounded border border-gray-800 cursor-pointer hover:bg-gray-800"><input type="checkbox" class="w-5 h-5 accent-wbGold rounded bg-gray-700 border-gray-600" id="chk_adm_${idx}"><span class="text-gray-300 text-sm">${item}</span></label>`).join(''); }
+        function renderChecklistCliente() {
+            document.getElementById('checklist-cliente').innerHTML = checklistItems.map((item, idx) => {
+                const checked = idx < 3; // Simulação inicial
+                const icon = checked ? '<i class="fa-solid fa-circle-check text-green-500"></i>' : '<i class="fa-regular fa-circle text-gray-600"></i>';
+                const uploadBtn = `<button onclick="alert('Enviaremos este arquivo para o Drive do Admin.')" class="ml-2 text-xs bg-gray-800 hover:bg-gray-700 text-wbGold px-2 py-1 rounded border border-gray-600"><i class="fa-solid fa-upload"></i> Enviar</button>`;
+                return `<div class="flex items-center justify-between p-3 border-b border-gray-800"><div class="flex items-center gap-2">${icon} <span class="text-gray-300 text-sm">${item}</span></div><div class="flex items-center gap-2">${!checked ? uploadBtn : ''}<span class="text-[10px] uppercase font-bold ${checked ? 'text-green-500' : 'text-red-500'}">${checked ? 'OK' : 'Pendente'}</span></div></div>`;
+            }).join('');
+        }
         function mudarAbaFicha(aba) { ['geral', 'processo', 'checklist'].forEach(t => { document.getElementById(`ficha-aba-${t}`).classList.add('hidden'); document.getElementById(`tab-btn-${t}`).classList.remove('text-wbGold', 'border-b-2', 'border-wbGold'); document.getElementById(`tab-btn-${t}`).classList.add('text-gray-500'); }); document.getElementById(`ficha-aba-${aba}`).classList.remove('hidden'); const activeBtn = document.getElementById(`tab-btn-${aba}`); activeBtn.classList.add('text-wbGold', 'border-b-2', 'border-wbGold'); activeBtn.classList.remove('text-gray-500'); }
         function atualizarStatusVisual(status) { const barra = document.getElementById('barraProgresso'); const percentTxt = document.getElementById('percentStatus'); const labelTxt = document.getElementById('labelStatus'); let w = '10%'; let color = 'bg-blue-600'; if(status === 'Novo Cliente') { w='10%'; } else if(status === 'Montando Documentações') { w='30%'; } else if(status === 'Processo Sendo Montado') { w='50%'; } else if(status === 'Ainda Não Protocolado') { w='70%'; color='bg-yellow-500'; } else if(status === 'Processo Protocolado') { w='90%'; color='bg-blue-500'; } else if(status === 'Deferido') { w='100%'; color='bg-green-500'; } else if(status === 'Indeferido') { w='100%'; color='bg-red-600'; } barra.style.width = w; barra.className = `h-full transition-all duration-1000 ${color}`; percentTxt.innerText = w; labelTxt.innerText = status; }
-        function salvarFicha() { const status = document.getElementById('fichaStatusProcesso').value; const numProcesso = document.getElementById('fichaNumProcesso').value; const loginCurso = document.getElementById('fichaCursoLogin').value; atualizarStatusVisual(status); if(numProcesso) document.getElementById('displayNumProcesso').innerText = numProcesso; if(loginCurso) document.getElementById('displayCursoCredenciais').innerText = loginCurso + " / ******"; alert("✅ Dados Salvos!"); document.getElementById('modalFicha').classList.add('hidden'); }
+        function salvarFicha() { alert("✅ Dados Salvos!"); document.getElementById('modalFicha').classList.add('hidden'); }
         function mudarModo(modo) { modoCadastro = modo; document.getElementById('opt-novo').classList.remove('selected'); document.getElementById('opt-antigo').classList.remove('selected'); document.getElementById('opt-' + modo).classList.add('selected'); const bloco = document.getElementById('bloco-migracao'); const inputAntigo = document.getElementById('inputEhAntigo'); const txtBtn = document.getElementById('txtBotao'); if (modo === 'antigo') { bloco.classList.remove('hidden'); inputAntigo.value = 'true'; txtBtn.innerText = 'MIGRAR CLIENTE (BASE)'; } else { bloco.classList.add('hidden'); inputAntigo.value = 'false'; txtBtn.innerText = 'CADASTRAR E ANALISAR'; } }
-        function fazerLogin(e) { e.preventDefault(); const u = document.getElementById('loginUser').value.toLowerCase().replace(/\D/g, ""); const u_raw = document.getElementById('loginUser').value.toLowerCase(); document.getElementById('login-screen').classList.add('hidden'); if (u_raw === 'admin') { document.getElementById('dashboard-colaborador').classList.remove('hidden'); document.querySelectorAll('.role-diretor').forEach(el => el.classList.remove('hidden-role')); document.getElementById('userNameDisplay').innerText = "Admin Master"; document.getElementById('avatarLetter').innerText = "A"; } else if (u_raw === 'vendas') { document.getElementById('dashboard-colaborador').classList.remove('hidden'); document.querySelectorAll('.role-diretor').forEach(el => el.classList.add('hidden-role')); document.getElementById('userNameDisplay').innerText = "Vendedor"; document.getElementById('avatarLetter').innerText = "V"; } else { document.getElementById('dashboard-cliente').classList.remove('hidden'); document.getElementById('clienteCpfDisplay').innerText = u.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4"); document.getElementById('clienteNomeDisplay').innerText = "Cliente Acesso"; atualizarStatusVisual('Montando Documentações'); } }
         function showTab(t) { document.querySelectorAll('[id^="tab-"]').forEach(el => el.classList.add('hidden')); document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active')); document.getElementById('tab-'+t).classList.remove('hidden'); document.getElementById('btn-'+t).classList.add('active'); }
         function maskCPF(i){i.value=i.value.replace(/\D/g,"").replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d{1,2})$/,"$1-$2");}
         function maskPhone(i){i.value=i.value.replace(/\D/g,"").replace(/^(\d{2})(\d)/,"($1) $2").replace(/(\d)(\d{4})$/,"$1-$2");}
