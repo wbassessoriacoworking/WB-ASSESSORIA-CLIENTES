@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WB System - Gestão Completa</title>
+    <title>WB System - Gestão Total</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script>
@@ -16,7 +16,8 @@
                         wbGray: '#121212', 
                         wbInput: '#1a1a1a',
                         mondayGreen: '#00c875',
-                        mondayBlue: '#0086c0'
+                        mondayBlue: '#0086c0',
+                        mondayPurple: '#a25ddc' /* Cor para Cliente Antigo */
                     },
                     animation: { 'fade-in': 'fadeIn 0.5s ease-out' },
                     keyframes: { fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } } }
@@ -34,6 +35,11 @@
         .sidebar-item { cursor: pointer; padding: 14px; border-radius: 8px; transition: 0.3s; color: #888; display: flex; align-items: center; gap: 12px; margin-bottom: 5px; font-weight: 500; }
         .sidebar-item:hover, .sidebar-item.active { background-color: #1a1a1a; color: #d4af37; border-left: 3px solid #d4af37; }
         .hidden-role { display: none !important; }
+        
+        /* Estilo do Toggle (Novo/Antigo) */
+        .toggle-container { display: flex; background: #0a0a0a; border-radius: 8px; padding: 4px; border: 1px solid #333; margin-bottom: 20px; }
+        .toggle-option { flex: 1; text-align: center; padding: 10px; cursor: pointer; border-radius: 6px; font-size: 13px; font-weight: bold; color: #666; transition: 0.3s; }
+        .toggle-option.selected { background: #d4af37; color: black; box-shadow: 0 2px 10px rgba(212, 175, 55, 0.2); }
     </style>
 </head>
 <body class="h-screen overflow-hidden flex flex-col">
@@ -64,63 +70,45 @@
         <div class="bg-wbGray border border-gray-700 rounded-2xl shadow-2xl max-w-4xl w-full h-[90vh] animate-fade-in flex flex-col">
             <div class="p-6 border-b border-gray-800 flex justify-between items-center bg-gray-900 rounded-t-2xl">
                 <div>
-                    <h3 class="text-2xl font-bold text-white" id="fichaNome">Nome do Cliente</h3>
+                    <h3 class="text-2xl font-bold text-white" id="fichaNome">Cliente</h3>
                     <p class="text-xs text-wbGold uppercase tracking-widest">Ficha Cadastral</p>
                 </div>
                 <button onclick="fecharModal('modalFicha')" class="text-gray-500 hover:text-white"><i class="fa-solid fa-xmark text-2xl"></i></button>
             </div>
-
             <div class="flex-grow overflow-y-auto p-8 space-y-8">
-                
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div class="bg-wbInput p-5 rounded-xl border border-gray-800">
                         <h4 class="text-wbGold font-bold mb-4"><i class="fa-brands fa-google-drive mr-2"></i>Pasta na Nuvem (Drive)</h4>
                         <div class="flex gap-2">
-                            <input type="text" id="fichaDriveLink" class="input-wb text-sm" placeholder="Cole o link do Google Drive aqui...">
+                            <input type="text" id="fichaDriveLink" class="input-wb text-sm" placeholder="Cole o link do Drive aqui...">
                             <button onclick="salvarLinkDrive()" class="bg-blue-900 text-white px-4 rounded hover:bg-blue-800"><i class="fa-solid fa-save"></i></button>
                         </div>
                         <div id="btnAcessarDrive" class="mt-3 hidden">
                             <a href="#" target="_blank" id="linkRealDrive" class="block w-full text-center bg-gray-800 hover:bg-gray-700 text-white py-2 rounded border border-gray-600 transition">
-                                <i class="fa-solid fa-folder-open text-yellow-500 mr-2"></i> Abrir Pasta do Cliente
+                                <i class="fa-solid fa-folder-open text-yellow-500 mr-2"></i> Abrir Pasta
                             </a>
                         </div>
                     </div>
-
                     <div class="bg-wbInput p-5 rounded-xl border border-gray-800">
-                        <h4 class="text-wbGold font-bold mb-4"><i class="fa-solid fa-list-ol mr-2"></i>Controle Interno</h4>
+                        <h4 class="text-wbGold font-bold mb-4"><i class="fa-solid fa-list-ol mr-2"></i>Controle</h4>
                         <div class="space-y-3">
-                            <div>
-                                <label class="text-[10px] text-gray-500 uppercase">Nº Protocolo (PF/MJ)</label>
-                                <input type="text" class="input-wb" placeholder="0000.0000...">
-                            </div>
-                            <div>
-                                <label class="text-[10px] text-gray-500 uppercase">Status Financeiro</label>
-                                <select class="input-wb text-sm">
-                                    <option value="em_dia" class="text-green-500">✅ Em Dia</option>
-                                    <option value="pendente" class="text-yellow-500">⚠️ Pendente</option>
-                                    <option value="atrasado" class="text-red-500">❌ Atrasado</option>
-                                </select>
-                            </div>
+                            <div><label class="text-[10px] text-gray-500 uppercase">Protocolo</label><input type="text" class="input-wb" placeholder="0000.0000..."></div>
                         </div>
                     </div>
                 </div>
-
                 <div class="bg-black/30 p-6 rounded-xl border border-gray-800">
-                    <h4 class="text-white font-bold mb-4 border-b border-gray-700 pb-2">Resumo do Processo</h4>
-                    <p class="text-gray-400 text-sm italic" id="fichaResumoIA">A análise da IA aparecerá aqui...</p>
+                    <h4 class="text-white font-bold mb-4 border-b border-gray-700 pb-2">Histórico / Análise</h4>
+                    <p class="text-gray-400 text-sm italic" id="fichaResumoIA">...</p>
                 </div>
-
             </div>
-
             <div class="p-4 border-t border-gray-800 bg-gray-900 rounded-b-2xl flex justify-between items-center">
-                <span class="text-xs text-gray-500">As alterações são salvas localmente nesta sessão.</span>
-                <button onclick="fecharModal('modalFicha')" class="bg-wbGold text-black px-6 py-3 rounded-lg font-bold hover:bg-yellow-500">Salvar & Fechar</button>
+                <span class="text-xs text-gray-500">Alterações salvas localmente.</span>
+                <button onclick="fecharModal('modalFicha')" class="bg-wbGold text-black px-6 py-3 rounded-lg font-bold">Salvar & Fechar</button>
             </div>
         </div>
     </div>
 
     <div id="login-screen" class="flex-grow flex items-center justify-center bg-gradient-to-br from-black to-gray-900 relative">
-        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
         <div class="relative z-10 bg-wbGray p-10 rounded-2xl shadow-2xl w-full max-w-md border border-wbGold/20 animate-fade-in">
             <div class="text-center mb-8">
                 <img src="logo.jpeg" class="w-24 h-24 mx-auto mb-4 rounded-full border-2 border-wbGold p-1">
@@ -160,10 +148,37 @@
         <div class="flex-grow overflow-y-auto p-8 bg-black relative">
             
             <div id="tab-novo-cliente" class="max-w-5xl mx-auto animate-fade-in">
-                <h2 class="text-3xl font-bold text-white mb-6">Nova Naturalização</h2>
+                
+                <h2 class="text-3xl font-bold text-white mb-6">Registro de Processo</h2>
+
+                <div class="toggle-container max-w-md">
+                    <div id="opt-novo" class="toggle-option selected" onclick="mudarModo('novo')">
+                        <i class="fa-solid fa-star mr-2"></i>NOVA VENDA
+                    </div>
+                    <div id="opt-antigo" class="toggle-option" onclick="mudarModo('antigo')">
+                        <i class="fa-solid fa-box-archive mr-2"></i>MIGRAR CLIENTE ANTIGO
+                    </div>
+                </div>
+
                 <form id="formCliente" onsubmit="enviarDados(event)" class="space-y-6">
                     <input type="hidden" name="tipo_cadastro" value="cliente">
                     <input type="hidden" name="servico_interesse" value="Naturalizacao_BR">
+                    
+                    <input type="hidden" name="eh_cliente_antigo" id="inputEhAntigo" value="false">
+
+                    <div id="bloco-migracao" class="bg-gray-900 border border-purple-900/50 p-6 rounded-xl hidden animate-fade-in">
+                        <h3 class="text-mondayPurple font-bold text-sm uppercase mb-4"><i class="fa-solid fa-database mr-2"></i>Dados de Migração (Cliente Antigo)</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
+                            <div>
+                                <label class="text-xs text-gray-400">Link da Pasta (Drive)</label>
+                                <input type="text" name="link_drive_migracao" id="inputDriveMigracao" class="input-wb border-purple-900 text-purple-200" placeholder="https://drive.google.com/...">
+                            </div>
+                            <div>
+                                <label class="text-xs text-gray-400">Status Atual do Processo</label>
+                                <input type="text" name="status_migracao" class="input-wb border-purple-900" placeholder="Ex: Aguardando Publicação">
+                            </div>
+                        </div>
+                    </div>
                     
                     <div class="bg-wbInput p-6 rounded-xl border border-gray-800">
                         <h3 class="text-wbGold font-bold text-sm uppercase mb-4"><i class="fa-solid fa-user mr-2"></i>Dados Pessoais</h3>
@@ -213,7 +228,7 @@
                     </div>
 
                     <button type="submit" id="btnSalvar" class="w-full btn-gold py-5 rounded-xl font-bold text-lg shadow-xl flex items-center justify-center gap-3">
-                        <span>CADASTRAR E ANALISAR</span> <i class="fa-solid fa-robot"></i>
+                        <span id="txtBotao">CADASTRAR E ANALISAR</span> <i class="fa-solid fa-paper-plane"></i>
                     </button>
                 </form>
             </div>
@@ -223,7 +238,7 @@
                 <div class="overflow-x-auto rounded border border-gray-800 bg-wbInput">
                     <table class="w-full text-left text-sm text-gray-400">
                         <thead class="bg-gray-900 text-xs uppercase font-bold text-gray-500">
-                            <tr><th class="p-4">Cliente</th><th class="p-4 text-center">Status</th><th class="p-4 text-center">Ficha</th><th class="p-4 text-right">Análise IA</th></tr>
+                            <tr><th class="p-4">Cliente</th><th class="p-4 text-center">Origem</th><th class="p-4 text-center">Ficha</th><th class="p-4 text-right">Análise</th></tr>
                         </thead>
                         <tbody id="crm-body">
                             </tbody>
@@ -237,6 +252,33 @@
 
     <script>
         const WEBHOOK_URL = "https://hook.us2.make.com/91fgciu87cnwl72ftfohkycnhyeylv8q";
+
+        // LÓGICA DO TOGGLE (NOVO vs ANTIGO)
+        let modoCadastro = 'novo';
+
+        function mudarModo(modo) {
+            modoCadastro = modo;
+            
+            // Visual do botão
+            document.getElementById('opt-novo').classList.remove('selected');
+            document.getElementById('opt-antigo').classList.remove('selected');
+            document.getElementById('opt-' + modo).classList.add('selected');
+
+            // Visual do Formulário
+            const blocoMigracao = document.getElementById('bloco-migracao');
+            const inputEhAntigo = document.getElementById('inputEhAntigo');
+            const txtBotao = document.getElementById('txtBotao');
+
+            if (modo === 'antigo') {
+                blocoMigracao.classList.remove('hidden');
+                inputEhAntigo.value = 'true';
+                txtBotao.innerText = 'MIGRAR CLIENTE (BASE)';
+            } else {
+                blocoMigracao.classList.add('hidden');
+                inputEhAntigo.value = 'false';
+                txtBotao.innerText = 'CADASTRAR E ANALISAR';
+            }
+        }
 
         // LOGIN
         function fazerLogin(e) {
@@ -270,42 +312,62 @@
             const originalText = btn.innerHTML;
             
             btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processando...'; btn.disabled = true;
-            abrirModalIA(true);
+            
+            // Se for novo, abre modal de IA. Se for antigo, não precisa abrir modal de análise imediata.
+            if(modoCadastro === 'novo') abrirModalIA(true);
 
             try {
                 const formData = new FormData(document.getElementById('formCliente'));
+                const driveMigracao = document.getElementById('inputDriveMigracao').value; // Pega o drive se tiver
+                
                 const response = await fetch(WEBHOOK_URL, { method: 'POST', body: formData });
                 const textoIA = await response.text();
 
-                mostrarResultadoIA(textoIA);
-                adicionarNaTabela(formData.get('nome'), textoIA);
+                if(modoCadastro === 'novo') {
+                    mostrarResultadoIA(textoIA);
+                } else {
+                    alert("✅ Cliente Antigo Migrado com Sucesso!");
+                }
+
+                // Passa o link do drive pra tabela
+                adicionarNaTabela(formData.get('nome'), textoIA, modoCadastro, driveMigracao);
                 document.getElementById('formCliente').reset();
+                mudarModo('novo'); // Reseta pro padrão
 
             } catch (err) {
-                document.getElementById('conteudoIA').innerHTML = `<p class="text-red-500">Erro: Verifique se o Make está ON.</p>`;
+                if(modoCadastro === 'novo') document.getElementById('conteudoIA').innerHTML = `<p class="text-red-500">Erro: Verifique se o Make está ON.</p>`;
+                else alert("Erro ao salvar cliente antigo.");
             } finally {
                 btn.innerHTML = originalText; btn.disabled = false;
             }
         }
 
-        // --- LÓGICA DO CRM E FICHAS ---
+        // --- CRM E FICHAS ---
 
-        function adicionarNaTabela(nome, analise) {
+        function adicionarNaTabela(nome, analise, tipo, driveLink) {
             const tbody = document.getElementById('crm-body');
+            
+            let badgeHtml = '';
+            if(tipo === 'antigo') {
+                badgeHtml = '<span class="bg-purple-900 text-purple-300 px-3 py-1 rounded text-xs font-bold uppercase border border-purple-700">BASE ANTIGA</span>';
+            } else {
+                badgeHtml = '<span class="bg-blue-900 text-blue-300 px-3 py-1 rounded text-xs font-bold uppercase border border-blue-700">NOVA VENDA</span>';
+            }
+
             const novaLinha = `
                 <tr class="border-b border-gray-800 hover:bg-gray-900 transition animate-fade-in">
-                    <td class="p-4 font-bold text-white cursor-pointer hover:text-wbGold" onclick="abrirFicha('${nome}', '${encodeURIComponent(analise)}')">
-                        ${nome} <i class="fa-solid fa-pen-to-square ml-2 text-gray-600 text-xs"></i>
+                    <td class="p-4 font-bold text-white cursor-pointer hover:text-wbGold" onclick="abrirFicha('${nome}', '${encodeURIComponent(analise)}', '${driveLink}')">
+                        ${nome}
                     </td>
-                    <td class="p-4 text-center"><span class="bg-blue-900 text-blue-300 px-3 py-1 rounded text-xs font-bold uppercase">Novo</span></td>
+                    <td class="p-4 text-center">${badgeHtml}</td>
                     <td class="p-4 text-center">
-                        <button onclick="abrirFicha('${nome}', '${encodeURIComponent(analise)}')" class="text-gray-400 hover:text-white transition">
+                        <button onclick="abrirFicha('${nome}', '${encodeURIComponent(analise)}', '${driveLink}')" class="text-gray-400 hover:text-white transition">
                             <i class="fa-solid fa-folder-open text-xl"></i>
                         </button>
                     </td>
                     <td class="p-4 text-right">
                         <button onclick="verAnaliseDeNovo('${encodeURIComponent(analise)}')" class="text-wbGold font-bold text-xs border border-wbGold px-3 py-1 rounded hover:bg-wbGold hover:text-black transition">
-                            PARECER IA
+                            PARECER
                         </button>
                     </td>
                 </tr>
@@ -313,20 +375,24 @@
             tbody.innerHTML = novaLinha + tbody.innerHTML;
         }
 
-        // --- MODAL DE FICHA (CARD DO CLIENTE) ---
-        function abrirFicha(nome, analiseEncoded) {
+        function abrirFicha(nome, analiseEncoded, driveLinkPreenchido) {
             document.getElementById('modalFicha').classList.remove('hidden');
             document.getElementById('fichaNome').innerText = nome;
             
-            // Tenta carregar resumo IA
             if(analiseEncoded) {
                 const texto = decodeURIComponent(analiseEncoded);
                 document.getElementById('fichaResumoIA').innerHTML = texto.replace(/\n/g, '<br>').substring(0, 300) + '...';
             }
-
-            // Reseta campo de drive (simulação)
-            document.getElementById('fichaDriveLink').value = '';
+            
+            // Se veio link do drive no cadastro (migração), já preenche
+            const campoDrive = document.getElementById('fichaDriveLink');
+            campoDrive.value = ''; // Limpa antes
             document.getElementById('btnAcessarDrive').classList.add('hidden');
+
+            if(driveLinkPreenchido && driveLinkPreenchido !== 'undefined') {
+                campoDrive.value = driveLinkPreenchido;
+                salvarLinkDrive(); // Simula o clique pra mostrar o botão
+            }
         }
 
         function salvarLinkDrive() {
@@ -334,11 +400,10 @@
             if(link) {
                 document.getElementById('linkRealDrive').href = link;
                 document.getElementById('btnAcessarDrive').classList.remove('hidden');
-                alert("Link salvo nesta sessão! (Para salvar definitivo, conecte ao banco de dados)");
             }
         }
 
-        // --- MODAL DE IA ---
+        // --- MODAL IA ---
         function abrirModalIA(loading) {
             document.getElementById('modalAnalise').classList.remove('hidden');
             if(loading) {
