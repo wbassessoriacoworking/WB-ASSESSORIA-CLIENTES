@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WB System - Admin Master</title>
+    <title>WB System - Versão Final Pro</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script>
@@ -45,7 +45,6 @@
         .fin-atrasado { background: rgba(226, 68, 92, 0.2); color: #e2445c; border: 1px solid #e2445c; }
         .btn-whatsapp-float { position: fixed; bottom: 30px; right: 30px; background-color: #25D366; color: white; padding: 15px 25px; border-radius: 50px; font-weight: bold; font-size: 16px; box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4); display: flex; align-items: center; gap: 10px; z-index: 9999; transition: transform 0.3s; text-decoration: none; }
         .btn-whatsapp-float:hover { transform: scale(1.05); background-color: #1ebc57; }
-        .check-item { display: flex; justify-content: space-between; align-items: center; padding: 8px; border-bottom: 1px solid #333; }
     </style>
 </head>
 <body class="h-screen overflow-hidden flex flex-col">
@@ -55,19 +54,12 @@
             <div class="absolute top-0 left-0 w-full h-2 bg-gradient-to-r from-purple-900 via-wbGold to-purple-900"></div>
             <div class="p-8">
                 <button onclick="document.getElementById('modalMigracaoRapida').classList.add('hidden')" class="absolute top-4 right-4 text-gray-500 hover:text-white transition"><i class="fa-solid fa-xmark text-2xl"></i></button>
-                <div class="text-center mb-6">
-                    <div class="w-16 h-16 bg-purple-900/30 rounded-full flex items-center justify-center mx-auto mb-4 border border-purple-500/50"><i class="fa-solid fa-box-archive text-2xl text-purple-400"></i></div>
-                    <h3 class="text-2xl font-bold text-white">Migração Rápida</h3>
-                    <p class="text-xs text-gray-500 uppercase tracking-widest mt-1">Cadastro de Cliente da Base</p>
-                </div>
+                <div class="text-center mb-6"><div class="w-16 h-16 bg-purple-900/30 rounded-full flex items-center justify-center mx-auto mb-4 border border-purple-500/50"><i class="fa-solid fa-box-archive text-2xl text-purple-400"></i></div><h3 class="text-2xl font-bold text-white">Migração Rápida</h3><p class="text-xs text-gray-500 uppercase tracking-widest mt-1">Cadastro de Cliente da Base</p></div>
                 <form id="formMigracaoRapida" onsubmit="enviarMigracaoRapida(event)" class="space-y-4">
                     <input type="hidden" name="tipo_cadastro" value="cliente"><input type="hidden" name="eh_cliente_antigo" value="true">
                     <div><label class="text-xs text-purple-400 font-bold uppercase">Nome</label><input type="text" name="nome" class="input-wb border-purple-900/50" required></div>
                     <div><label class="text-xs text-purple-400 font-bold uppercase">CPF (Login)</label><input type="text" name="cpf" oninput="maskCPF(this)" class="input-wb border-purple-900/50" required></div>
-                    <div class="grid grid-cols-2 gap-4">
-                        <div><label class="text-xs text-purple-400 font-bold uppercase">Senha</label><input type="text" name="senha_cliente" class="input-wb border-purple-900/50 text-center font-bold tracking-widest" value="WB2026"></div>
-                        <div><label class="text-xs text-gray-500 uppercase">Status</label><input type="text" name="status_migracao" class="input-wb border-gray-700" value="Novo Cliente"></div>
-                    </div>
+                    <div class="grid grid-cols-2 gap-4"><div><label class="text-xs text-purple-400 font-bold uppercase">Senha</label><input type="text" name="senha_cliente" class="input-wb border-purple-900/50 text-center font-bold tracking-widest" value="WB2026"></div><div><label class="text-xs text-gray-500 uppercase">Status</label><input type="text" name="status_migracao" class="input-wb border-gray-700" value="Novo Cliente"></div></div>
                     <div><label class="text-xs text-gray-400 uppercase">Link Drive</label><input type="text" name="link_drive_migracao" class="input-wb border-gray-700 text-gray-300"></div>
                     <button type="submit" id="btnMigrarRapido" class="w-full bg-purple-900 hover:bg-purple-800 text-white py-4 rounded-lg font-bold transition shadow-lg mt-4 border border-purple-700">CONFIRMAR MIGRAÇÃO</button>
                 </form>
@@ -93,6 +85,10 @@
                         <div class="bg-wbInput p-5 rounded-xl border border-gray-800">
                             <h4 class="text-wbGold font-bold mb-4"><i class="fa-brands fa-google-drive mr-2"></i>Link da Pasta (Drive)</h4>
                             <div class="flex gap-2"><input type="text" id="fichaDriveLink" class="input-wb text-sm" placeholder="Cole o link do Drive..."><button onclick="salvarFicha()" class="bg-blue-900 text-white px-4 rounded hover:bg-blue-800"><i class="fa-solid fa-save"></i></button></div>
+                            <div class="mt-6 pt-6 border-t border-gray-700">
+                                <h4 class="text-white font-bold mb-2">Ações Rápidas</h4>
+                                <button onclick="alert('Funcionalidade Futura: Conecte o Make para gerar PDF automático.')" class="w-full bg-gray-800 hover:bg-gray-700 text-white py-2 rounded border border-gray-600 flex items-center justify-center gap-2"><i class="fa-solid fa-file-pdf text-red-500"></i> Gerar Minuta de Contrato</button>
+                            </div>
                         </div>
                         <div class="bg-wbInput p-5 rounded-xl border border-gray-800">
                             <h4 class="text-wbGold font-bold mb-4"><i class="fa-solid fa-money-check-dollar mr-2"></i>Status Financeiro</h4>
@@ -102,7 +98,7 @@
                 </div>
                 <div id="ficha-aba-processo" class="hidden space-y-6">
                     <div class="bg-wbInput p-6 rounded-xl border border-gray-800">
-                        <h4 class="text-green-500 font-bold mb-4"><i class="fa-solid fa-gavel mr-2"></i>Status do Processo (GOV.BR)</h4>
+                        <h4 class="text-green-500 font-bold mb-4"><i class="fa-solid fa-gavel mr-2"></i>Status (GOV.BR)</h4>
                         <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
                             <div><label class="text-[10px] text-gray-500 uppercase">Fase Atual</label><select id="fichaStatusProcesso" class="input-wb text-sm font-bold text-wbGold"><option value="Novo Cliente">Novo Cliente</option><option value="Montando Documentações">Montando Documentações</option><option value="Processo Sendo Montado">Processo Sendo Montado</option><option value="Ainda Não Protocolado">Ainda Não Protocolado</option><option value="Processo Protocolado">Processo Protocolado (GOV.BR)</option><option value="Deferido">DEFERIDO (Aprovado)</option><option value="Indeferido">Indeferido (Negado)</option></select></div>
                             <div><label class="text-[10px] text-gray-500 uppercase">Número do Processo</label><input type="text" id="fichaNumProcesso" class="input-wb text-sm" placeholder="Ex: 08018.000..."></div>
@@ -111,11 +107,7 @@
                     </div>
                     <div class="bg-gray-900 border border-purple-900/50 p-6 rounded-xl">
                         <h4 class="text-purple-400 font-bold mb-4"><i class="fa-solid fa-graduation-cap mr-2"></i>Curso de Língua Portuguesa</h4>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-                            <div><label class="text-[10px] text-gray-500 uppercase">Link do Curso</label><input type="text" id="fichaCursoLink" class="input-wb text-sm"></div>
-                            <div><label class="text-[10px] text-gray-500 uppercase">Login</label><input type="text" id="fichaCursoLogin" class="input-wb text-sm"></div>
-                            <div><label class="text-[10px] text-gray-500 uppercase">Senha</label><input type="text" id="fichaCursoSenha" class="input-wb text-sm"></div>
-                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-5"><div><label class="text-[10px] text-gray-500 uppercase">Link</label><input type="text" id="fichaCursoLink" class="input-wb text-sm"></div><div><label class="text-[10px] text-gray-500 uppercase">Login</label><input type="text" id="fichaCursoLogin" class="input-wb text-sm"></div><div><label class="text-[10px] text-gray-500 uppercase">Senha</label><input type="text" id="fichaCursoSenha" class="input-wb text-sm"></div></div>
                     </div>
                 </div>
                 <div id="ficha-aba-checklist" class="hidden">
@@ -125,16 +117,13 @@
                     </div>
                 </div>
             </div>
-            <div class="p-4 border-t border-gray-800 bg-gray-900 rounded-b-2xl flex justify-between items-center"><span class="text-xs text-gray-500">Alterações salvas no banco.</span><div class="flex gap-2"><button onclick="fecharModal('modalFicha')" class="bg-gray-700 text-white px-6 py-3 rounded-lg font-bold hover:bg-gray-600">Fechar</button><button onclick="salvarFicha()" class="bg-wbGold text-black px-6 py-3 rounded-lg font-bold hover:bg-yellow-500">Salvar Alterações</button></div></div>
+            <div class="p-4 border-t border-gray-800 bg-gray-900 rounded-b-2xl flex justify-between items-center"><span class="text-xs text-gray-500">Alterações salvas.</span><div class="flex gap-2"><button onclick="fecharModal('modalFicha')" class="bg-gray-700 text-white px-6 py-3 rounded-lg font-bold hover:bg-gray-600">Fechar</button><button onclick="salvarFicha()" class="bg-wbGold text-black px-6 py-3 rounded-lg font-bold hover:bg-yellow-500">Salvar Alterações</button></div></div>
         </div>
     </div>
 
     <div id="modalAnalise" class="hidden fixed inset-0 z-50 flex items-center justify-center modal-overlay p-4">
         <div class="bg-wbGray border-2 border-wbGold rounded-2xl shadow-2xl max-w-2xl w-full animate-fade-in flex flex-col max-h-[90vh]">
-            <div class="p-6 border-b border-gray-800 flex justify-between items-center bg-gray-900 rounded-t-2xl">
-                <div class="flex items-center gap-3"><div class="w-10 h-10 bg-wbGold rounded-full flex items-center justify-center"><i class="fa-solid fa-robot text-black text-lg"></i></div><div><h3 class="text-xl font-bold text-white">Parecer Jurídico (IA)</h3></div></div>
-                <button onclick="fecharModal('modalAnalise')" class="text-gray-500 hover:text-white"><i class="fa-solid fa-xmark text-2xl"></i></button>
-            </div>
+            <div class="p-6 border-b border-gray-800 flex justify-between items-center bg-gray-900 rounded-t-2xl"><div class="flex items-center gap-3"><div class="w-10 h-10 bg-wbGold rounded-full flex items-center justify-center"><i class="fa-solid fa-robot text-black text-lg"></i></div><div><h3 class="text-xl font-bold text-white">Parecer Jurídico (IA)</h3></div></div><button onclick="fecharModal('modalAnalise')" class="text-gray-500 hover:text-white"><i class="fa-solid fa-xmark text-2xl"></i></button></div>
             <div class="p-8 overflow-y-auto"><div id="loaderIA" class="text-center py-10 hidden"><i class="fa-solid fa-circle-notch fa-spin text-4xl text-wbGold mb-4"></i><p class="text-gray-400 animate-pulse">Consultando Lei 13.445...</p></div><div id="conteudoIA" class="space-y-4 text-sm leading-relaxed text-gray-300"></div></div>
             <div class="p-4 border-t border-gray-800 bg-gray-900 rounded-b-2xl text-right"><button onclick="fecharModal('modalAnalise')" class="bg-gray-700 text-white px-6 py-2 rounded-lg font-bold">Fechar</button></div>
         </div>
@@ -155,12 +144,10 @@
     </div>
 
     <div id="dashboard-colaborador" class="hidden h-full flex flex-col md:flex-row">
-        
         <div class="md:hidden bg-wbGray p-4 flex justify-between items-center border-b border-gray-800">
             <div class="flex items-center gap-3"><img src="logo.jpeg" class="w-10 h-10 rounded-full border border-wbGold"><span class="font-bold text-wbGold">WB ADMIN</span></div>
             <button onclick="document.getElementById('sidebar-menu').classList.toggle('hidden')" class="text-white text-2xl"><i class="fa-solid fa-bars"></i></button>
         </div>
-
         <div id="sidebar-menu" class="w-full md:w-72 bg-wbGray border-r border-gray-800 flex flex-col p-6 hidden md:flex transition-all">
             <div class="flex items-center gap-4 mb-12 hidden md:flex"><img src="logo.jpeg" class="w-12 h-12 rounded-full border border-wbGold"><div><h1 class="font-bold text-wbGold text-xl">WB ADMIN</h1></div></div>
             <nav class="space-y-2 flex-grow text-sm">
@@ -170,61 +157,36 @@
             </nav>
             <button onclick="location.reload()" class="mt-4 bg-red-900/30 hover:bg-red-900 text-red-500 hover:text-white p-3 rounded-lg font-bold flex items-center justify-center gap-2 transition border border-red-900/50"><i class="fa-solid fa-right-from-bracket"></i> SAIR DO SISTEMA</button>
         </div>
-
         <div class="flex-grow overflow-y-auto p-8 bg-black relative">
-            
             <div id="tab-novo-cliente" class="max-w-5xl mx-auto animate-fade-in">
                 <h2 class="text-3xl font-bold text-white mb-6">Registro de Processo</h2>
-                <div class="toggle-container max-w-md">
-                    <div id="opt-novo" class="toggle-option selected" onclick="mudarModo('novo')"><i class="fa-solid fa-star mr-2"></i>NOVA VENDA</div>
-                    <div id="opt-antigo" class="toggle-option" onclick="mudarModo('antigo')"><i class="fa-solid fa-box-archive mr-2"></i>MIGRAR CLIENTE ANTIGO</div>
-                </div>
+                <div class="toggle-container max-w-md"><div id="opt-novo" class="toggle-option selected" onclick="mudarModo('novo')"><i class="fa-solid fa-star mr-2"></i>NOVA VENDA</div><div id="opt-antigo" class="toggle-option" onclick="mudarModo('antigo')"><i class="fa-solid fa-box-archive mr-2"></i>MIGRAR CLIENTE ANTIGO</div></div>
                 <form id="formCliente" onsubmit="enviarDados(event)" class="space-y-6">
                     <input type="hidden" name="tipo_cadastro" value="cliente"><input type="hidden" name="servico_interesse" value="Naturalizacao_BR"><input type="hidden" name="eh_cliente_antigo" id="inputEhAntigo" value="false">
-                    <div id="bloco-migracao" class="bg-gray-900 border border-purple-900/50 p-6 rounded-xl hidden animate-fade-in">
-                        <h3 class="text-mondayPurple font-bold text-sm uppercase mb-4"><i class="fa-solid fa-database mr-2"></i>Dados de Migração</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                            <div><label class="text-xs text-gray-400">Link Drive</label><input type="text" name="link_drive_migracao" id="inputDriveMigracao" class="input-wb border-purple-900 text-purple-200"></div>
-                            <div><label class="text-xs text-gray-400">Status Atual</label><input type="text" name="status_migracao" class="input-wb border-purple-900"></div>
-                        </div>
-                    </div>
+                    <div id="bloco-migracao" class="bg-gray-900 border border-purple-900/50 p-6 rounded-xl hidden animate-fade-in"><h3 class="text-mondayPurple font-bold text-sm uppercase mb-4"><i class="fa-solid fa-database mr-2"></i>Dados de Migração</h3><div class="grid grid-cols-1 md:grid-cols-2 gap-5"><div><label class="text-xs text-gray-400">Link Drive</label><input type="text" name="link_drive_migracao" id="inputDriveMigracao" class="input-wb border-purple-900 text-purple-200"></div><div><label class="text-xs text-gray-400">Status Atual</label><input type="text" name="status_migracao" class="input-wb border-purple-900"></div></div></div>
                     <div class="bg-wbInput p-6 rounded-xl border border-gray-800">
                         <h3 class="text-wbGold font-bold text-sm uppercase mb-4">Dados Pessoais</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-4">
-                            <div><label class="text-xs text-gray-500">Nome</label><input type="text" name="nome" class="input-wb" required></div>
-                            <div><label class="text-xs text-gray-500">CPF (Login)</label><input type="text" name="cpf" oninput="maskCPF(this)" class="input-wb" required></div>
-                        </div>
-                        <div class="bg-gray-800 p-4 rounded border border-gray-600 mb-4 flex items-end gap-3">
-                            <div class="flex-grow"><label class="text-xs text-wbGold font-bold uppercase">Senha de Acesso</label><input type="text" name="senha_cliente" id="inputSenhaCliente" class="input-wb text-center font-bold tracking-widest text-lg" value="WB2026"></div>
-                            <button type="button" onclick="document.getElementById('inputSenhaCliente').value = Math.random().toString(36).slice(-8).toUpperCase()" class="bg-gray-700 text-white px-3 py-3 rounded"><i class="fa-solid fa-shuffle"></i> Gerar</button>
-                        </div>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-                            <div><label class="text-xs text-gray-500">Nacionalidade</label><input type="text" name="pais" class="input-wb" required></div>
-                            <div><label class="text-xs text-gray-500">WhatsApp</label><input type="text" name="whatsapp" oninput="maskPhone(this)" class="input-wb"></div>
-                            <div><label class="text-xs text-gray-500">Email</label><input type="email" name="email" class="input-wb"></div>
-                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-4"><div><label class="text-xs text-gray-500">Nome</label><input type="text" name="nome" class="input-wb" required></div><div><label class="text-xs text-gray-500">CPF (Login)</label><input type="text" name="cpf" oninput="maskCPF(this)" class="input-wb" required></div></div>
+                        <div class="bg-gray-800 p-4 rounded border border-gray-600 mb-4 flex items-end gap-3"><div class="flex-grow"><label class="text-xs text-wbGold font-bold uppercase">Senha de Acesso</label><input type="text" name="senha_cliente" id="inputSenhaCliente" class="input-wb text-center font-bold tracking-widest text-lg" value="WB2026"></div><button type="button" onclick="document.getElementById('inputSenhaCliente').value = Math.random().toString(36).slice(-8).toUpperCase()" class="bg-gray-700 text-white px-3 py-3 rounded"><i class="fa-solid fa-shuffle"></i> Gerar</button></div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-5"><div><label class="text-xs text-gray-500">Nacionalidade</label><input type="text" name="pais" class="input-wb" required></div><div><label class="text-xs text-gray-500">WhatsApp</label><input type="text" name="whatsapp" oninput="maskPhone(this)" class="input-wb"></div><div><label class="text-xs text-gray-500">Email</label><input type="email" name="email" class="input-wb"></div></div>
+                    </div>
+                    <div class="bg-black/30 p-4 rounded border border-gray-700">
+                        <label class="flex items-center gap-3 cursor-pointer">
+                            <input type="checkbox" required class="w-5 h-5 accent-wbGold rounded bg-gray-700 border-gray-600">
+                            <span class="text-xs text-gray-400">Declaro que o cliente está ciente e concorda com o processamento de dados conforme a <strong>LGPD (Lei 13.709/2018)</strong> para fins de processo migratório.</span>
+                        </label>
                     </div>
                     <div class="bg-wbInput p-6 rounded-xl border border-gray-800">
                         <h3 class="text-green-500 font-bold text-sm uppercase mb-4">Critérios Legais</h3>
-                        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-                            <div><label class="text-xs text-gray-500">Tempo Brasil</label><select name="tempo_brasil" class="input-wb text-wbGold font-bold"><option value="4 anos ou mais">4 anos ou mais</option><option value="1 a 3 anos">1 a 3 anos</option><option value="Menos de 1 ano">Menos de 1 ano</option></select></div>
-                            <div><label class="text-xs text-gray-500">RNE</label><select name="rne_tipo" class="input-wb"><option value="Permanente">Permanente</option><option value="Provisorio">Provisório</option><option value="Temporario">Temporário</option></select></div>
-                            <div class="flex gap-4 pt-6"><label class="text-sm text-gray-300 flex items-center gap-2"><input type="checkbox" name="filho_br" value="Sim" class="accent-wbGold"> Filho BR</label><label class="text-sm text-gray-300 flex items-center gap-2"><input type="checkbox" name="conjuge_br" value="Sim" class="accent-wbGold"> Cônjuge BR</label></div>
-                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-5"><div><label class="text-xs text-gray-500">Tempo Brasil</label><select name="tempo_brasil" class="input-wb text-wbGold font-bold"><option value="4 anos ou mais">4 anos ou mais</option><option value="1 a 3 anos">1 a 3 anos</option><option value="Menos de 1 ano">Menos de 1 ano</option></select></div><div><label class="text-xs text-gray-500">RNE</label><select name="rne_tipo" class="input-wb"><option value="Permanente">Permanente</option><option value="Provisorio">Provisório</option><option value="Temporario">Temporário</option></select></div><div class="flex gap-4 pt-6"><label class="text-sm text-gray-300 flex items-center gap-2"><input type="checkbox" name="filho_br" value="Sim" class="accent-wbGold"> Filho BR</label><label class="text-sm text-gray-300 flex items-center gap-2"><input type="checkbox" name="conjuge_br" value="Sim" class="accent-wbGold"> Cônjuge BR</label></div></div>
                         <div class="mt-4"><label class="text-xs text-gray-500">Obs</label><textarea name="obs_vendas" class="input-wb h-16"></textarea></div>
                     </div>
                     <div class="bg-gray-900 p-6 rounded-xl border border-green-900/30"><div class="grid grid-cols-2 md:grid-cols-4 gap-4"><div><label class="text-[10px] text-gray-400">TOTAL</label><input type="text" name="valor_total" oninput="maskMoney(this)" class="input-wb text-green-400 font-bold"></div><div><label class="text-[10px] text-gray-400">ENTRADA</label><input type="text" name="valor_entrada" oninput="maskMoney(this)" class="input-wb"></div><div><label class="text-[10px] text-gray-400">PARCELAS</label><input type="number" name="qtd_parcelas" class="input-wb"></div><div><label class="text-[10px] text-gray-400">VALOR PARC.</label><input type="text" name="valor_parcela" oninput="maskMoney(this)" class="input-wb"></div></div></div>
                     <button type="submit" id="btnSalvar" class="w-full btn-gold py-5 rounded-xl font-bold text-lg shadow-xl flex items-center justify-center gap-3"><span id="txtBotao">CADASTRAR E ANALISAR</span> <i class="fa-solid fa-paper-plane"></i></button>
                 </form>
             </div>
-
             <div id="tab-crm-board" class="max-w-6xl mx-auto mt-10 hidden"><h2 class="text-white mb-4 text-xl font-bold border-l-4 border-wbGold pl-3">Meus Processos</h2><div class="overflow-x-auto rounded border border-gray-800 bg-wbInput"><table class="w-full text-left text-sm text-gray-400"><thead class="bg-gray-900 text-xs uppercase font-bold text-gray-500"><tr><th class="p-4">Cliente</th><th class="p-4 text-center">Origem</th><th class="p-4 text-center">Ficha</th><th class="p-4 text-right">Análise</th></tr></thead><tbody id="crm-body"></tbody></table></div></div>
-            
-            <div id="tab-financeiro" class="hidden animate-fade-in max-w-6xl mx-auto">
-                <div class="flex justify-between items-center mb-8"><h2 class="text-3xl font-bold text-white">Central Financeira</h2><div class="flex gap-2"><button class="bg-wbInput border border-gray-700 text-white px-4 py-2 rounded hover:bg-gray-800"><i class="fa-solid fa-filter mr-2"></i>Filtros</button><button class="bg-wbGold text-black px-4 py-2 rounded font-bold hover:bg-yellow-500"><i class="fa-solid fa-file-export mr-2"></i>Relatório</button></div></div>
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8"><div class="bg-wbInput border border-gray-800 p-6 rounded-xl flex items-center gap-4"><div class="w-12 h-12 rounded-full bg-green-900/30 text-green-500 flex items-center justify-center text-xl"><i class="fa-solid fa-arrow-up"></i></div><div><p class="text-gray-500 text-xs uppercase font-bold">Total Recebido</p><h3 class="text-2xl font-bold text-white">R$ 45.200,00</h3></div></div><div class="bg-wbInput border border-gray-800 p-6 rounded-xl flex items-center gap-4"><div class="w-12 h-12 rounded-full bg-yellow-900/30 text-yellow-500 flex items-center justify-center text-xl"><i class="fa-solid fa-clock"></i></div><div><p class="text-gray-500 text-xs uppercase font-bold">A Receber</p><h3 class="text-2xl font-bold text-white">R$ 12.850,00</h3></div></div><div class="bg-wbInput border border-gray-800 p-6 rounded-xl flex items-center gap-4"><div class="w-12 h-12 rounded-full bg-red-900/30 text-red-500 flex items-center justify-center text-xl"><i class="fa-solid fa-triangle-exclamation"></i></div><div><p class="text-gray-500 text-xs uppercase font-bold">Inadimplência</p><h3 class="text-2xl font-bold text-white">R$ 3.400,00</h3></div></div></div>
-                <div class="bg-wbInput rounded-xl border border-gray-800 overflow-hidden"><div class="p-4 border-b border-gray-800 bg-gray-900 flex gap-4"><div class="relative flex-grow"><i class="fa-solid fa-search absolute left-3 top-3 text-gray-500"></i><input type="text" oninput="filtrarFinanceiro(this.value)" class="w-full bg-black border border-gray-700 rounded pl-10 py-2 text-white text-sm" placeholder="Buscar por cliente ou CPF..."></div></div><div class="overflow-x-auto"><table class="w-full text-left text-sm text-gray-400"><thead class="bg-gray-900 text-xs uppercase font-bold text-gray-500"><tr><th class="p-4">Cliente</th><th class="p-4">Vencimento</th><th class="p-4">Valor</th><th class="p-4 text-center">Status</th><th class="p-4 text-center">Ações</th></tr></thead><tbody id="financeiro-body"><tr class="border-b border-gray-800 hover:bg-gray-900/50 transition"><td class="p-4 font-bold text-white">Jean Pierre <div class="text-[10px] text-gray-500">Nat. Brasileira</div></td><td class="p-4 text-white">25/01/2026</td><td class="p-4 text-white">R$ 500,00</td><td class="p-4 text-center"><span class="badge-fin fin-pendente">Pendente</span></td><td class="p-4 text-center flex justify-center gap-2"><button class="text-green-500 hover:text-green-400 p-2"><i class="fa-brands fa-whatsapp text-lg"></i></button><button class="text-wbGold hover:text-yellow-400 p-2"><i class="fa-solid fa-pen"></i></button></td></tr></tbody></table></div></div>
-            </div>
+            <div id="tab-financeiro" class="hidden animate-fade-in max-w-6xl mx-auto"><div class="flex justify-between items-center mb-8"><h2 class="text-3xl font-bold text-white">Central Financeira</h2><div class="flex gap-2"><button class="bg-wbInput border border-gray-700 text-white px-4 py-2 rounded hover:bg-gray-800"><i class="fa-solid fa-filter mr-2"></i>Filtros</button><button class="bg-wbGold text-black px-4 py-2 rounded font-bold hover:bg-yellow-500"><i class="fa-solid fa-file-export mr-2"></i>Relatório</button></div></div><div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8"><div class="bg-wbInput border border-gray-800 p-6 rounded-xl flex items-center gap-4"><div class="w-12 h-12 rounded-full bg-green-900/30 text-green-500 flex items-center justify-center text-xl"><i class="fa-solid fa-arrow-up"></i></div><div><p class="text-gray-500 text-xs uppercase font-bold">Total Recebido</p><h3 class="text-2xl font-bold text-white">R$ 45.200,00</h3></div></div><div class="bg-wbInput border border-gray-800 p-6 rounded-xl flex items-center gap-4"><div class="w-12 h-12 rounded-full bg-yellow-900/30 text-yellow-500 flex items-center justify-center text-xl"><i class="fa-solid fa-clock"></i></div><div><p class="text-gray-500 text-xs uppercase font-bold">A Receber</p><h3 class="text-2xl font-bold text-white">R$ 12.850,00</h3></div></div><div class="bg-wbInput border border-gray-800 p-6 rounded-xl flex items-center gap-4"><div class="w-12 h-12 rounded-full bg-red-900/30 text-red-500 flex items-center justify-center text-xl"><i class="fa-solid fa-triangle-exclamation"></i></div><div><p class="text-gray-500 text-xs uppercase font-bold">Inadimplência</p><h3 class="text-2xl font-bold text-white">R$ 3.400,00</h3></div></div></div><div class="bg-wbInput rounded-xl border border-gray-800 overflow-hidden"><div class="p-4 border-b border-gray-800 bg-gray-900 flex gap-4"><div class="relative flex-grow"><i class="fa-solid fa-search absolute left-3 top-3 text-gray-500"></i><input type="text" oninput="filtrarFinanceiro(this.value)" class="w-full bg-black border border-gray-700 rounded pl-10 py-2 text-white text-sm" placeholder="Buscar por cliente ou CPF..."></div></div><div class="overflow-x-auto"><table class="w-full text-left text-sm text-gray-400"><thead class="bg-gray-900 text-xs uppercase font-bold text-gray-500"><tr><th class="p-4">Cliente</th><th class="p-4">Vencimento</th><th class="p-4">Valor</th><th class="p-4 text-center">Status</th><th class="p-4 text-center">Ações</th></tr></thead><tbody id="financeiro-body"><tr class="border-b border-gray-800 hover:bg-gray-900/50 transition"><td class="p-4 font-bold text-white">Jean Pierre <div class="text-[10px] text-gray-500">Nat. Brasileira</div></td><td class="p-4 text-white">25/01/2026</td><td class="p-4 text-white">R$ 500,00</td><td class="p-4 text-center"><span class="badge-fin fin-pendente">Pendente</span></td><td class="p-4 text-center flex justify-center gap-2"><button class="text-green-500 hover:text-green-400 p-2"><i class="fa-brands fa-whatsapp text-lg"></i></button><button class="text-wbGold hover:text-yellow-400 p-2"><i class="fa-solid fa-pen"></i></button></td></tr></tbody></table></div></div></div>
         </div>
     </div>
 
@@ -242,10 +204,7 @@
                 <div class="flex justify-between items-start mb-6"><h2 class="text-2xl font-bold text-white flex items-center gap-3"><i class="fa-solid fa-scale-balanced text-wbGold"></i> Status do Processo</h2><span class="text-xs font-bold bg-black/50 px-3 py-1 rounded text-gray-400 border border-gray-600">GOV.BR</span></div>
                 <div class="space-y-6">
                     <div><div class="flex justify-between text-sm mb-2 text-white font-bold"><span id="labelStatus">Novo Cliente</span><span id="percentStatus">10%</span></div><div class="w-full bg-gray-700 h-4 rounded-full overflow-hidden"><div id="barraProgresso" class="bg-blue-600 h-full transition-all duration-1000" style="width: 10%"></div></div></div>
-                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4">
-                         <div class="bg-black/50 p-4 rounded border border-gray-600 flex items-center gap-4"><div class="text-3xl text-gray-500"><i class="fa-solid fa-fingerprint"></i></div><div><p class="text-[10px] text-gray-400 uppercase">Número do Processo</p><p class="text-white font-bold text-lg" id="displayNumProcesso">Aguardando Protocolo</p></div></div>
-                         <div class="bg-black/50 p-4 rounded border border-gray-600 flex items-center gap-4 cursor-pointer hover:bg-gray-800 transition"><div class="text-3xl text-gray-500"><i class="fa-solid fa-image"></i></div><div><p class="text-[10px] text-gray-400 uppercase">Print do Sistema (GOV.BR)</p><p class="text-wbGold font-bold text-sm">Visualizar Comprovante</p></div></div>
-                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mt-4"><div class="bg-black/50 p-4 rounded border border-gray-600 flex items-center gap-4"><div class="text-3xl text-gray-500"><i class="fa-solid fa-fingerprint"></i></div><div><p class="text-[10px] text-gray-400 uppercase">Número do Processo</p><p class="text-white font-bold text-lg" id="displayNumProcesso">Aguardando Protocolo</p></div></div><div class="bg-black/50 p-4 rounded border border-gray-600 flex items-center gap-4 cursor-pointer hover:bg-gray-800 transition"><div class="text-3xl text-gray-500"><i class="fa-solid fa-image"></i></div><div><p class="text-[10px] text-gray-400 uppercase">Print do Sistema (GOV.BR)</p><p class="text-wbGold font-bold text-sm">Visualizar Comprovante</p></div></div></div>
                 </div>
             </div>
             <div class="bg-gray-900 border border-purple-900/50 p-6 rounded-2xl shadow-lg relative overflow-hidden">
@@ -259,12 +218,7 @@
             </div>
             <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
                 <div class="bg-wbInput p-6 rounded-2xl border border-gray-800"><h3 class="text-white font-bold mb-6 flex items-center gap-2"><i class="fa-solid fa-clipboard-check text-blue-400"></i> Checklist de Documentos</h3><div class="space-y-2 max-h-60 overflow-y-auto pr-2" id="checklist-cliente"></div></div>
-                <div class="bg-wbInput p-6 rounded-2xl border border-gray-800">
-                    <h3 class="text-white font-bold mb-6 flex items-center gap-2"><i class="fa-solid fa-sack-dollar text-green-500"></i> Meu Financeiro</h3>
-                    <div class="space-y-6"><div><div class="flex justify-between text-sm mb-1"><span class="text-gray-400">Progresso</span><span class="text-green-400 font-bold">60% Pago</span></div><div class="w-full bg-gray-700 h-3 rounded-full overflow-hidden"><div class="bg-green-500 h-full" style="width: 60%"></div></div></div>
-                        <div class="grid grid-cols-2 gap-4 mt-4"><div class="bg-black/40 p-3 rounded border border-gray-700 text-center"><p class="text-[10px] text-gray-500 uppercase">Total Pago</p><p class="text-green-400 font-bold text-lg">R$ 1.200,00</p></div><div class="bg-black/40 p-3 rounded border border-gray-700 text-center"><p class="text-[10px] text-gray-500 uppercase">Pendente</p><p class="text-red-400 font-bold text-lg">R$ 800,00</p></div></div>
-                    </div>
-                </div>
+                <div class="bg-wbInput p-6 rounded-2xl border border-gray-800"><h3 class="text-white font-bold mb-6 flex items-center gap-2"><i class="fa-solid fa-sack-dollar text-green-500"></i> Meu Financeiro</h3><div class="space-y-6"><div><div class="flex justify-between text-sm mb-1"><span class="text-gray-400">Progresso</span><span class="text-green-400 font-bold">60% Pago</span></div><div class="w-full bg-gray-700 h-3 rounded-full overflow-hidden"><div class="bg-green-500 h-full" style="width: 60%"></div></div></div><div class="grid grid-cols-2 gap-4 mt-4"><div class="bg-black/40 p-3 rounded border border-gray-700 text-center"><p class="text-[10px] text-gray-500 uppercase">Total Pago</p><p class="text-green-400 font-bold text-lg">R$ 1.200,00</p></div><div class="bg-black/40 p-3 rounded border border-gray-700 text-center"><p class="text-[10px] text-gray-500 uppercase">Pendente</p><p class="text-red-400 font-bold text-lg">R$ 800,00</p></div></div></div></div>
             </div>
             <a href="https://wa.link/pp2gw8" target="_blank" class="btn-whatsapp-float animate-pulse-slow"><i class="fa-brands fa-whatsapp text-2xl"></i> Falar com Especialista</a>
         </div>
@@ -281,108 +235,39 @@
             const container = document.getElementById('checklist-container-admin');
             container.innerHTML = checklistItems.map((item, idx) => `<label class="flex items-center space-x-3 p-3 bg-black/30 rounded border border-gray-800 cursor-pointer hover:bg-gray-800"><input type="checkbox" class="w-5 h-5 accent-wbGold rounded bg-gray-700 border-gray-600" id="chk_adm_${idx}"><span class="text-gray-300 text-sm">${item}</span></label>`).join('');
         }
-
+        
+        // UPGRADE: BOTÃO DE UPLOAD NO CHECKLIST DO CLIENTE
         function renderChecklistCliente() {
             const container = document.getElementById('checklist-cliente');
             container.innerHTML = checklistItems.map((item, idx) => {
                 const checked = idx < 5; 
                 const icon = checked ? '<i class="fa-solid fa-circle-check text-green-500"></i>' : '<i class="fa-regular fa-circle text-gray-600"></i>';
                 const color = checked ? 'text-white' : 'text-gray-500';
-                return `<div class="flex items-center justify-between p-3 border-b border-gray-800"><div class="flex items-center gap-3">${icon} <span class="${color} text-sm">${item}</span></div><span class="text-[10px] uppercase font-bold ${checked ? 'text-green-500' : 'text-red-500'}">${checked ? 'Entregue' : 'Pendente'}</span></div>`;
+                // Novo Botão de Upload
+                const uploadBtn = `<button onclick="alert('Enviaremos este arquivo para o Drive do Admin.')" class="ml-2 text-xs bg-gray-800 hover:bg-gray-700 text-wbGold px-2 py-1 rounded border border-gray-600"><i class="fa-solid fa-upload"></i> Enviar</button>`;
+                
+                return `<div class="flex items-center justify-between p-3 border-b border-gray-800">
+                    <div class="flex items-center gap-2">${icon} <span class="${color} text-sm">${item}</span></div>
+                    <div class="flex items-center gap-2">
+                        ${!checked ? uploadBtn : ''}
+                        <span class="text-[10px] uppercase font-bold ${checked ? 'text-green-500' : 'text-red-500'}">${checked ? 'OK' : 'Pendente'}</span>
+                    </div>
+                </div>`;
             }).join('');
         }
 
-        function mudarAbaFicha(aba) {
-            ['geral', 'processo', 'checklist'].forEach(t => { document.getElementById(`ficha-aba-${t}`).classList.add('hidden'); document.getElementById(`tab-btn-${t}`).classList.remove('text-wbGold', 'border-b-2', 'border-wbGold'); document.getElementById(`tab-btn-${t}`).classList.add('text-gray-500'); });
-            document.getElementById(`ficha-aba-${aba}`).classList.remove('hidden');
-            const activeBtn = document.getElementById(`tab-btn-${aba}`);
-            activeBtn.classList.add('text-wbGold', 'border-b-2', 'border-wbGold'); activeBtn.classList.remove('text-gray-500');
-        }
-
-        function atualizarStatusVisual(status) {
-            const barra = document.getElementById('barraProgresso');
-            const percentTxt = document.getElementById('percentStatus');
-            const labelTxt = document.getElementById('labelStatus');
-            let w = '10%'; let color = 'bg-blue-600';
-            if(status === 'Novo Cliente') { w='10%'; }
-            else if(status === 'Montando Documentações') { w='30%'; }
-            else if(status === 'Processo Sendo Montado') { w='50%'; }
-            else if(status === 'Ainda Não Protocolado') { w='70%'; color='bg-yellow-500'; }
-            else if(status === 'Processo Protocolado') { w='90%'; color='bg-blue-500'; }
-            else if(status === 'Deferido') { w='100%'; color='bg-green-500'; }
-            else if(status === 'Indeferido') { w='100%'; color='bg-red-600'; }
-            barra.style.width = w; barra.className = `h-full transition-all duration-1000 ${color}`; percentTxt.innerText = w; labelTxt.innerText = status;
-        }
-
-        function salvarFicha() {
-            const status = document.getElementById('fichaStatusProcesso').value;
-            const numProcesso = document.getElementById('fichaNumProcesso').value;
-            const loginCurso = document.getElementById('fichaCursoLogin').value;
-            atualizarStatusVisual(status);
-            if(numProcesso) document.getElementById('displayNumProcesso').innerText = numProcesso;
-            if(loginCurso) document.getElementById('displayCursoCredenciais').innerText = loginCurso + " / ******";
-            alert("✅ Dados Salvos!");
-            document.getElementById('modalFicha').classList.add('hidden');
-        }
-
-        function mudarModo(modo) {
-            modoCadastro = modo;
-            document.getElementById('opt-novo').classList.remove('selected'); document.getElementById('opt-antigo').classList.remove('selected'); document.getElementById('opt-' + modo).classList.add('selected');
-            const bloco = document.getElementById('bloco-migracao'); const inputAntigo = document.getElementById('inputEhAntigo'); const txtBtn = document.getElementById('txtBotao');
-            if (modo === 'antigo') { bloco.classList.remove('hidden'); inputAntigo.value = 'true'; txtBtn.innerText = 'MIGRAR CLIENTE (BASE)'; } else { bloco.classList.add('hidden'); inputAntigo.value = 'false'; txtBtn.innerText = 'CADASTRAR E ANALISAR'; }
-        }
-
-        function fazerLogin(e) {
-            e.preventDefault();
-            const u = document.getElementById('loginUser').value.toLowerCase().replace(/\D/g, ""); 
-            const u_raw = document.getElementById('loginUser').value.toLowerCase();
-            document.getElementById('login-screen').classList.add('hidden');
-            
-            // ADMIN (VER TUDO)
-            if (u_raw === 'admin') {
-                document.getElementById('dashboard-colaborador').classList.remove('hidden');
-                document.querySelectorAll('.role-diretor').forEach(el => el.classList.remove('hidden-role'));
-                document.getElementById('userNameDisplay').innerText = "Admin Master";
-                document.getElementById('avatarLetter').innerText = "A";
-            } 
-            // VENDAS (RESTRITO)
-            else if (u_raw === 'vendas') {
-                document.getElementById('dashboard-colaborador').classList.remove('hidden');
-                document.querySelectorAll('.role-diretor').forEach(el => el.classList.add('hidden-role'));
-                document.getElementById('userNameDisplay').innerText = "Vendedor";
-                document.getElementById('avatarLetter').innerText = "V";
-            } 
-            // CLIENTE
-            else {
-                document.getElementById('dashboard-cliente').classList.remove('hidden');
-                document.getElementById('clienteCpfDisplay').innerText = u.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4");
-                document.getElementById('clienteNomeDisplay').innerText = "Cliente Acesso";
-                atualizarStatusVisual('Montando Documentações');
-            }
-        }
-
+        function mudarAbaFicha(aba) { ['geral', 'processo', 'checklist'].forEach(t => { document.getElementById(`ficha-aba-${t}`).classList.add('hidden'); document.getElementById(`tab-btn-${t}`).classList.remove('text-wbGold', 'border-b-2', 'border-wbGold'); document.getElementById(`tab-btn-${t}`).classList.add('text-gray-500'); }); document.getElementById(`ficha-aba-${aba}`).classList.remove('hidden'); const activeBtn = document.getElementById(`tab-btn-${aba}`); activeBtn.classList.add('text-wbGold', 'border-b-2', 'border-wbGold'); activeBtn.classList.remove('text-gray-500'); }
+        function atualizarStatusVisual(status) { const barra = document.getElementById('barraProgresso'); const percentTxt = document.getElementById('percentStatus'); const labelTxt = document.getElementById('labelStatus'); let w = '10%'; let color = 'bg-blue-600'; if(status === 'Novo Cliente') { w='10%'; } else if(status === 'Montando Documentações') { w='30%'; } else if(status === 'Processo Sendo Montado') { w='50%'; } else if(status === 'Ainda Não Protocolado') { w='70%'; color='bg-yellow-500'; } else if(status === 'Processo Protocolado') { w='90%'; color='bg-blue-500'; } else if(status === 'Deferido') { w='100%'; color='bg-green-500'; } else if(status === 'Indeferido') { w='100%'; color='bg-red-600'; } barra.style.width = w; barra.className = `h-full transition-all duration-1000 ${color}`; percentTxt.innerText = w; labelTxt.innerText = status; }
+        function salvarFicha() { const status = document.getElementById('fichaStatusProcesso').value; const numProcesso = document.getElementById('fichaNumProcesso').value; const loginCurso = document.getElementById('fichaCursoLogin').value; atualizarStatusVisual(status); if(numProcesso) document.getElementById('displayNumProcesso').innerText = numProcesso; if(loginCurso) document.getElementById('displayCursoCredenciais').innerText = loginCurso + " / ******"; alert("✅ Dados Salvos!"); document.getElementById('modalFicha').classList.add('hidden'); }
+        function mudarModo(modo) { modoCadastro = modo; document.getElementById('opt-novo').classList.remove('selected'); document.getElementById('opt-antigo').classList.remove('selected'); document.getElementById('opt-' + modo).classList.add('selected'); const bloco = document.getElementById('bloco-migracao'); const inputAntigo = document.getElementById('inputEhAntigo'); const txtBtn = document.getElementById('txtBotao'); if (modo === 'antigo') { bloco.classList.remove('hidden'); inputAntigo.value = 'true'; txtBtn.innerText = 'MIGRAR CLIENTE (BASE)'; } else { bloco.classList.add('hidden'); inputAntigo.value = 'false'; txtBtn.innerText = 'CADASTRAR E ANALISAR'; } }
+        function fazerLogin(e) { e.preventDefault(); const u = document.getElementById('loginUser').value.toLowerCase().replace(/\D/g, ""); const u_raw = document.getElementById('loginUser').value.toLowerCase(); document.getElementById('login-screen').classList.add('hidden'); if (u_raw === 'admin') { document.getElementById('dashboard-colaborador').classList.remove('hidden'); document.querySelectorAll('.role-diretor').forEach(el => el.classList.remove('hidden-role')); document.getElementById('userNameDisplay').innerText = "Admin Master"; document.getElementById('avatarLetter').innerText = "A"; } else if (u_raw === 'vendas') { document.getElementById('dashboard-colaborador').classList.remove('hidden'); document.querySelectorAll('.role-diretor').forEach(el => el.classList.add('hidden-role')); document.getElementById('userNameDisplay').innerText = "Vendedor"; document.getElementById('avatarLetter').innerText = "V"; } else { document.getElementById('dashboard-cliente').classList.remove('hidden'); document.getElementById('clienteCpfDisplay').innerText = u.replace(/(\d{3})(\d{3})(\d{3})(\d{2})/, "$1.$2.$3-$4"); document.getElementById('clienteNomeDisplay').innerText = "Cliente Acesso"; atualizarStatusVisual('Montando Documentações'); } }
         function showTab(t) { document.querySelectorAll('[id^="tab-"]').forEach(el => el.classList.add('hidden')); document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active')); document.getElementById('tab-'+t).classList.remove('hidden'); document.getElementById('btn-'+t).classList.add('active'); }
         function maskCPF(i){i.value=i.value.replace(/\D/g,"").replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d{1,2})$/,"$1-$2");}
         function maskPhone(i){i.value=i.value.replace(/\D/g,"").replace(/^(\d{2})(\d)/,"($1) $2").replace(/(\d)(\d{4})$/,"$1-$2");}
         function maskMoney(i){let v=i.value.replace(/\D/g,"");v=(v/100).toFixed(2)+"";i.value="R$ "+v.replace(".",",").replace(/(\d)(?=(\d{3})+(?!\d))/g,"$1.");}
-
-        async function enviarDados(e) {
-            e.preventDefault(); const btn = document.getElementById('btnSalvar'); const originalText = btn.innerHTML; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processando...'; btn.disabled = true; if(modoCadastro === 'novo') abrirModalIA(true);
-            try { const formData = new FormData(document.getElementById('formCliente')); const driveMigracao = document.getElementById('inputDriveMigracao').value; const response = await fetch(WEBHOOK_URL, { method: 'POST', body: formData }); const textoIA = await response.text(); if(modoCadastro === 'novo') mostrarResultadoIA(textoIA); else alert("✅ Cliente Antigo Migrado!"); adicionarNaTabela(formData.get('nome'), textoIA, modoCadastro, driveMigracao); document.getElementById('formCliente').reset(); mudarModo('novo'); } catch (err) { if(modoCadastro === 'novo') document.getElementById('conteudoIA').innerHTML = `<p class="text-red-500">Erro: Make OFF.</p>`; else alert("Erro ao salvar."); } finally { btn.innerHTML = originalText; btn.disabled = false; }
-        }
-
-        async function enviarMigracaoRapida(e) {
-             e.preventDefault(); const btn = document.getElementById('btnMigrarRapido'); btn.innerHTML = '...'; btn.disabled = true;
-             try { const formData = new FormData(document.getElementById('formMigracaoRapida')); await fetch(WEBHOOK_URL, { method: 'POST', body: formData }); alert("✅ Migrado!"); document.getElementById('modalMigracaoRapida').classList.add('hidden'); } catch(err) { alert("Erro conexão."); } finally { btn.innerHTML = 'CONFIRMAR'; btn.disabled = false; }
-        }
-
-        function adicionarNaTabela(nome, analise, tipo, driveLink) {
-            const tbody = document.getElementById('crm-body');
-            let badgeHtml = tipo === 'antigo' ? '<span class="bg-purple-900 text-purple-300 px-3 py-1 rounded text-xs font-bold uppercase border border-purple-700">BASE ANTIGA</span>' : '<span class="bg-blue-900 text-blue-300 px-3 py-1 rounded text-xs font-bold uppercase border border-blue-700">NOVA VENDA</span>';
-            const novaLinha = `<tr class="border-b border-gray-800 hover:bg-gray-900 transition animate-fade-in"><td class="p-4 font-bold text-white cursor-pointer hover:text-wbGold" onclick="abrirFicha('${nome}', '${encodeURIComponent(analise)}', '${driveLink}')">${nome}</td><td class="p-4 text-center">${badgeHtml}</td><td class="p-4 text-center"><button onclick="abrirFicha('${nome}', '${encodeURIComponent(analise)}', '${driveLink}')" class="text-gray-400 hover:text-white transition"><i class="fa-solid fa-folder-open text-xl"></i></button></td><td class="p-4 text-right"><button onclick="verAnaliseDeNovo('${encodeURIComponent(analise)}')" class="text-wbGold font-bold text-xs border border-wbGold px-3 py-1 rounded hover:bg-wbGold hover:text-black transition">PARECER</button></td></tr>`;
-            tbody.innerHTML = novaLinha + tbody.innerHTML;
-        }
-
+        async function enviarDados(e) { e.preventDefault(); const btn = document.getElementById('btnSalvar'); const originalText = btn.innerHTML; btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processando...'; btn.disabled = true; if(modoCadastro === 'novo') abrirModalIA(true); try { const formData = new FormData(document.getElementById('formCliente')); const driveMigracao = document.getElementById('inputDriveMigracao').value; const response = await fetch(WEBHOOK_URL, { method: 'POST', body: formData }); const textoIA = await response.text(); if(modoCadastro === 'novo') mostrarResultadoIA(textoIA); else alert("✅ Cliente Antigo Migrado!"); adicionarNaTabela(formData.get('nome'), textoIA, modoCadastro, driveMigracao); document.getElementById('formCliente').reset(); mudarModo('novo'); } catch (err) { if(modoCadastro === 'novo') document.getElementById('conteudoIA').innerHTML = `<p class="text-red-500">Erro: Make OFF.</p>`; else alert("Erro ao salvar."); } finally { btn.innerHTML = originalText; btn.disabled = false; } }
+        async function enviarMigracaoRapida(e) { e.preventDefault(); const btn = document.getElementById('btnMigrarRapido'); btn.innerHTML = '...'; btn.disabled = true; try { const formData = new FormData(document.getElementById('formMigracaoRapida')); await fetch(WEBHOOK_URL, { method: 'POST', body: formData }); alert("✅ Migrado!"); document.getElementById('modalMigracaoRapida').classList.add('hidden'); } catch(err) { alert("Erro conexão."); } finally { btn.innerHTML = 'CONFIRMAR'; btn.disabled = false; } }
+        function adicionarNaTabela(nome, analise, tipo, driveLink) { const tbody = document.getElementById('crm-body'); let badgeHtml = tipo === 'antigo' ? '<span class="bg-purple-900 text-purple-300 px-3 py-1 rounded text-xs font-bold uppercase border border-purple-700">BASE ANTIGA</span>' : '<span class="bg-blue-900 text-blue-300 px-3 py-1 rounded text-xs font-bold uppercase border border-blue-700">NOVA VENDA</span>'; const novaLinha = `<tr class="border-b border-gray-800 hover:bg-gray-900 transition animate-fade-in"><td class="p-4 font-bold text-white cursor-pointer hover:text-wbGold" onclick="abrirFicha('${nome}', '${encodeURIComponent(analise)}', '${driveLink}')">${nome}</td><td class="p-4 text-center">${badgeHtml}</td><td class="p-4 text-center"><button onclick="abrirFicha('${nome}', '${encodeURIComponent(analise)}', '${driveLink}')" class="text-gray-400 hover:text-white transition"><i class="fa-solid fa-folder-open text-xl"></i></button></td><td class="p-4 text-right"><button onclick="verAnaliseDeNovo('${encodeURIComponent(analise)}')" class="text-wbGold font-bold text-xs border border-wbGold px-3 py-1 rounded hover:bg-wbGold hover:text-black transition">PARECER</button></td></tr>`; tbody.innerHTML = novaLinha + tbody.innerHTML; }
         function abrirFicha(nome, analiseEncoded, driveLink) { document.getElementById('modalFicha').classList.remove('hidden'); document.getElementById('fichaNome').innerText = nome; if(driveLink && driveLink !== 'undefined') document.getElementById('fichaDriveLink').value = driveLink; mudarAbaFicha('geral'); }
         function abrirModalIA(l){document.getElementById('modalAnalise').classList.remove('hidden');if(l){document.getElementById('loaderIA').classList.remove('hidden');document.getElementById('conteudoIA').classList.add('hidden');}}
         function mostrarResultadoIA(t){document.getElementById('loaderIA').classList.add('hidden');document.getElementById('conteudoIA').classList.remove('hidden');document.getElementById('conteudoIA').innerHTML = t.replace(/\n/g, '<br>');}
