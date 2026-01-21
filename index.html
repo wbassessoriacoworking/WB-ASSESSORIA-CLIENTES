@@ -3,14 +3,20 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WB System - Análise Jurídica</title>
+    <title>WB System - Naturalização & IA</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <script>
         tailwind.config = {
             theme: {
                 extend: {
-                    colors: { wbGold: '#d4af37', wbGray: '#121212', wbInput: '#1a1a1a', mondayGreen: '#00c875' },
+                    colors: { 
+                        wbGold: '#d4af37', 
+                        wbDark: '#050505', 
+                        wbGray: '#121212', 
+                        wbInput: '#1a1a1a',
+                        mondayGreen: '#00c875' 
+                    },
                     animation: { 'fade-in': 'fadeIn 0.5s ease-out' },
                     keyframes: { fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } } }
                 }
@@ -19,14 +25,23 @@
     </script>
     <style>
         body { background-color: #000; color: #e5e5e5; font-family: 'Segoe UI', sans-serif; }
-        .input-wb { width: 100%; background: #1a1a1a; border: 1px solid #333; padding: 12px; border-radius: 6px; color: white; }
-        .input-wb:focus { border-color: #d4af37; outline: none; }
-        .btn-gold { background: linear-gradient(45deg, #d4af37, #b5952f); color: black; font-weight: bold; }
         
-        /* Modal Style */
+        /* INPUTS */
+        .input-wb { width: 100%; background: #1a1a1a; border: 1px solid #333; padding: 12px; border-radius: 6px; color: white; transition: 0.3s; }
+        .input-wb:focus { border-color: #d4af37; outline: none; background: #222; }
+        
+        /* BOTÃO */
+        .btn-gold { background: linear-gradient(45deg, #d4af37, #b5952f); color: black; font-weight: bold; border: none; transition: 0.3s; }
+        .btn-gold:hover { transform: scale(1.02); box-shadow: 0 0 15px rgba(212, 175, 55, 0.3); }
+
+        /* MODAL (POP-UP) */
         .modal-overlay { background-color: rgba(0, 0, 0, 0.85); backdrop-filter: blur(5px); }
-        .typing-effect::after { content: '|'; animation: blink 1s infinite; }
-        @keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        
+        /* SIDEBAR */
+        .sidebar-item { cursor: pointer; padding: 14px; border-radius: 8px; transition: 0.3s; color: #888; display: flex; align-items: center; gap: 12px; margin-bottom: 5px; font-weight: 500; }
+        .sidebar-item:hover, .sidebar-item.active { background-color: #1a1a1a; color: #d4af37; border-left: 3px solid #d4af37; }
+        
+        .hidden-role { display: none !important; }
     </style>
 </head>
 <body class="h-screen overflow-hidden flex flex-col">
@@ -44,112 +59,219 @@
             <div class="p-8 overflow-y-auto">
                 <div id="loaderIA" class="text-center py-10 hidden">
                     <i class="fa-solid fa-circle-notch fa-spin text-4xl text-wbGold mb-4"></i>
-                    <p class="text-gray-400 animate-pulse">Consultando Portaria 623/2020 e Decreto 9.199...</p>
+                    <p class="text-gray-400 animate-pulse">Consultando Lei 13.445, Decreto 9.199 e Portaria 623...</p>
                 </div>
-                <div id="conteudoIA" class="space-y-4 text-sm leading-relaxed">
+                <div id="conteudoIA" class="space-y-4 text-sm leading-relaxed text-gray-300">
                     </div>
             </div>
             
             <div class="p-4 border-t border-gray-800 bg-gray-900 rounded-b-2xl text-right">
-                <button onclick="fecharModal()" class="bg-gray-700 text-white px-6 py-2 rounded-lg font-bold hover:bg-gray-600">Fechar</button>
+                <button onclick="fecharModal()" class="bg-gray-700 text-white px-6 py-2 rounded-lg font-bold hover:bg-gray-600 transition">Fechar Análise</button>
             </div>
         </div>
     </div>
 
-    <div class="flex h-full">
-        <div class="w-64 bg-wbGray border-r border-gray-800 p-6 hidden md:block">
-            <img src="logo.jpeg" class="w-12 h-12 rounded-full border border-wbGold mb-8">
-            <nav class="space-y-2 text-sm text-gray-400">
-                <div class="p-3 bg-wbInput rounded text-wbGold font-bold border-l-2 border-wbGold">Novo Cadastro</div>
-                <div class="p-3 hover:text-white cursor-pointer">CRM / Clientes</div>
+    <div id="login-screen" class="flex-grow flex items-center justify-center bg-gradient-to-br from-black to-gray-900 relative">
+        <div class="absolute inset-0 bg-[url('https://www.transparenttextures.com/patterns/cubes.png')] opacity-10"></div>
+        <div class="relative z-10 bg-wbGray p-10 rounded-2xl shadow-2xl w-full max-w-md border border-wbGold/20 animate-fade-in">
+            <div class="text-center mb-8">
+                <img src="logo.jpeg" class="w-24 h-24 mx-auto mb-4 rounded-full border-2 border-wbGold p-1">
+                <h2 class="text-3xl font-bold text-wbGold tracking-widest">WB SYSTEM</h2>
+                <p class="text-gray-500 text-sm">Acesso Restrito</p>
+            </div>
+            <form onsubmit="fazerLogin(event)" class="space-y-6">
+                <div><label class="text-[10px] text-wbGold font-bold uppercase ml-1">Usuário</label><input type="text" id="loginUser" class="input-wb" required></div>
+                <div><label class="text-[10px] text-wbGold font-bold uppercase ml-1">Senha</label><input type="password" id="loginPass" class="input-wb" required></div>
+                <button type="submit" class="w-full btn-gold py-4 rounded-lg text-sm font-bold uppercase tracking-widest">Entrar</button>
+            </form>
+            <div class="mt-8 text-center border-t border-gray-800 pt-4"><p class="text-[10px] text-gray-600">Logins: admin | vendas | cliente</p></div>
+        </div>
+    </div>
+
+    <div id="dashboard-colaborador" class="hidden h-full flex">
+        
+        <div class="w-72 bg-wbGray border-r border-gray-800 flex flex-col p-6 hidden md:flex">
+            <div class="flex items-center gap-4 mb-12">
+                <img src="logo.jpeg" class="w-12 h-12 rounded-full border border-wbGold">
+                <div><h1 class="font-bold text-wbGold text-xl">WB ADMIN</h1></div>
+            </div>
+            <nav class="space-y-2 flex-grow text-sm">
+                <div onclick="showTab('novo-cliente')" class="sidebar-item active" id="btn-novo-cliente"><i class="fa-solid fa-passport w-6 text-center"></i> Naturalização</div>
+                <div onclick="showTab('crm-board')" class="sidebar-item" id="btn-crm-board"><i class="fa-solid fa-users w-6 text-center"></i> CRM / Clientes</div>
+                
+                <div class="role-diretor mt-8 border-t border-gray-800 pt-4">
+                    <p class="text-[10px] text-gray-600 font-bold uppercase mb-2 ml-2">Diretoria</p>
+                    <div onclick="showTab('equipe')" class="sidebar-item"><i class="fa-solid fa-user-gear w-6 text-center"></i> Equipe</div>
+                    <div onclick="showTab('financeiro')" class="sidebar-item"><i class="fa-solid fa-chart-line w-6 text-center"></i> Financeiro</div>
+                </div>
             </nav>
+            <div class="flex items-center gap-3 mt-4 text-white p-3 bg-wbInput rounded-lg border border-gray-800">
+                <div class="w-8 h-8 bg-wbGold text-black font-bold rounded-full flex items-center justify-center" id="avatarLetter">A</div>
+                <span id="userNameDisplay" class="font-bold text-sm">Admin</span>
+            </div>
         </div>
 
-        <div class="flex-grow p-8 bg-black overflow-y-auto">
-            <h2 class="text-2xl font-bold text-white mb-6">Análise de Naturalização</h2>
+        <div class="flex-grow overflow-y-auto p-8 bg-black relative">
             
-            <form id="formCliente" onsubmit="enviarDados(event)" class="bg-wbInput p-8 rounded-xl border border-gray-800 space-y-6 max-w-4xl">
-                <input type="hidden" name="servico_interesse" value="Naturalizacao_BR">
-                
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-5">
-                    <div><label class="text-xs text-gray-500">Nome</label><input type="text" name="nome" id="inputNome" class="input-wb" required></div>
-                    <div><label class="text-xs text-gray-500">Nacionalidade</label><input type="text" name="pais" class="input-wb" required></div>
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
-                    <div><label class="text-xs text-gray-500">Tempo Brasil</label>
-                        <select name="tempo_brasil" class="input-wb">
-                            <option value="Menos de 1 ano">Menos de 1 ano</option>
-                            <option value="1 a 3 anos">1 a 3 anos</option>
-                            <option value="4 anos ou mais">4 anos ou mais</option>
-                        </select>
-                    </div>
-                    <div><label class="text-xs text-gray-500">RNE</label>
-                        <select name="rne_tipo" class="input-wb">
-                            <option value="Provisorio">Provisório</option>
-                            <option value="Permanente">Permanente</option>
-                            <option value="Indocumentado">Indocumentado</option>
-                        </select>
-                    </div>
-                    <div class="flex flex-col justify-center gap-2 text-sm text-gray-300">
-                        <label><input type="checkbox" name="filho_br" value="Sim" class="accent-wbGold"> Filho BR</label>
-                        <label><input type="checkbox" name="conjuge_br" value="Sim" class="accent-wbGold"> Cônjuge BR</label>
+            <div id="tab-novo-cliente" class="max-w-5xl mx-auto animate-fade-in">
+                <div class="flex justify-between items-end mb-6 border-b border-gray-800 pb-4">
+                    <div>
+                        <h2 class="text-3xl font-bold text-white">Naturalização Brasileira</h2>
+                        <p class="text-gray-500 text-sm mt-1">Análise jurídica automática (Lei 13.445/2017)</p>
                     </div>
                 </div>
 
-                <div class="pt-4">
-                    <button type="submit" id="btnSalvar" class="w-full btn-gold py-4 rounded-xl font-bold shadow-lg flex items-center justify-center gap-2">
-                        CADASTRAR E CONSULTAR IA <i class="fa-solid fa-magnifying-glass"></i>
+                <form id="formCliente" onsubmit="enviarDados(event)" class="space-y-6">
+                    <input type="hidden" name="tipo_cadastro" value="cliente">
+                    <input type="hidden" name="servico_interesse" value="Naturalizacao_BR">
+
+                    <div class="bg-wbInput p-6 rounded-xl border border-gray-800 shadow-lg">
+                        <h3 class="text-wbGold font-bold text-sm uppercase mb-4 border-b border-gray-800 pb-2"><i class="fa-solid fa-user mr-2"></i>Dados Pessoais</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-5 mb-4">
+                            <div><label class="text-xs text-gray-500">Nome Completo</label><input type="text" name="nome" id="inputNome" class="input-wb" required></div>
+                            <div><label class="text-xs text-gray-500">Nacionalidade</label><input type="text" name="pais" class="input-wb" required></div>
+                        </div>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                            <div><label class="text-xs text-gray-500">CPF</label><input type="text" name="cpf" oninput="maskCPF(this)" class="input-wb" required></div>
+                            <div><label class="text-xs text-gray-500">WhatsApp</label><input type="text" name="whatsapp" oninput="maskPhone(this)" class="input-wb"></div>
+                            <div><label class="text-xs text-gray-500">Email</label><input type="email" name="email" class="input-wb"></div>
+                        </div>
+                    </div>
+
+                    <div class="bg-wbInput p-6 rounded-xl border border-gray-800 shadow-lg">
+                        <h3 class="text-green-500 font-bold text-sm uppercase mb-4 border-b border-gray-800 pb-2"><i class="fa-solid fa-scale-balanced mr-2"></i>Critérios de Elegibilidade</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-5">
+                            <div><label class="text-xs text-gray-500">Tempo de Residência</label>
+                                <select name="tempo_brasil" class="input-wb text-wbGold font-bold">
+                                    <option value="Menos de 1 ano">Menos de 1 ano</option>
+                                    <option value="1 a 2 anos">1 a 2 anos</option>
+                                    <option value="2 a 3 anos">2 a 3 anos</option>
+                                    <option value="4 anos ou mais">4 anos ou mais (Regra Geral)</option>
+                                </select>
+                            </div>
+                            <div><label class="text-xs text-gray-500">Status RNE</label>
+                                <select name="rne_tipo" class="input-wb">
+                                    <option value="Provisorio">Provisório / Protocolo</option>
+                                    <option value="Temporario">Temporário</option>
+                                    <option value="Permanente">Permanente (Definitivo)</option>
+                                </select>
+                            </div>
+                            <div class="bg-black/40 p-3 rounded border border-gray-700">
+                                <label class="text-xs text-gray-400 block mb-2">Vínculos Familiares</label>
+                                <div class="flex gap-4">
+                                    <label class="flex items-center gap-2 cursor-pointer text-sm text-gray-200"><input type="checkbox" name="filho_br" value="Sim" class="accent-wbGold"> Filho BR</label>
+                                    <label class="flex items-center gap-2 cursor-pointer text-sm text-gray-200"><input type="checkbox" name="conjuge_br" value="Sim" class="accent-wbGold"> Cônjuge BR</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-4">
+                            <label class="text-xs text-gray-500">Observações</label>
+                            <textarea name="obs_vendas" class="input-wb h-16" placeholder="Detalhes adicionais..."></textarea>
+                        </div>
+                    </div>
+
+                    <div class="bg-gray-900 p-6 rounded-xl border border-green-900/30 shadow-lg">
+                        <div class="flex justify-between items-center mb-4">
+                            <h3 class="text-green-500 font-bold text-sm uppercase"><i class="fa-solid fa-money-bill-wave mr-2"></i>Proposta Financeira</h3>
+                        </div>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <div><label class="text-[10px] text-gray-400">TOTAL</label><input type="text" name="valor_total" oninput="maskMoney(this)" class="input-wb text-green-400 font-bold text-lg" placeholder="R$"></div>
+                            <div><label class="text-[10px] text-gray-400">ENTRADA</label><input type="text" name="valor_entrada" oninput="maskMoney(this)" class="input-wb" placeholder="R$"></div>
+                            <div><label class="text-[10px] text-gray-400">PARCELAS</label><input type="number" name="qtd_parcelas" class="input-wb text-center" placeholder="Qtd"></div>
+                            <div><label class="text-[10px] text-gray-400">VALOR PARC.</label><input type="text" name="valor_parcela" oninput="maskMoney(this)" class="input-wb" placeholder="R$"></div>
+                        </div>
+                    </div>
+
+                    <button type="submit" id="btnSalvar" class="w-full btn-gold py-5 rounded-xl font-bold text-lg shadow-xl hover:shadow-yellow-600/20 transition flex items-center justify-center gap-3">
+                        <span>CADASTRAR E CONSULTAR IA</span> <i class="fa-solid fa-robot"></i>
                     </button>
-                </div>
-            </form>
-
-            <div class="mt-10">
-                <h3 class="text-white font-bold mb-4 border-l-4 border-wbGold pl-3">Últimos Cadastros</h3>
-                <table class="w-full text-left text-sm text-gray-400">
-                    <thead class="bg-gray-900 text-xs uppercase"><tr><th class="p-3">Cliente</th><th class="p-3">Status</th><th class="p-3 text-right">Ação</th></tr></thead>
-                    <tbody id="crm-body">
-                        </tbody>
-                </table>
+                </form>
             </div>
+
+            <div id="tab-crm-board" class="max-w-6xl mx-auto mt-10 hidden">
+                <h2 class="text-white mb-4 text-xl font-bold border-l-4 border-wbGold pl-3">Meus Processos</h2>
+                <div class="overflow-x-auto rounded border border-gray-800 bg-wbInput">
+                    <table class="w-full text-left text-sm text-gray-400">
+                        <thead class="bg-gray-900 text-xs uppercase font-bold text-gray-500">
+                            <tr><th class="p-4">Cliente</th><th class="p-4 text-center">Status</th><th class="p-4 text-right">Ação</th></tr>
+                        </thead>
+                        <tbody id="crm-body">
+                            </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div id="tab-financeiro" class="hidden animate-fade-in text-center mt-20"><h2 class="text-white">Relatórios Financeiros</h2><p class="text-gray-500">Área da Diretoria</p></div>
+            <div id="tab-equipe" class="hidden text-center mt-20 text-white">Gestão de Equipe</div>
         </div>
     </div>
 
     <script>
+        // COLOQUE SEU LINK DO MAKE AQUI
         const WEBHOOK_URL = "https://hook.us2.make.com/91fgciu87cnwl72ftfohkycnhyeylv8q";
 
+        // LOGIN
+        function fazerLogin(e) {
+            e.preventDefault();
+            const u = document.getElementById('loginUser').value.toLowerCase();
+            document.getElementById('login-screen').classList.add('hidden');
+            document.getElementById('dashboard-colaborador').classList.remove('hidden');
+            
+            if(u === 'vendas') {
+                document.querySelectorAll('.role-diretor').forEach(el => el.classList.add('hidden-role'));
+                document.getElementById('userNameDisplay').innerText = "Vendedor";
+                document.getElementById('avatarLetter').innerText = "V";
+            }
+        }
+
+        // ABAS
+        function showTab(t) {
+            document.querySelectorAll('[id^="tab-"]').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
+            document.getElementById('tab-'+t).classList.remove('hidden');
+            document.getElementById('btn-'+t).classList.add('active');
+        }
+
+        // MÁSCARAS
+        function maskCPF(i){i.value=i.value.replace(/\D/g,"").replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d)/,"$1.$2").replace(/(\d{3})(\d{1,2})$/,"$1-$2");}
+        function maskPhone(i){i.value=i.value.replace(/\D/g,"").replace(/^(\d{2})(\d)/,"($1) $2").replace(/(\d)(\d{4})$/,"$1-$2");}
+        function maskMoney(i){let v=i.value.replace(/\D/g,"");v=(v/100).toFixed(2)+"";i.value="R$ "+v.replace(".",",").replace(/(\d)(?=(\d{3})+(?!\d))/g,"$1.");}
+
+        // ENVIO DE DADOS + MODAL
         async function enviarDados(e) {
             e.preventDefault();
             const btn = document.getElementById('btnSalvar');
             const originalText = btn.innerHTML;
             
-            // 1. Prepara UI
-            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Analisando Leis...';
+            // 1. UI de Carregamento
+            btn.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Processando...';
             btn.disabled = true;
-            abrirModal(true); // Abre modal carregando
+            abrirModal(true); // Abre o modal carregando
 
             try {
-                // 2. Envia para Make e AGUARDA resposta (await)
+                // 2. Envia para o Make
                 const formData = new FormData(document.getElementById('formCliente'));
                 const response = await fetch(WEBHOOK_URL, { method: 'POST', body: formData });
-                const textoIA = await response.text(); // Pega o texto que o Make devolveu
+                
+                // 3. Recebe a resposta da IA (Texto)
+                const textoIA = await response.text(); 
 
-                // 3. Mostra o Parecer no Modal
+                // 4. Mostra no Modal e na Tabela
                 mostrarResultadoModal(textoIA);
-
-                // 4. Adiciona na Tabela CRM com botão para ver de novo
                 adicionarNaTabela(formData.get('nome'), textoIA);
+                
+                document.getElementById('formCliente').reset();
 
             } catch (err) {
-                document.getElementById('conteudoIA').innerHTML = `<p class="text-red-500">Erro na conexão: ${err.message}</p>`;
+                document.getElementById('conteudoIA').innerHTML = `<p class="text-red-500 font-bold">Erro de conexão: Verifique se o Make está ON.</p>`;
             } finally {
                 btn.innerHTML = originalText;
                 btn.disabled = false;
-                document.getElementById('formCliente').reset();
             }
         }
 
-        function abrirModal(loading = false) {
+        // FUNÇÕES DO MODAL
+        function abrirModal(loading) {
             document.getElementById('modalAnalise').classList.remove('hidden');
             if(loading) {
                 document.getElementById('loaderIA').classList.remove('hidden');
@@ -162,26 +284,29 @@
             const content = document.getElementById('conteudoIA');
             content.classList.remove('hidden');
             
-            // Formatação bonita do texto
+            // Formatação do Texto da IA (Negrito e Cores)
             content.innerHTML = texto
                 .replace(/\n/g, '<br>')
                 .replace(/STATUS:/g, '<strong class="text-wbGold text-lg">STATUS:</strong>')
                 .replace(/ELEGÍVEL/g, '<span class="text-green-500 font-bold">ELEGÍVEL</span>')
-                .replace(/NÃO ELEGÍVEL/g, '<span class="text-red-500 font-bold">NÃO ELEGÍVEL</span>');
+                .replace(/NÃO ELEGÍVEL/g, '<span class="text-red-500 font-bold">NÃO ELEGÍVEL</span>')
+                .replace(/PENDENTE/g, '<span class="text-yellow-500 font-bold">PENDENTE</span>');
         }
 
-        function adicionarNaTabela(nome, analiseGuardada) {
+        function fecharModal() {
+            document.getElementById('modalAnalise').classList.add('hidden');
+        }
+
+        // ATUALIZAÇÃO DO CRM
+        function adicionarNaTabela(nome, analise) {
             const tbody = document.getElementById('crm-body');
-            const idUnico = Date.now(); // ID para recuperar o texto depois
-            
-            // Salva o texto num atributo escondido (data-analise)
             const novaLinha = `
-                <tr class="border-b border-gray-800 hover:bg-gray-900 transition">
+                <tr class="border-b border-gray-800 hover:bg-gray-900 transition animate-fade-in">
                     <td class="p-4 font-bold text-white">${nome}</td>
-                    <td class="p-4"><span class="bg-blue-900 text-blue-300 px-2 py-1 rounded text-xs">Novo</span></td>
+                    <td class="p-4 text-center"><span class="bg-blue-900 text-blue-300 px-3 py-1 rounded text-xs font-bold uppercase">Novo</span></td>
                     <td class="p-4 text-right">
-                        <button onclick="verAnaliseDeNovo(this)" data-analise="${encodeURIComponent(analiseGuardada)}" class="text-wbGold hover:text-white font-bold text-xs border border-wbGold px-3 py-1 rounded">
-                            <i class="fa-solid fa-eye mr-1"></i> VER PARECER
+                        <button onclick="verAnaliseDeNovo('${encodeURIComponent(analise)}')" class="text-wbGold hover:text-white font-bold text-xs border border-wbGold px-3 py-2 rounded">
+                            <i class="fa-solid fa-eye mr-2"></i>VER PARECER
                         </button>
                     </td>
                 </tr>
@@ -189,14 +314,10 @@
             tbody.innerHTML = novaLinha + tbody.innerHTML;
         }
 
-        function verAnaliseDeNovo(btn) {
-            const texto = decodeURIComponent(btn.getAttribute('data-analise'));
+        window.verAnaliseDeNovo = function(analiseEncoded) {
+            const texto = decodeURIComponent(analiseEncoded);
             abrirModal(false);
             mostrarResultadoModal(texto);
-        }
-
-        function fecharModal() {
-            document.getElementById('modalAnalise').classList.add('hidden');
         }
     </script>
 </body>
